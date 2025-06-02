@@ -2,6 +2,18 @@
   <img src="docs/source/_static/kanji_time_title_byline.svg" alt="Kanji Time!" width="800" height="200">
 </p>
 
+<p align="center">
+  <a href="https://github.com/HouseElves/kanji_time_public/releases">
+    <img src="https://img.shields.io/github/v/release/HouseElves/kanji_time_public?include_prereleases" alt="GitHub release">
+  </a>
+  <a href="https://www.gnu.org/licenses/agpl-3.0">
+    <img src="https://img.shields.io/badge/License-AGPL%20v3-blue.svg" alt="License: AGPL v3">
+  </a>
+  <a href="https://creativecommons.org/licenses/by-sa/4.0/">
+    <img src="https://img.shields.io/badge/Data%20License-CC%20BY--SA%204.0-lightgrey.svg" alt="Data License: CC BY-SA 4.0">
+  </a>
+</p>
+
 # Kanji Time!
 
 **Kanji Time is an extensible tool that instantly generates custom, printable kanji study sheets and dictionary summaries.**
@@ -117,92 +129,111 @@ Here's what Kanji Time delivers today... and why it's built to handle tomorrow's
 
 ## Build & Run
 
-### Setup: Build and Install Locally
+Kanji Time runs on Python 11.0 or later. 
 
-1. **Create and activate a virtual environment (recommended):**
+### Run Kanji Time and use its output - no source code
 
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate        # On Windows: .venv\Scripts\activate
-   ```
+Install using the latest development wheel from github from the command window. 
+Create (or navigate to) an owner directory for Kanji Time (such as Python Apps) and then run the following: 
 
-2. **Install build tools** (only needed if you want to build the wheel yourself):
+**On Windows**
 
-   ```bash
-   pip install build
-   ```
+    ```bash
+    python -m venv kanji_time
+    kanji_time\Scripts\activate
+    pip install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.0-alpha-20250531/kanji_time-0.1.0.20250531-py3-none-any.whl
+    ```
 
-3. **Build the wheel (optional, for local packaging):**
+**On Mac or Linux**
 
-   ```bash
-   python -m build
-   ```
+    ```bash
+    python -m venv kanji_time
+    source kanji_time/bin/activate
+    pip install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.0-alpha-20250531/kanji_time-0.1.0.20250531-py3-none-any.whl
+    ```
 
-   This will create a `.whl` file in the `dist/` directory.
+Kanji Time will be installed into a directory named *kanji_time* under the owner directory.
 
-4. **Install Kanji Time and its runtime dependencies:**
+To uninstall Kanji Time, simply navigate to the owner directory and then remove the *kanji_time* directory from it.
 
-   ```bash
-   pip install -r requirements.txt
-   pip install dist/kanji_time-*.whl    # if you built the wheel in step 3
-   ```
+**On Windows**
 
-   *Alternatively, you can install directly from source for development:*
+    ```bash
+    kanji_time\Scripts\deactivate
+    rmdir /q /s kanji_time
+    ```
 
-   ```bash
-   pip install -e .
-   ```
+**On Mac or Linux**
 
-5. **(Optional) For development and testing, also install dev requirements:**
+    ```bash
+    deactivate
+    rmdir -rf kanji_time
+    ```
 
-   ```bash
-   pip install -r dev_requirements_only.txt
-   ```
+### Build & run Kanji Time from its source code
 
-6. **(Optional) To build or test documentation, install docs requirements:**
+Clone the Kanji Time git repository, build it, then install into a virtual environment.
+Create (or navigate to) an owner directory for Kanji Time (such as Python Code) and then run the following:
 
-   ```bash
-   pip install -r docs_requirements_only.txt
-   ```
+**On Windows**
+
+    ```bash
+    # Get the source code
+    git clone https://github.com/HouseElves/kanji_time_public.git
+    cd kanji_time_public
+    # Make a virtual environment
+    python -m venv kanji_time
+    kanji_time_venv\Scripts\activate
+    # Build
+    pip install --upgrade build
+    python -m build
+    # Install
+    pip install -e .
+    ```
+**On Mac or Linux**
+
+    ```bash
+    # Get the source code
+    git clone https://github.com/HouseElves/kanji_time_public.git
+    cd kanji_time_public
+    # Make a virtual environment
+    python -m venv kanji_time
+    source kanji_time/bin/activate
+    # Build
+    pip install --upgrade build
+    python -m build
+    # Install
+    pip install -e .
+    ```
 
 ### Run
 
-Generate kanji reports from the command line:
+Generate sample kanji reports from the command line:
 
 ```bash
 python -m kanji_time 現 生 鳥 --report=kanji_summary --report=practice_sheet
 ```
 
 * This will process the characters `現`, `生`, and `鳥`, and produce PDF outputs and execution logs.
-* Look for PDF files and logs named like:
 
-```
-Beginning kanji_summary.
-Processing 現...on page...1...done! PDF result in 96_現_summary.pdf
-Processing 生...on page...1...2...3...done! PDF result in 100_生_summary.pdf
-Processing 鳥...on page...1...done! PDF result in 196_鳥_summary.pdf
-kanji_summary complete.
-Finished.  Execution log in kanji_summary.log
-Beginning practice_sheet.
-Processing 現...on page...1...done! PDF result in 現_practice.pdf
-Processing 生...on page...1...done! PDF result in 生_practice.pdf
-Processing 鳥...on page...1...done! PDF result in 鳥_practice.pdf
-practice_sheet complete.
-Finished.  Execution log in practice_sheet.log
-```
+    After a moment or two, you will see output like this:
+
+    ```
+    Beginning kanji_summary.
+    Processing 現...on page...1...done! PDF result in 96_現_summary.pdf
+    Processing 生...on page...1...2...3...done! PDF result in 100_生_summary.pdf
+    Processing 鳥...on page...1...done! PDF result in 196_鳥_summary.pdf
+    kanji_summary complete.
+    Finished.  Execution log in kanji_summary.log
+    Beginning practice_sheet.
+    Processing 現...on page...1...done! PDF result in 現_practice.pdf
+    Processing 生...on page...1...done! PDF result in 生_practice.pdf
+    Processing 鳥...on page...1...done! PDF result in 鳥_practice.pdf
+    practice_sheet complete.
+    Finished.  Execution log in practice_sheet.log
+    ```
 
 * **Output files**: Each processed kanji will have its own summary and/or practice sheet PDF in the current directory.
-
-### Notes
-
-* **Virtual environments are strongly recommended** to avoid polluting your system Python.
-* **You do not need to install `build` in your main requirements.txt**—it’s only needed for packaging, not for running Kanji Time.
-* **Development and documentation requirements** are separated for clarity—install them only if you want to run tests or build the docs.
-* **If you only want to run the program, you can skip steps 2–3 and just install from source:**
-
-  ```bash
-  pip install -r requirements.txt
-  ```
 
 ---
 
@@ -211,6 +242,9 @@ Finished.  Execution log in practice_sheet.log
 Full documentation will be available soon. RST files are under final review in the 'docs' directory.
 
 Watch this space for a ReadTheDocs or GitHub Pages link!
+
+➡️ [Full CLI usage and report options »](cli_usage.md)
+
 
 ---
 
