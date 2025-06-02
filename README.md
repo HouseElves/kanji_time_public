@@ -177,34 +177,35 @@ Create (or navigate to) an owner directory for Kanji Time (such as Python Code) 
 
 **On Windows**
 
-    ```bash
-    # Get the source code
-    git clone https://github.com/HouseElves/kanji_time_public.git
-    cd kanji_time_public
-    # Make a virtual environment
-    python -m venv kanji_time
-    kanji_time_venv\Scripts\activate
-    # Build
-    pip install --upgrade build
-    python -m build
-    # Install
-    pip install -e .
-    ```
+```bash
+# Get the source code
+git clone https://github.com/HouseElves/kanji_time_public.git
+cd kanji_time_public
+# Make a virtual environment
+python -m venv kanji_time
+kanji_time_venv\Scripts\activate
+# Build
+pip install --upgrade build
+python -m build
+# Install
+pip install -e .
+```
+
 **On Mac or Linux**
 
-    ```bash
-    # Get the source code
-    git clone https://github.com/HouseElves/kanji_time_public.git
-    cd kanji_time_public
-    # Make a virtual environment
-    python -m venv kanji_time
-    source kanji_time/bin/activate
-    # Build
-    pip install --upgrade build
-    python -m build
-    # Install
-    pip install -e .
-    ```
+```bash
+# Get the source code
+git clone https://github.com/HouseElves/kanji_time_public.git
+cd kanji_time_public
+# Make a virtual environment
+python -m venv kanji_time
+source kanji_time/bin/activate
+# Build
+pip install --upgrade build
+python -m build
+# Install
+pip install -e .
+```
 
 ### Run
 
@@ -218,20 +219,20 @@ python -m kanji_time 現 生 鳥 --report=kanji_summary --report=practice_sheet
 
     After a moment or two, you will see output like this:
 
-    ```
-    Beginning kanji_summary.
-    Processing 現...on page...1...done! PDF result in 96_現_summary.pdf
-    Processing 生...on page...1...2...3...done! PDF result in 100_生_summary.pdf
-    Processing 鳥...on page...1...done! PDF result in 196_鳥_summary.pdf
-    kanji_summary complete.
-    Finished.  Execution log in kanji_summary.log
-    Beginning practice_sheet.
-    Processing 現...on page...1...done! PDF result in 現_practice.pdf
-    Processing 生...on page...1...done! PDF result in 生_practice.pdf
-    Processing 鳥...on page...1...done! PDF result in 鳥_practice.pdf
-    practice_sheet complete.
-    Finished.  Execution log in practice_sheet.log
-    ```
+```text
+Beginning kanji_summary.
+Processing 現...on page...1...done! PDF result in 96_現_summary.pdf
+Processing 生...on page...1...2...3...done! PDF result in 100_生_summary.pdf
+Processing 鳥...on page...1...done! PDF result in 196_鳥_summary.pdf
+kanji_summary complete.
+Finished.  Execution log in kanji_summary.log
+Beginning practice_sheet.
+Processing 現...on page...1...done! PDF result in 現_practice.pdf
+Processing 生...on page...1...done! PDF result in 生_practice.pdf
+Processing 鳥...on page...1...done! PDF result in 鳥_practice.pdf
+practice_sheet complete.
+Finished.  Execution log in practice_sheet.log
+```
 
 * **Output files**: Each processed kanji will have its own summary and/or practice sheet PDF in the current directory.
 
