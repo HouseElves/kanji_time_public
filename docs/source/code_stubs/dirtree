@@ -1,0 +1,57 @@
+├── adapter
+│   ├── __init__.py
+│   └── svg.py
+├── external_data
+│   ├── __init__.py
+│   ├── kanji_dic2.py
+│   ├── kanji_dict.py
+│   ├── kanji_svg.py
+│   ├── radicals.py
+│   └── settings.py
+├── reports
+│   ├── kanji_summary
+│   │   ├── __init__.py
+│   │   ├── banner.py
+│   │   ├── document.py
+│   │   ├── kanji_summary.py
+│   │   ├── radical_summary.py
+│   │   └── report.py
+│   ├── practice_sheet
+│   │   ├── __init__.py
+│   │   ├── document.py
+│   │   └── report.py
+│   ├── controller.py
+│   └── __init__.py
+├── utilities
+│   ├── __init__.py
+│   ├── check_attrs.py
+│   ├── class_property.py
+│   ├── general.py
+│   ├── singleton.py
+│   └── xml.py
+├── visual
+│   ├── frame
+│   │   ├── __init__.py
+│   │   ├── container.py
+│   │   ├── drawing.py
+│   │   ├── empty_space.py
+│   │   ├── formatted_text.py
+│   │   ├── page.py
+│   │   ├── page_rule.py
+│   │   └── simple_element.py
+│   ├── layout
+│   │   ├── __init__.py
+│   │   ├── anchor_point.py
+│   │   ├── distance.py
+│   │   ├── paper_names.py
+│   │   ├── region.py
+│   │   └── stack_layout.py
+│   ├── protocol
+│   │   ├── __init__.py
+│   │   ├── content.py
+│   │   └── layout_strategy.py
+│   └── __init__.py
+├── kanji_time.py
+└── svg_transform.py
+
+10 directories, 45 files

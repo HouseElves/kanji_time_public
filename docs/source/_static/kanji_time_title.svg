@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="300" viewBox="0 0 800 300">
+  <defs>
+    <linearGradient id="bggrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fceabb"/>
+      <stop offset="100%" stop-color="#f8b500"/>
+    </linearGradient>
+    <filter id="dropShadow" height="130%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="0" dy="4" result="offsetblur"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="800" height="300" fill="url(#bggrad)"/>
+
+  <!-- English title -->
+  <text x="50%" y="42%" text-anchor="middle" font-family="Montserrat,'Noto Sans',sans-serif" font-size="72" font-weight="700" fill="#ffffff" filter="url(#dropShadow)">
+    Kanji Time!
+  </text>
+
+  <!-- Japanese title -->
+  <text x="50%" y="78%" text-anchor="middle" font-family="'Yu Gothic','Noto Sans JP',sans-serif" font-size="64" font-weight="700" fill="#ffffff" filter="url(#dropShadow)">
+    漢字タイム！
+  </text>
+<script xmlns=""/></svg>

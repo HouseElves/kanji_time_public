@@ -1,0 +1,13 @@
+.. role:: python(code)
+   :language: python
+
+.. |rarr| unicode:: U+2192
+   :ltrim:
+
+.. |implies| unicode:: U+21D2
+   :ltrim:
+
+.. |mapsto| unicode:: U+27F6
+   :ltrim:
+
+.. |KT| replace:: Kanji Time

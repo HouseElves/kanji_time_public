@@ -1,0 +1,50 @@
+Kanji Time
+
+Copyright © 2024, 2025 Andrew Milton
+
+This software is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0), 
+as published by the Free Software Foundation.
+
+You may copy, modify, and distribute this program under the terms of the AGPL-3.0. 
+See the full license text at: https://www.gnu.org/licenses/agpl-3.0.html
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+See the AGPL-3.0 for more details.
+
+---
+
+Redistributed Data Notice:
+
+Kanji Time redistributes several data sets under the Creative Commons Attribution-Share Alike 4.0 International (CC BY-SA 4.0) license. These data sets are included unmodified and retain their original licensing terms:
+
+1. **KanjiDict and KanjiDic2 XML data sets**  
+   Source: Electronic Dictionary Research and Development Group (EDRDG)  
+   License: CC BY-SA 4.0 (upgraded from 3.0)  
+   Website: https://www.edrdg.org/wiki/index.php/KANJIDIC_Project
+
+2. **KanjiVG XML stroke order graphics**  
+   Source: Ulrich Apel  
+   License: CC BY-SA 4.0 (upgraded from 3.0)  
+   Website: https://kanjivg.tagaini.net/
+
+Kanji Time includes an unmodified copy of the Unicode CJKRadicals.txt file. The Unicode data files are freely redistributable under the Unicode License, which permits use in both commercial and non-commercial
+applications as long as proper attribution is given.
+
+1. **Unicode CJK Radicals**
+   Source: Unicode Consortium  
+   License: Unicode License Version 3.0  
+   Website: https://www.unicode.org/Public/15.1.0/ucd/CJKRadicals.txt  
+
+All redistributed data remains in its original form. All rights remain with the original authors and licensors. By using this software, you agree to comply with the terms of these third-party licences when accessing or redistributing the included data.
+
+For the full CC BY-SA 4.0 license text, see: https://creativecommons.org/licenses/by-sa/4.0/
+For the full Unicode 3.0 license text, see: https://www.unicode.org/license.txt.
+
+The full text of the Unicode License V3 also appears in the bundled file UnicodeV3.txt in the project root.
+
+Summary of applicable licenses:
+
+- Kanji Time code: AGPL-3.0-or-later
+- KanjiDic and KanjiVG data: CC BY-SA 4.0
+- Unicode CJK Radicals: Unicode License Version 3.0

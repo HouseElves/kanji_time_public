@@ -1,0 +1,48 @@
+Kanji Time Documentation – Legal Notices
+========================================
+
+Kanji Time © 2024, 2025 Andrew Milton  
+Licensed under the GNU Affero General Public License v3.0 (AGPL-3.0)  
+Full text: https://www.gnu.org/licenses/agpl-3.0.html
+
+This documentation accompanies software licensed under AGPL-3.0. You may copy, modify, and redistribute this documentation as long as such use complies with the license terms above.
+
+Redistributed Data Sources
+--------------------------
+
+This project redistributes unmodified data from third-party sources under the Creative Commons Attribution-Share Alike 4.0 International (CC BY-SA 4.0) license.
+
+**KanjiDic2 and KanjiDict XML datasets**  
+
+    - Source: Electronic Dictionary Research and Development Group (EDRDG)  
+    - License: CC BY-SA 4.0 (upgraded from 3.0)  
+    - Website: https://www.edrdg.org/wiki/index.php/KANJIDIC_Project  
+    - Includes: kanjidic2.xml.gz and related files
+
+**KanjiVG stroke order graphics**  
+
+    - Source: Ulrich Apel  
+    - License: CC BY-SA 4.0 (upgraded from 3.0)  
+    - Website: https://kanjivg.tagaini.net/  
+    - Includes: SVG files modeling kanji character strokes
+
+These datasets are redistributed **verbatim and unmodified**. All copyright and licensing obligations remain with the original authors.
+By using this software or accessing redistributed data, you agree to comply with the CC BY-SA 4.0 license.
+
+For full license terms, visit: https://creativecommons.org/licenses/by-sa/4.0/
+
+**Unicode CJK Radicals**
+
+This project redistributes an unaltered copy of the Unicode Consortium's CJK Radicals file:
+
+  https://www.unicode.org/Public/15.1.0/ucd/CJKRadicals.txt
+
+Copyright © 1991–2022 Unicode, Inc.
+
+Licensed under the Unicode License Version 3.0: https://www.unicode.org/license.html
+
+License Summary
+---------------
+
+- **Software code**: GNU AGPL v3.0 or later
+- **Redistributed data**: Creative Commons Attribution-Share Alike 4.0 International (CC BY-SA 4.0), Unicode License Version 3.0

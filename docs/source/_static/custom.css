@@ -1,0 +1,14 @@
+table.docutils {
+    width: 100%;
+    border: none;
+    border-collapse: collapse;
+}
+
+table.docutils td, table.docutils th {
+    border: none;
+    padding: 0.5em;
+    vertical-align: top;
+}
+
+.center {text-align: center;}
+

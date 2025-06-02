@@ -1,0 +1,11 @@
+project root
+├── adapter
+├── external_data
+├── reports
+│   ├── kanji_summary
+│   └── practice_sheet
+├── utilities
+└── visual
+    ├── frame
+    ├── layout
+    └── protocol
