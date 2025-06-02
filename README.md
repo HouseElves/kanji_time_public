@@ -138,19 +138,19 @@ Create (or navigate to) an owner directory for Kanji Time (such as Python Apps) 
 
 **On Windows**
 
-    ```bash
-    python -m venv kanji_time
-    kanji_time\Scripts\activate
-    pip install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.0-alpha-20250531/kanji_time-0.1.0.20250531-py3-none-any.whl
-    ```
+```bash
+python -m venv kanji_time
+kanji_time\Scripts\activate
+pip install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.0-alpha-20250531/kanji_time-0.1.0.20250531-py3-none-any.whl
+```
 
 **On Mac or Linux**
 
-    ```bash
-    python -m venv kanji_time
-    source kanji_time/bin/activate
-    pip install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.0-alpha-20250531/kanji_time-0.1.0.20250531-py3-none-any.whl
-    ```
+```bash
+python -m venv kanji_time
+source kanji_time/bin/activate
+pip install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.0-alpha-20250531/kanji_time-0.1.0.20250531-py3-none-any.whl
+```
 
 Kanji Time will be installed into a directory named *kanji_time* under the owner directory.
 
@@ -158,17 +158,17 @@ To uninstall Kanji Time, simply navigate to the owner directory and then remove 
 
 **On Windows**
 
-    ```bash
-    kanji_time\Scripts\deactivate
-    rmdir /q /s kanji_time
-    ```
+```bash
+kanji_time\Scripts\deactivate
+rmdir /q /s kanji_time
+```
 
 **On Mac or Linux**
 
-    ```bash
-    deactivate
-    rmdir -rf kanji_time
-    ```
+```bash
+deactivate
+rmdir -rf kanji_time
+```
 
 ### Build & run Kanji Time from its source code
 
