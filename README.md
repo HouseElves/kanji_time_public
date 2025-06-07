@@ -127,14 +127,18 @@ Here's what Kanji Time delivers today... and why it's built to handle tomorrow's
 
 ---
 
-## Build & Run
+# Installing Kanji Time
+
+You can install & run the current Kanji Time package  
+**or**  
+build & run Kanji Time using the current source code.
+
+## Install & run the current package
 
 Kanji Time runs on Python 11.0 or later. 
 
-### Run Kanji Time and use its output - no source code
-
-Install using the latest development wheel from github from the command window. 
-Create (or navigate to) an owner directory for Kanji Time (such as Python Apps) and then run the following: 
+These steps will install Kanji time using the latest development wheel from github. 
+From the command window, create (or navigate to) an owner directory for Kanji Time (such as Python Apps) and then run the following: 
 
 **On Windows**
 
@@ -154,23 +158,38 @@ pip install https://github.com/HouseElves/kanji_time_public/releases/download/v0
 
 Kanji Time will be installed into a directory named *kanji_time* under the owner directory.
 
-To uninstall Kanji Time, simply navigate to the owner directory and then remove the *kanji_time* directory from it.
+## Run Sample Reports
 
-**On Windows**
-
-```bash
-kanji_time\Scripts\deactivate
-rmdir /q /s kanji_time
-```
-
-**On Mac or Linux**
+Generate sample kanji reports from the command line:
 
 ```bash
-deactivate
-rmdir -rf kanji_time
+python -m kanji_time 現 生 鳥 --report=kanji_summary --report=practice_sheet
 ```
 
-### Build & run Kanji Time from its source code
+* This will process the characters `現`, `生`, and `鳥`, and produce PDF outputs and execution logs.
+
+After a moment or two, you will see output like this:
+
+```text
+Loading extra kanji information...
+Loading the kanji dictionary...
+Beginning kanji_summary.
+Processing 現...on page...1...done! PDF result in 96_現_summary.pdf
+Processing 生...on page...1...done! PDF result in 100_生_summary.pdf
+Processing 鳥...on page...1...done! PDF result in 196_鳥_summary.pdf
+kanji_summary complete.
+Finished.  Execution log in kanji_summary.log
+Beginning practice_sheet.
+Processing 現...on page...1...done! PDF result in 現_practice.pdf
+Processing 生...on page...1...done! PDF result in 生_practice.pdf
+Processing 鳥...on page...1...done! PDF result in 鳥_practice.pdf
+practice_sheet complete.
+Finished.  Execution log in practice_sheet.log
+```
+
+* **Output files**: Each processed kanji will have its own summary and/or practice sheet PDF in the current directory.
+
+## Build & run Kanji Time from its source code
 
 Clone the Kanji Time git repository, build it, then install into a virtual environment.
 Create (or navigate to) an owner directory for Kanji Time (such as Python Code) and then run the following:
@@ -207,45 +226,17 @@ python -m build
 pip install -e .
 ```
 
-### Run
-
-Generate sample kanji reports from the command line:
-
-```bash
-python -m kanji_time 現 生 鳥 --report=kanji_summary --report=practice_sheet
-```
-
-* This will process the characters `現`, `生`, and `鳥`, and produce PDF outputs and execution logs.
-
-    After a moment or two, you will see output like this:
-
-```text
-Beginning kanji_summary.
-Processing 現...on page...1...done! PDF result in 96_現_summary.pdf
-Processing 生...on page...1...2...3...done! PDF result in 100_生_summary.pdf
-Processing 鳥...on page...1...done! PDF result in 196_鳥_summary.pdf
-kanji_summary complete.
-Finished.  Execution log in kanji_summary.log
-Beginning practice_sheet.
-Processing 現...on page...1...done! PDF result in 現_practice.pdf
-Processing 生...on page...1...done! PDF result in 生_practice.pdf
-Processing 鳥...on page...1...done! PDF result in 鳥_practice.pdf
-practice_sheet complete.
-Finished.  Execution log in practice_sheet.log
-```
-
-* **Output files**: Each processed kanji will have its own summary and/or practice sheet PDF in the current directory.
+The same instructions to run sample reports also work after building from source, [here](#run).
 
 ---
 
-## Documentation
+# Documentation
 
 Full documentation will be available soon. RST files are under final review in the 'docs' directory.
 
 Watch this space for a ReadTheDocs or GitHub Pages link!
 
 ➡️ [Full CLI usage and report options »](cli_usage.md)
-
 
 ---
 
