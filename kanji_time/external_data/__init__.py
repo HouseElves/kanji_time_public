@@ -77,3 +77,6 @@ The Python code modules in :mod:`external_data` depend on modules external to th
     radicals --> check_attrs
 
 """
+import pathlib
+
+EXTERNAL_DATA_ROOT : pathlib.Path = pathlib.Path(__file__).parent

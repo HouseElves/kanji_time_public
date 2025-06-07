@@ -98,7 +98,7 @@ def radical_map() -> RadicalMap:
     #   CJK radical numbers match the regular expression [1-9][0-9]{0,2}\'{0,2}
     #   and in particular they can end with one or two U+0027 ' APOSTROPHE characters.
     #
-    with open(settings.radical_file, encoding="utf-8") as ucd_radicals:
+    with open(settings.CJKRADICALS_PATH, encoding="utf-8") as ucd_radicals:
         while (line := ucd_radicals.readline().strip()):
             if line[0] == '#':  # ignore comments
                 continue
@@ -143,7 +143,7 @@ def meaning_map(src_radical_map: RadicalMap) -> MeaningMap:
         assert kangxi is None or ord(kangxi) in kangxi_range or ord(kangxi) in cjk_supplement_range
         assert ord(cjk) in cjk_range or ord(cjk) in cjk_extension_h_range
 
-        character_xmls = get_glyph_xml(cjk)
+        character_xmls = get_glyph_xml(cjk)  # Issue:  this should be loading on-demand!
         for character_xml in character_xmls:
             radical_name = rad_name_xml[0].text if (rad_name_xml := character_xml.findall(".//rad_name")) else None
             if radical_name:
