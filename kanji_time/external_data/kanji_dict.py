@@ -23,18 +23,39 @@ particular to a kanji (or kana) glyph as defined in this Python module.
 """
 
 from collections.abc import Generator
+import gzip
 import xml.etree.ElementTree as ET
 
 import kanji_time.external_data.settings as settings
+
+# pylint: disable=wrong-import-order,wrong-import-position
+import logging
+logger = logging.getLogger(__name__)
 
 
 def load_kanjidict() -> ET.Element:
     """
     Load the KanjiDict XML file and return the parsed tree.
 
-    :return: the root of the parsed Kanji Dict XML tree.
+    Attempt to load from a GZIP file first, then fall back to the filesystem.
+
+    :return: the root of the parsed Kanji Dict XML tree.    
     """
-    tree = ET.parse(settings.kanjidict_path)
+    print("Loading the kanji dictionary...")
+    tree : ET.ElementTree[ET.Element[str]] | None = None
+    if settings.KANJIDICT_GZIP_PATH.exists():
+        with gzip.open(settings.KANJIDICT_GZIP_PATH, 'rt', encoding='utf-8') as xml_file:
+            logging.info(f"loading {settings.KANJIDICT_PATH.name} from {settings.KANJIDICT_GZIP_PATH}.")
+            tree = ET.parse(xml_file)
+
+    if tree is None and settings.KANJIDICT_PATH.exists():
+        logging.info(f"loading {settings.KANJIDICT_PATH} from uncompressed data.")
+        tree = ET.parse(settings.KANJIDICT_PATH)
+    
+    if tree is None:
+        raise RuntimeError(f"Cannot load {settings.KANJIDICT_PATH}")
+    
+    assert tree is not None
     return tree.getroot()
 
 

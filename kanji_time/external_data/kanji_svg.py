@@ -20,6 +20,7 @@ Licensing/Credits:
  """
 # pylint: disable=fixme
 
+from contextlib import contextmanager
 import copy
 from itertools import product
 import threading
@@ -28,9 +29,10 @@ from typing import Any, cast
 from functools import cache
 
 from collections import defaultdict
-from collections.abc import Callable, Iterable, Mapping
+from collections.abc import Callable, Generator, Iterable, Mapping
 from dataclasses import dataclass, field
 import xml.etree.ElementTree as ET
+import zipfile
 
 from IPython.display import SVG, display
 from svgwrite import Drawing as SVGDrawing
@@ -494,6 +496,34 @@ class KanjiSVG(metaclass=SVGCache):
             assert isinstance(text.text, str), "OMFG the type linter is SOOOOO whiny!"
             self._labels.append((position_xform, text.text))
 
+    @staticmethod
+    def kanji_vg_file(glyph: str):
+        """Open a compressed or uncompressed version of a Kanji VG file."""
+        kanji_unicode = f"{ord(glyph):05x}"  # Convert Kanji to Unicode hex (e.g., '66f8' for 書)
+        filename = settings.KANJI_SVG_PATH/f"{kanji_unicode}.svg"  # either in the file system or the ZIP
+
+        xml_tree : ET.ElementTree[ET.Element[str]] | None = None
+
+        # Try the zip file first
+        if settings.KANJI_SVG_ZIP_PATH.exists():
+            with zipfile.ZipFile(settings.KANJI_SVG_ZIP_PATH) as z:
+                # If you have a ZIP: list files, pick the correct name
+                archive_file = str(filename.relative_to(settings.EXTERNAL_DATA_ROOT))
+                with z.open(archive_file) as xml_file:
+                    logging.info(f"loading {archive_file} from {settings.KANJI_SVG_ZIP_PATH}.")
+                    xml_tree = ET.parse(xml_file)
+
+        # Then fall back to the filesystem
+        if xml_tree is None and filename.exists():
+            logging.info(f"loading {filename} from uncompressed data.")
+            xml_tree = ET.parse(filename)
+
+        if xml_tree is None:
+            raise ValueError(f"Could not load the KanjiVG file for '{glyph}'.")
+
+        assert xml_tree is not None
+        return xml_tree
+
     def load(self) -> None:
         """
         Parse KanjiVG XML for stroke paths and order.
@@ -516,10 +546,10 @@ class KanjiSVG(metaclass=SVGCache):
             return
 
         kanji_unicode = f"{ord(self.glyph):05x}"  # Convert Kanji to Unicode hex (e.g., '66f8' for 書)
-        filename = f"{settings.kanji_svg_path}/{kanji_unicode}.svg"
+        filename = settings.KANJI_SVG_PATH/f"{kanji_unicode}.svg"
 
         # Use the XML element tree module to parse the SVG content
-        tree = ET.parse(filename)
+        tree = KanjiSVG.kanji_vg_file(self.glyph)
         root = tree.getroot()
 
         # We require a viewBox attribute for the glyph boundaries and centering.
