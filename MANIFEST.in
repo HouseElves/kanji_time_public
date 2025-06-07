@@ -6,12 +6,10 @@ include _static/kanji_time_title_byline.svg
 include _static/strokes_image.png
 include _static/summary_image.png
 
-include kanji_time/external_data/kanji/*
 include kanji_time/external_data/CJKRadicals.txt
-include kanji_time/external_data/kanjidic2.xml
-include kanji_time/external_data/kanji_dict
 include kanji_time/external_data/JMdict_e_examp.gz
 include kanji_time/external_data/kanjidic2.xml.gz
 include kanji_time/external_data/kanjivg-20240807-main.zip
 
 recursive-exclude docs *
+recursive-exclude kanji_time/external_data/kanji *
