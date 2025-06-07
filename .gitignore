@@ -106,3 +106,4 @@ kanji_time/external_data/kanjivg-*.zip
 
 # Ignore wheels/dist
 *.whl
+docs/source/code/*
