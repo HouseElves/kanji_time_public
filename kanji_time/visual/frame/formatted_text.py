@@ -64,34 +64,29 @@ class FormattedText(SimpleElement):
         :name: cd_formatted_text
         :caption: Class relationships for a simple HTML-like text frame.
 
-        ---
-        config:
-            mermaid_include_elk: "0.1.7"
-            layout: elk
-            class:
-                hideEmptyMembersBox: true
-        ---
         classDiagram
             direction TB
             class RenderingFrame
             class SimpleElement
 
-            <<interface>> RenderingFrame
-            <<abstract>> SimpleElement
-            RenderingFrame <|-- SimpleElement
-            SimpleElement <|-- FormattedText
-
             class FormattedText {
                 <<realization>>
                 +getSpaceBefore() : float
                 +getSpaceAfter() : float
-                +measure(Extent extent) Extent
+                +measure(Extent extent) : Extent
                 +draw(DisplaySurface c, Region region)
             }
             FormattedText : AnchorPoint anchor
             FormattedText : Extent content_size
             FormattedText : bool do_not_consume
             FormattedText --o "n" Flowable : text
+
+            <<interface>> RenderingFrame
+            <<abstract>> SimpleElement
+            RenderingFrame <|-- SimpleElement
+            SimpleElement <|-- FormattedText
+
+
      """
     height_extra = 1.0  # this is a rounding pad.  it should be optional as  a property
 
