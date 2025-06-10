@@ -226,7 +226,6 @@ class Radical:
             cls.meanings = meaning_map(cls.radicals)
         return super().__new__(cls)
 
-    @radical_in_range(["radical_num"], CheckOn.Exit)
     def __init__(self, radical_num: int | str):
         """Initialize with the radical number."""
         # pylint: disable=unsubscriptable-object
