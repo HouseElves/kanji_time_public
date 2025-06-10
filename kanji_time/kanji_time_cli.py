@@ -378,7 +378,13 @@ def cli_entry_point():
         sys.exit(2)  # should be a well known and documented named constant
 
     # Now let's do the report.  The logger will handle exceptions on our behalf.
+    if args.report is None:
+        print("No Kanji Time report requested.  Exiting.")
+        sys.exit(2)
     for report_alias in args.report:
+        if report_alias not in VALID_REPORTS:
+            print(f"{report_alias} is not a known Kanji Time report.")
+            sys.exit(2)
         log_file = output_dir / f"{report_alias}.log"
         with log(log_file, logging.INFO):
             execute_report(report_alias, args.kanji, output_dir)
