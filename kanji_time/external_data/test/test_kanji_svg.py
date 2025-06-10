@@ -3,13 +3,18 @@ Test suite for KanjiSVG class with full branch coverage.
 """
 # pylint: disable=fixme
 
+import io
+import xml.etree.ElementTree as ET
 import pytest
 from unittest.mock import MagicMock, patch, mock_open
+
+from kanji_time.adapter.svg import ReportLabDrawingFactory
+from kanji_time.external_data.settings import KANJI_SVG_ZIP_PATH, KANJI_SVG_PATH
 from kanji_time.external_data.kanji_svg import KanjiSVG, SVGDrawing
+from kanji_time.external_data.test.test_kanji_dicts import hide_paths
 from kanji_time.svg_transform import Transform
 from kanji_time.visual.layout.region import Extent
 from kanji_time.visual.layout.distance import Distance
-import xml.etree.ElementTree as ET
 
 # TEST INITIALIZATION AND CACHING
 def test_kanji_svg_initialization():
@@ -52,6 +57,48 @@ def test_load_kanji_svg():
             assert kanji_svg.loaded
             assert len(kanji_svg.strokes) == 1
             assert kanji_svg.viewbox == "0 0 100.0 150.0"
+
+
+def test_no_zip_fallback():
+    """Test that we try to open an uncompressed XML file if the ZIP does not exist."""
+    glyph = "戸"
+    hidden = [KANJI_SVG_ZIP_PATH]
+    uncompressed = KANJI_SVG_PATH/f"{ord(glyph):05x}.svg"
+    hider = hide_paths(hidden)
+
+    def mock_target_does_not_exist(self):
+        """Make the hider look like a class method for unittest.mock.patch."""
+        return hider(self)
+
+    assert all(mock_target_does_not_exist(target) is False for target in hidden)
+    
+    with patch("pathlib.Path.exists", mock_target_does_not_exist):
+        assert all(target.exists() is False for target in hidden)  # Mocked: returns False
+        if uncompressed.exists():
+            glyph_root = KanjiSVG.kanji_vg_file(glyph)
+            assert glyph_root is not None
+        else:
+            with pytest.raises(ValueError):
+                glyph_root = KanjiSVG.kanji_vg_file(glyph)
+
+
+def test_no_kanjivg_files():
+    """Test that we try to open an uncompressed XML file if the GZIP does not exist, and fail if that doesn't exist either."""
+    glyph = "戸"
+    hidden = [KANJI_SVG_ZIP_PATH, KANJI_SVG_PATH/f"{ord(glyph):05x}.svg"] 
+    hider = hide_paths(hidden)
+
+    def mock_target_does_not_exist(self):
+        """Make the hider look like a class method for unittest.mock.patch."""
+        return hider(self)
+
+    assert all(mock_target_does_not_exist(target) is False for target in hidden)
+    
+    with patch("pathlib.Path.exists", mock_target_does_not_exist):    
+        assert all(target.exists() is False for target in hidden)  # Mocked: returns False
+        with pytest.raises(ValueError):
+            glyph_root = KanjiSVG.kanji_vg_file(glyph)
+
 
 def test_double_load():
     """Test that a second load is a no-op."""
@@ -348,7 +395,7 @@ def test_load_invalid_svg():
     """Test handling of malformed SVG files."""
     glyph = "上"  # use a different glyph so we don't hit the cache
     kanji_svg = KanjiSVG(glyph)  #: .. todo:: pass in a "no cache/force reload" option
-    with patch("builtins.open", mock_open(read_data="<svg></svg>")):
+    with patch("zipfile.ZipFile.open", return_value=io.StringIO("<svg></svg>")):        
         with pytest.raises(ValueError):
             kanji_svg.load()
 
@@ -392,6 +439,18 @@ def test_kanji_svg_empty_practice_strip():
     kanji_svg._strokes = []
     strip_drawing = kanji_svg.draw_practice_strip(grid_columns=5)
     assert strip_drawing is not None
+
+
+def test_reportlab_drawing_factory():
+    """Verify that we can create a specialized drawing factory for ReportLab."""
+    default_viewbox = "0 0 100 100"
+    different_viewbox = "0 0 50 50"
+    factory = ReportLabDrawingFactory(default_viewbox)
+    d1 = factory()    
+    assert d1.attribs['viewBox'] == default_viewbox
+    d2 = factory(viewBox=different_viewbox)
+    assert d2.attribs['viewBox'] == different_viewbox
+
 
 if 0:
     # TEST RADICAL HIGHLIGHTING
