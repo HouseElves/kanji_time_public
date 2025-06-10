@@ -75,6 +75,9 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+# kanji_list = '鷄合晴格好悪上五以'  # しの何分初別功単原台君味嘘図圖土地子密屹度心愛成戸所教文斤書有横無珍現生産由発知禽私秘紋紙緒考者自至表言語諺識近邪音馬魔鳥鶏鷄鹿':
+
+
 class Report(PaginatedReport, DelegatingRenderingFrame):
     """
     Define a report containing a kanji stroke diagram and practice areas for brushing it.
@@ -277,35 +280,3 @@ class Report(PaginatedReport, DelegatingRenderingFrame):
         page = super().get_page_container(layout_name)
         self.set_delegatee(page)
         return page
-
-
-def generate(kanji_list: str):
-    """
-    Create a Kanji stroke diagram and practice grid.
-
-    :param kanji_list: a list of Unicode glyphs for which to generate practice sheets.
-    """
-
-    with log("./practice.log", logging.INFO):
-
-        pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))
-
-        for glyph in kanji_list:  # '鷄合晴格好悪上五以':  # しの何分初別功単原台君味嘘図圖土地子密屹度心愛成戸所教文斤書有横無珍現生産由発知禽私秘紋紙緒考者自至表言語諺識近邪音馬魔鳥鶏鷄鹿':
-            print(f"Processing {glyph}...", end="")
-            logging.info("Processing %s", glyph)
-
-            page_number: int = 1
-            practice_sheet_doc = PracticeSheetData(glyph)
-            current_page = Report(practice_sheet_doc)
-            page_settings = current_page.page_factory.settings
-            
-            dest_file = os.path.join(settings.report_directory, f"{glyph}_practice.pdf")
-            with pdf_canvas(dest_file, pagesize=current_page.paper_size) as pdf:
-                logging.info(f"writing to {dest_file}")
-                while current_page.begin_page(page_number):
-                    print(f"{page_number}...", end="")
-                    logging.info(f"on page {page_number}")
-                    current_page.draw(cast(DisplaySurface, pdf), page_settings.printable_region)
-                    pdf.showPage()
-
-            print("done")
