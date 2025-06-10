@@ -278,7 +278,7 @@ The second design objective for Kanji Time was set to be a case study for my [Co
 * The program had to avoid complex libraries or little understood Python constructs.
 * Above all else, the program had to *solve a useful and relatable problem*.
 
-The result is *Kanji Time*, a surprisingly powerful, useful, and compact application built out of simple components and algorithms in a couple of lines of code.
+The result is *Kanji Time*, a surprisingly powerful, useful, and compact application built out of simple components and algorithms in a couple of thousand lines of code.
 
 Kanji Time doesn't just demonstrate good programming practices and the art of making design trade-offs.
 It also fosters respect for good programming habits such as first-class documentation, comprehensive test suites, and rock-solid code hygiene.
