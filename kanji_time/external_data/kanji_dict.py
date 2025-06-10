@@ -62,7 +62,7 @@ def load_kanjidict() -> ET.Element:
 kanjidict_root = load_kanjidict()  #: root of the KanjiDict XML tree
 
 
-def get_glyph_xml(kanji_glyph: str) -> Generator[ET.Element, None, None]:
+def get_glyph_xml(kanji_glyph: str, xml_root: ET.Element | None = None) -> Generator[ET.Element, None, None]:
     """
     Fetch metadata for a Kanji glyph from KanjiDict.
 
@@ -71,8 +71,9 @@ def get_glyph_xml(kanji_glyph: str) -> Generator[ET.Element, None, None]:
 
     :return: A lazy sequence of XML nodes containing metadata about the kanji.
     """
+    root = xml_root or kanjidict_root
     xpath = lambda x: f".//k_ele[keb='{x}'].."  # f".//[keb='{x}']"
-    return (e for e in kanjidict_root.findall(xpath(kanji_glyph)))
+    return (e for e in root.findall(xpath(kanji_glyph)))
 
 
 def flatten_xml(entry: ET.Element) -> dict[str, list[str] | list[dict[str, list[str]]]]:
