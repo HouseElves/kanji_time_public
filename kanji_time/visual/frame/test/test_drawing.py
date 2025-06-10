@@ -161,6 +161,6 @@ def test_draw_no_drawing():
     region = Region(Pos(Distance(0, "cm"), Distance(0, "cm")), size)
     element.measure(size)
     element.do_layout(size)
-    with patch('visual.frame.drawing.logging.warning') as mock_warning:
+    with patch('kanji_time.visual.frame.drawing.logging.warning') as mock_warning:
         element.draw(mock_canvas, region)
         mock_warning.assert_called_once_with("no diagram to draw!")
