@@ -31,7 +31,7 @@ KANJI_SVG_ZIP_FILE = "kanjivg-20240807-main.zip"
 CJKRADICALS_PATH : pathlib.Path = EXTERNAL_DATA_ROOT / CJKRADICALS_FILE
 
 KANJIDICT_PATH : pathlib.Path = EXTERNAL_DATA_ROOT / KANJIDICT_FILE  #: relative path to the Kanji Dict XML file
-KANJIDICT_GZIP_PATH : pathlib.Path = EXTERNAL_DATA_ROOT / KANJIDIC2_GZIP_FILE  #: relative path to the compressed Kanji Dict XML file
+KANJIDICT_GZIP_PATH : pathlib.Path = EXTERNAL_DATA_ROOT / KANJIDICT_GZIP_FILE  #: relative path to the compressed Kanji Dict XML file
 
 KANJIDIC2_PATH : pathlib.Path = EXTERNAL_DATA_ROOT / KANJIDIC2_FILE  #: relative path to the Kanji Dict 2 XML file
 KANJIDIC2_GZIP_PATH : pathlib.Path = EXTERNAL_DATA_ROOT / KANJIDIC2_GZIP_FILE  #: relative path to the compressed Kanji Dict 2 XML file
