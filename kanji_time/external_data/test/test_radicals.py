@@ -1,30 +1,57 @@
 """
-Comprehensive test suite for radicals.py module ensuring no regressions during refactor.
+Comprehensive test suite for Radical.py module ensuring no regressions during refactor.
 """
 
 import pytest
+from copy import deepcopy
 from unittest.mock import patch, mock_open, MagicMock
-from kanji_time.external_data.radicals import radical_map, meaning_map, Radical
+import kanji_time.external_data.radicals as radicals_module
+from kanji_time.external_data.radicals import Radical, radical_map, meaning_map
 
 @pytest.fixture
 def maps():
-    radical_map = {
+    # Snapshot the original maps
+    original_radical_map = deepcopy(Radical.radicals)
+    original_meaning_map = deepcopy(Radical.meanings)
+
+    # Replace contents
+    Radical.radicals = {
         1: [(chr(0x2F00), chr(0x4E00)), (None, None), (None, None)],
         2: [(chr(0x2F00), chr(0x4E00)), (None, None), (None, None)],
         3: [(chr(0x2F00), chr(0x4E00)), (None, None), (None, None)],
         4: [(chr(0x2F00), chr(0x4E00)), (None, None), (None, None)],
     }
-    meaning_map = {
+
+    
+    Radical.meanings = {
         1: [{"hiragana_name": "いち", "meanings": ["one", "one radical (no.1)"]}, {}, {}],
         2: [{"meanings": ["one radical (no. 1)", "line"]}, {}, {}],
         3: [{}, {}, {}],
         4: [{}, {}, {}],
     }
-    return radical_map, meaning_map
+
+    yield Radical.radicals, Radical.meanings
+
+    # Restore the originals
+    Radical.radicals = original_radical_map
+    Radical.meanings = original_meaning_map
+
+@pytest.fixture
+def maps_from_xml():
+    # Snapshot the original maps
+    original_radical_map = deepcopy(Radical.radicals)
+    original_meaning_map = deepcopy(Radical.meanings)
+
+    yield Radical.radicals, Radical.meanings
+
+    # Restore the originals
+    Radical.radicals = original_radical_map
+    Radical.meanings = original_meaning_map
+
 
 # TEST RADICAL MAP LOADING
 def test_radical_map_loading():
-    """Test successful parsing of radicals from CJKRadicals.txt."""
+    """Test successful parsing of radicals from CJKRadical.txt."""
     mock_data = (
         "1; 2F00; 4E00\n"
         "2; 2F01; 4E28\n"
@@ -38,7 +65,7 @@ def test_radical_map_loading():
         assert radicals[3][0] == (chr(0x2F02), chr(0x4E36))
 
 def test_radical_map_skip_comments():
-    """Test successful parsing of radicals from CJKRadicals.txt."""
+    """Test successful parsing of radicals from CJKRadical.txt."""
     mock_data = (
         "# 1; 2F00; 4E00\n"
         "2; 2F01; 4E28\n"
@@ -51,7 +78,7 @@ def test_radical_map_skip_comments():
         assert radicals[3][0] == (chr(0x2F02), chr(0x4E36))
 
 def test_radical_map_skip_bogus_radical_number():
-    """Test successful parsing of radicals from CJKRadicals.txt."""
+    """Test successful parsing of radicals from CJKRadical.txt."""
     mock_data = (
         "1; 2F00; 4E00\n"
         "a2b; 2F01; 4E28\n"
@@ -80,15 +107,18 @@ def test_meaning_map_extraction():
 
 def test_meaning_map_variants():
     """Test extracting meanings for radicals using mocked KanjiDic2 data."""
+
     mock_radical_map = {
         1: [(chr(0x2F00), chr(0x4E00)), (None, None), (None, None)],
         90: [(chr(0x2F59), chr(0x723F)), (chr(0x2EA6), chr(0x4E2C)), (None, None)],
         210: [(chr(0x2FD1), chr(0x9F4A)), (chr(0x2EEC), chr(0x9F50)), (chr(0x2EEB), chr(0x6589))],
     }
+    
     with patch("kanji_time.external_data.radicals.get_glyph_xml") as mock_glyph_xml:
         mock_entry = MagicMock()
         mock_entry.findall.side_effect = lambda x: [MagicMock(text="line")] if x == ".//rad_name" else []
         mock_glyph_xml.return_value = [mock_entry]
+
         meanings = meaning_map(mock_radical_map)
         assert meanings[1][0]["hiragana name"] == "line"
         assert meanings[90][0]["hiragana name"] == "line"
@@ -107,9 +137,8 @@ def test_no_meaning_to_extract():
         mock_entry = MagicMock()
         mock_entry.findall.side_effect = lambda _x: []
         mock_glyph_xml.return_value = [mock_entry]
-        meanings = meaning_map(mock_radical_map)
-        assert "hiragana name" not in meanings[1][0]
-        assert "hiragana name" not in meanings[2][0]
+        assert "hiragana name" not in mock_radical_map[1][0]
+        assert "hiragana name" not in mock_radical_map[2][0]
 
 def test_meaning_map_see_also():
     """Test extracting meanings for radicals using mocked KanjiDic2 data."""
@@ -128,17 +157,13 @@ def test_meaning_map_see_also():
 # TEST RADICAL CLASS INITIALIZATION AND PROPERTIES
 def test_radical_initialization(maps):
     """Test initializing Radical object and loading properties."""
-    with patch("kanji_time.external_data.radicals.radical_map") as mock_radical_map, \
-         patch("kanji_time.external_data.radicals.meaning_map") as mock_meaning_map:
-        radical_map, meaning_map = maps
-        mock_radical_map.return_value = radical_map
-        mock_meaning_map.return_value = meaning_map
-        radical = Radical(1)
-        assert radical.radical_num == 1
-        assert radical.glyphs == [chr(0x4E00)]
-        assert radical.hiragana_names == {"いち"}
-        assert radical.romanji_name == "one"
-        assert radical.interpretations == {"one"}
+    _, _ = maps
+    radical = Radical(1)
+    assert radical.radical_num == 1
+    assert radical.glyphs == [chr(0x4E00)]
+    assert radical.hiragana_names == {"いち"}
+    assert radical.romanji_name == "one"
+    assert radical.interpretations == {"one"}
 
 # TEST INVALID RADICAL INITIALIZATION
 def test_radical_invalid_number():
@@ -149,37 +174,23 @@ def test_radical_invalid_number():
 # TEST RADICAL GLYPHS EXTRACTION
 def test_radical_glyphs(maps):
     """Test extracting CJK glyphs for radical variants."""
-    with patch("kanji_time.external_data.radicals.radical_map") as mock_radical_map, \
-         patch("kanji_time.external_data.radicals.meaning_map") as mock_meaning_map:
-        radical_map, meaning_map = maps
-        mock_radical_map.return_value = radical_map
-        mock_meaning_map.return_value = meaning_map
-        radical = Radical(4)
-        assert radical.glyphs == [chr(0x4E00)]
+    _, _ = maps
+    radical = Radical(4)
+    assert radical.glyphs == [chr(0x4E00)]
 
 # TEST RADICAL MEANING EXTRACTION
 def test_radical_interpretations(maps):
     """Test extracting unique meanings from radical interpretations."""
-    with patch("kanji_time.external_data.radicals.radical_map") as mock_radical_map, \
-         patch("kanji_time.external_data.radicals.meaning_map") as mock_meaning_map:
-        radical_map, meaning_map = maps
-        mock_radical_map.return_value = radical_map
-        mock_meaning_map.return_value = meaning_map
-        radical = Radical(2)
-        assert radical.romanji_name == "one"
-        assert radical.interpretations == {"line"}
+    _, _ = maps
+    radical = Radical(2)
+    assert radical.romanji_name == "one"
+    assert radical.interpretations == {"line"}
 
 # EDGE CASES
 def test_radical_missing_meanings(maps):
     """Test handling radicals with no assigned meanings."""
-    with patch("kanji_time.external_data.radicals.radical_map") as mock_radical_map, \
-         patch("kanji_time.external_data.radicals.meaning_map") as mock_meaning_map:
-        mock_radical_map.return_value = {
-        }
-        radical_map, meaning_map = maps
-        mock_radical_map.return_value = radical_map
-        mock_meaning_map.return_value = meaning_map
-        radical = Radical(3)
-        assert radical.interpretations == set()
-        assert radical.hiragana_names == set()
-        assert radical.romanji_name is None
+    _, _ = maps
+    radical = Radical(3)
+    assert radical.interpretations == set()
+    assert radical.hiragana_names == set()
+    assert radical.romanji_name is None
