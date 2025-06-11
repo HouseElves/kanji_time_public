@@ -145,7 +145,7 @@ From the command window, create (or navigate to) an owner directory for Kanji Ti
 ```bash
 python -m venv kanji_time
 kanji_time\Scripts\activate
-pip install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.0-alpha-20250531/kanji_time-0.1.0.20250531-py3-none-any.whl
+pip install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.1-alpha-20250606-test/kanji_time-0.1.1a20250606-py3-none-any.whl
 ```
 
 **On Mac or Linux**
@@ -153,7 +153,7 @@ pip install https://github.com/HouseElves/kanji_time_public/releases/download/v0
 ```bash
 python -m venv kanji_time
 source kanji_time/bin/activate
-pip install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.0-alpha-20250531/kanji_time-0.1.0.20250531-py3-none-any.whl
+pip install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.1-alpha-20250606-test/kanji_time-0.1.1a20250606-py3-none-any.whl
 ```
 
 Kanji Time will be installed into a directory named *kanji_time* under the owner directory.
@@ -175,7 +175,7 @@ Loading extra kanji information...
 Loading the kanji dictionary...
 Beginning kanji_summary.
 Processing 現...on page...1...done! PDF result in 96_現_summary.pdf
-Processing 生...on page...1...done! PDF result in 100_生_summary.pdf
+Processing 生...on page...1...2...3...done! PDF result in 100_生_summary.pdf
 Processing 鳥...on page...1...done! PDF result in 196_鳥_summary.pdf
 kanji_summary complete.
 Finished.  Execution log in kanji_summary.log
@@ -187,7 +187,7 @@ practice_sheet complete.
 Finished.  Execution log in practice_sheet.log
 ```
 
-* **Output files**: Each processed kanji will have its own summary and/or practice sheet PDF in the current directory.
+* **Output files**: Each processed kanji will have its own summary and practice sheet PDF in the current directory.
 
 ## Build & run Kanji Time from its source code
 
