@@ -37,6 +37,7 @@ import zipfile
 from IPython.display import SVG, display
 from svgwrite import Drawing as SVGDrawing
 
+from kanji_time.utilities.class_property import classproperty
 from kanji_time.svg_transform import Transform
 from kanji_time.external_data import settings
 from kanji_time.utilities.general import log
@@ -223,9 +224,7 @@ class KanjiSVG(metaclass=SVGCache):
         radical: str = field(default='')
         phon: str = field(default='')
 
-        @classmethod
-        @property
-        @cache
+        @classproperty
         def attrib_namespace(cls):
             """
             Map full XML attribute Q-names to our internal data member names.
@@ -270,9 +269,7 @@ class KanjiSVG(metaclass=SVGCache):
         d: str
         type: str
 
-        @classmethod
-        @property
-        @cache
+        @classproperty
         def attrib_namespace(cls):
             """
             Map full XML attribute Q-names to our internal data member names.
