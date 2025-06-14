@@ -102,8 +102,9 @@ Thumbs.db
 *.sublime-project
 
 # Local data/output that should not be versioned
-kanji_time/external_data/kanjidic2.xml.gz
-kanji_time/external_data/kanjivg-*.zip
+kanji_time/external_data/kanjidic2.xml
+kanji_time/external_data/kanji/*
+kanji_time/external_data/kanji_dict
 
 # Ignore wheels/dist
 *.whl
