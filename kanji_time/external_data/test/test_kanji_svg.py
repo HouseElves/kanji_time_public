@@ -47,7 +47,7 @@ def test_load_kanji_svg():
         </g>
     </svg>
     """
-    with patch("builtins.open", mock_open(read_data=fake_svg_content)):
+    with patch("zipfile.ZipFile.open", return_value=io.StringIO(fake_svg_content)):        
         with patch("xml.etree.ElementTree.parse") as mock_parse:
             mock_tree = MagicMock()
             mock_root = ET.fromstring(fake_svg_content)
@@ -114,7 +114,7 @@ def test_double_load():
         </g>
     </svg>
     """
-    with patch("builtins.open", mock_open(read_data=fake_svg_content)):
+    with patch("zipfile.ZipFile.open", return_value=io.StringIO(fake_svg_content)):        
         with patch("xml.etree.ElementTree.parse") as mock_parse:
             mock_tree = MagicMock()
             mock_root = ET.fromstring(fake_svg_content)
@@ -263,7 +263,7 @@ def test_load_labelsgroup():
         </g>
     </svg>
     """
-    with patch("builtins.open", mock_open(read_data=fake_svg_content)):
+    with patch("zipfile.ZipFile.open", return_value=io.StringIO(fake_svg_content)):        
         with patch("xml.etree.ElementTree.parse") as mock_parse:
             mock_tree = MagicMock()
             mock_root = ET.fromstring(fake_svg_content)
