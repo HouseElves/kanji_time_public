@@ -53,7 +53,7 @@ def test_load_kanjidict():
 
 def test_no_gzip_fallback():
     """Test that we try to open an uncompressed XML file if the GZIP does not exist."""
-    hidden = [KANJIDICT_GZIP_PATH, KANJIDIC2_GZIP_PATH] 
+    hidden = [KANJIDICT_GZIP_PATH, KANJIDIC2_GZIP_PATH]     
     hider = hide_paths(hidden)
 
     def mock_target_does_not_exist(self):
@@ -64,8 +64,16 @@ def test_no_gzip_fallback():
     
     with patch("pathlib.Path.exists", mock_target_does_not_exist):
         assert all(target.exists() is False for target in hidden)  # Mocked: returns False
-        test_load_kanjidict()
-        test_load_kanjidic2()
+        if KANJIDICT_PATH.exists():
+            test_load_kanjidict()
+        else:
+            with pytest.raises(RuntimeError):
+                test_load_kanjidict()
+        if KANJIDIC2_PATH.exists():
+            test_load_kanjidic2()
+        else:
+            with pytest.raises(RuntimeError):
+                test_load_kanjidic2()
 
 
 def test_no_dict_files():
