@@ -160,7 +160,7 @@ From the command line, create (or navigate to) a parent directory for Kanji Time
 ```bash
 python -m venv .kanji_time
 .kanji_time\Scripts\activate
-pip install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.1-alpha-20250606-test/kanji_time-0.1.1a20250606-py3-none-any.whl
+pip install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.1-alpha-20250606/kanji_time-0.1.1a20250606-py3-none-any.whl
 ```
 
 ### On **macOS** or **Linux**
@@ -168,7 +168,7 @@ pip install https://github.com/HouseElves/kanji_time_public/releases/download/v0
 ```bash
 python -m venv .kanji_time
 source .kanji_time/bin/activate
-pip install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.1-alpha-20250606-test/kanji_time-0.1.1a20250606-py3-none-any.whl
+pip install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.1-alpha-20250606/kanji_time-0.1.1a20250606-py3-none-any.whl
 ```
 
 Kanji Time will be installed into a directory named `.kanji_time` under the parent directory that you selected.
