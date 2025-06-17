@@ -402,6 +402,7 @@ def build_data_object(glyph: str, size: Extent) -> KanjiReportData:
         glyph_detail: dict[str, Any] = KanjiReportData.get_glyph_detail(glyph)
     except Exception as e:
         # need some kind of reasonable fallback.  A 288pt character? :-)
+        # Issue:  on real failure, I should skip insetead of abort --> well, make that configurable.
         logging.info("Could not obtain graphics for %s: %s", glyph, e)
         raise e
 

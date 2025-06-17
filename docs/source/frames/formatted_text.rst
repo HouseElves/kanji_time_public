@@ -16,5 +16,8 @@ Use `FormattedText` when you need to handle scrollable or styled content blocks 
 
 ----
 
+Automodule Documentation
+------------------------
+
 .. automodule:: kanji_time.visual.frame.formatted_text
      :members:

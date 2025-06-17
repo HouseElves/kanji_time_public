@@ -2,9 +2,20 @@
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"kanji_time.external_data" = [
+    "CJKRadicals.txt",
+    "JMdict_e_examp.gz",
+    "kanjidic2.xml.gz",
+    "kanjivg-20240807-main.zip",
+]
+
 [project]
 name = "kanji-time"
-version = "0.1.0.20250531"
+version = "0.1.1.alpha.20250606"
 description = "A tool for generating kanji study sheets and dictionary summaries"
 readme = "README.rst"
 license = "AGPL-3.0-only"
@@ -57,3 +68,4 @@ classifiers = [
 
 [project.scripts]
 kanjitime = "kanji_time.__main__:main"
+

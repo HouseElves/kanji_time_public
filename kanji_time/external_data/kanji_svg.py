@@ -20,21 +20,25 @@ Licensing/Credits:
  """
 # pylint: disable=fixme
 
+from contextlib import contextmanager
 import copy
 from itertools import product
+from pathlib import PosixPath, PurePosixPath
 import threading
 
 from typing import Any, cast
 from functools import cache
 
 from collections import defaultdict
-from collections.abc import Callable, Iterable, Mapping
+from collections.abc import Callable, Generator, Iterable, Mapping
 from dataclasses import dataclass, field
 import xml.etree.ElementTree as ET
+import zipfile
 
 from IPython.display import SVG, display
 from svgwrite import Drawing as SVGDrawing
 
+from kanji_time.utilities.class_property import classproperty
 from kanji_time.svg_transform import Transform
 from kanji_time.external_data import settings
 from kanji_time.utilities.general import log
@@ -221,9 +225,7 @@ class KanjiSVG(metaclass=SVGCache):
         radical: str = field(default='')
         phon: str = field(default='')
 
-        @classmethod
-        @property
-        @cache
+        @classproperty
         def attrib_namespace(cls):
             """
             Map full XML attribute Q-names to our internal data member names.
@@ -268,9 +270,7 @@ class KanjiSVG(metaclass=SVGCache):
         d: str
         type: str
 
-        @classmethod
-        @property
-        @cache
+        @classproperty
         def attrib_namespace(cls):
             """
             Map full XML attribute Q-names to our internal data member names.
@@ -494,6 +494,35 @@ class KanjiSVG(metaclass=SVGCache):
             assert isinstance(text.text, str), "OMFG the type linter is SOOOOO whiny!"
             self._labels.append((position_xform, text.text))
 
+    @staticmethod
+    def kanji_vg_file(glyph: str):
+        """Open a compressed or uncompressed version of a Kanji VG file."""
+        kanji_unicode = f"{ord(glyph):05x}"  # Convert Kanji to Unicode hex (e.g., '66f8' for 書)
+        filename = settings.KANJI_SVG_PATH/f"{kanji_unicode}.svg"  # either in the file system or the ZIP
+
+        xml_tree : ET.ElementTree[ET.Element[str]] | None = None
+
+        # Try the zip file first
+        if settings.KANJI_SVG_ZIP_PATH.exists():
+            with zipfile.ZipFile(settings.KANJI_SVG_ZIP_PATH) as z:
+                # Convert to a Posix path:  the zipfile package doesn't like Windows style paths one little tiny bit.
+                posix_path = PurePosixPath(*filename.relative_to(settings.EXTERNAL_DATA_ROOT).parts)
+                archive_file = str(posix_path)
+                with z.open(archive_file) as xml_file:
+                    logging.info(f"loading {archive_file} from {settings.KANJI_SVG_ZIP_PATH}.")
+                    xml_tree = ET.parse(xml_file)
+
+        # Then fall back to the filesystem
+        if xml_tree is None and filename.exists():
+            logging.info(f"loading {filename} from uncompressed data.")
+            xml_tree = ET.parse(filename)
+
+        if xml_tree is None:
+            raise ValueError(f"Could not load the KanjiVG file for '{glyph}'.")
+
+        assert xml_tree is not None
+        return xml_tree
+
     def load(self) -> None:
         """
         Parse KanjiVG XML for stroke paths and order.
@@ -510,28 +539,26 @@ class KanjiSVG(metaclass=SVGCache):
 
             - Thread safety: we have instance mutators!  Probably should protect this with a lock of some kind.
             - ideally _load_all_groups shouldn't have any mutating side effects
+            - does the vg_file loader need to be in a context manager?  Don't think so, we're getting back an in-memory XML tree.
 
         """
         if self.loaded:
             return
 
-        kanji_unicode = f"{ord(self.glyph):05x}"  # Convert Kanji to Unicode hex (e.g., '66f8' for 書)
-        filename = f"{settings.kanji_svg_path}/{kanji_unicode}.svg"
-
         # Use the XML element tree module to parse the SVG content
-        tree = ET.parse(filename)
+        tree = KanjiSVG.kanji_vg_file(self.glyph)  # Issue:  make into a context?
         root = tree.getroot()
 
         # We require a viewBox attribute for the glyph boundaries and centering.
         viewbox = root.attrib.get("viewBox", None)
         if viewbox is None:
-            raise ValueError(f"No viewBox found in {filename}")
+            raise ValueError(f"No viewBox found for {self.glyph}")
         self.min_x, self.min_y, self.width, self.height = map(float, viewbox.split())
 
         # Find the topmost group in the strokes then extract them from <path> elements
         strokes_group = root.find(f"svg:g[@id='kvg:{self.strokepaths_id}']", self.namespace)
         if strokes_group is None:
-            raise ValueError(f"Malformed SVG:  no strokes group found in {filename}")
+            raise ValueError(f"Malformed SVG:  no strokes group found for {self.glyph}")
         topmost_group = strokes_group.find(f"svg:g[@id='kvg:{self.topmost_id}']", self.namespace)
         assert not self._strokes, "Unexpected strokes present that are about to be clobbered."
         self._strokes = self._load_all_groups(topmost_group)  # need to eliminate all the side effects of this method

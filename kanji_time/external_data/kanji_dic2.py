@@ -23,18 +23,40 @@ particular to a kanji (or kana) glyph as defined in this Python module.
 """
 
 from collections.abc import Sequence, Generator
+import gzip
 import xml.etree.ElementTree as ET
 
-from kanji_time.external_data.settings import kanjidic2_path
+from kanji_time.external_data.settings import KANJIDIC2_PATH, KANJIDIC2_GZIP_PATH, EXTERNAL_DATA_ROOT
+
+
+# pylint: disable=wrong-import-order,wrong-import-position
+import logging
+logger = logging.getLogger(__name__)
 
 
 def load_kanjidic2() -> ET.Element:
     """
     Load the KanjiDict2 XML file and return the parsed tree.
 
-    :return: the root of the parsed Kanji Dict XML tree.
+    Attempt to load from a GZIP file first, then fall back to the filesystem.
+
+    :return: the root of the parsed Kanji Dict XML tree.    
     """
-    tree = ET.parse(kanjidic2_path)
+    print("Loading extra kanji information...")
+    tree : ET.ElementTree[ET.Element[str]] | None = None
+    if KANJIDIC2_GZIP_PATH.exists():
+        with gzip.open(KANJIDIC2_GZIP_PATH, 'rt', encoding='utf-8') as xml_file:
+            logging.info(f"loading {KANJIDIC2_PATH.name} from {KANJIDIC2_GZIP_PATH}.")
+            tree = ET.parse(xml_file)
+
+    if tree is None and KANJIDIC2_PATH.exists():
+        logging.info(f"loading {KANJIDIC2_PATH} from uncompressed data.")
+        tree = ET.parse(KANJIDIC2_PATH)
+    
+    if tree is None:
+        raise RuntimeError(f"Cannot load {KANJIDIC2_PATH}")
+    
+    assert tree is not None
     return tree.getroot()
 
 
