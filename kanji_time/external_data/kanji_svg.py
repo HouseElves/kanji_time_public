@@ -23,6 +23,7 @@ Licensing/Credits:
 from contextlib import contextmanager
 import copy
 from itertools import product
+from pathlib import PosixPath, PurePosixPath
 import threading
 
 from typing import Any, cast
@@ -504,8 +505,9 @@ class KanjiSVG(metaclass=SVGCache):
         # Try the zip file first
         if settings.KANJI_SVG_ZIP_PATH.exists():
             with zipfile.ZipFile(settings.KANJI_SVG_ZIP_PATH) as z:
-                # If you have a ZIP: list files, pick the correct name
-                archive_file = str(filename.relative_to(settings.EXTERNAL_DATA_ROOT))
+                # Convert to a Posix path:  the zipfile package doesn't like Windows style paths one little tiny bit.
+                posix_path = PurePosixPath(*filename.relative_to(settings.EXTERNAL_DATA_ROOT).parts)
+                archive_file = str(posix_path)
                 with z.open(archive_file) as xml_file:
                     logging.info(f"loading {archive_file} from {settings.KANJI_SVG_ZIP_PATH}.")
                     xml_tree = ET.parse(xml_file)
@@ -537,16 +539,14 @@ class KanjiSVG(metaclass=SVGCache):
 
             - Thread safety: we have instance mutators!  Probably should protect this with a lock of some kind.
             - ideally _load_all_groups shouldn't have any mutating side effects
+            - does the vg_file loader need to be in a context manager?  Don't think so, we're getting back an in-memory XML tree.
 
         """
         if self.loaded:
             return
 
-        kanji_unicode = f"{ord(self.glyph):05x}"  # Convert Kanji to Unicode hex (e.g., '66f8' for 書)
-        filename = settings.KANJI_SVG_PATH/f"{kanji_unicode}.svg"
-
         # Use the XML element tree module to parse the SVG content
-        tree = KanjiSVG.kanji_vg_file(self.glyph)
+        tree = KanjiSVG.kanji_vg_file(self.glyph)  # Issue:  make into a context?
         root = tree.getroot()
 
         # We require a viewBox attribute for the glyph boundaries and centering.
