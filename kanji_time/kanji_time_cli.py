@@ -257,6 +257,7 @@ def execute_report(report_alias: str, glyphs: str, target_dir: pathlib.Path):
     # Report chaining would land in this too.
     print(f"Beginning {report_alias}.")
     for glyph in ''.join(glyphs):
+        # Issue: skip glyphs that are not in scope -> avoid an "SVG not found" error later on... meh, here is not the right place to do this.
         print(f"Processing {glyph}...on page...", end="")
         logging.info("Processing %s", glyph)
 
