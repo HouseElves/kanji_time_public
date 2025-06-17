@@ -143,9 +143,10 @@ build & run Kanji Time from the source code.
 
 Kanji Time runs on Python 3.11.0 or later.
 
+The installation instructions below have been verified on **Windows 10** (Build 19045.5965), **Ubuntu 22.04.5 LTS**, and **macOS 15.5 "Sequoia"**.  
 
-The installation instructions below have been verified on **Windows 10** (Build 19045.5965), **Ubuntu 22.04.5 LTS**, and **macOS 15.5 "Sequoia"**.
 These steps will install Kanji Time using the latest development wheel from GitHub.  
+
 Kanji Time will be *isolated inside its own virtual environment using `venv`* so it does not interfere with your existing Python applications.
 
 * If you're unfamiliar with virtual environments and would like to learn more, the Real Python site has an excellent [primer](https://realpython.com/python-virtual-environments-a-primer/).
