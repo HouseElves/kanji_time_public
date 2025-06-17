@@ -53,6 +53,9 @@ docs/.doctrees/
 docs/.buildinfo
 docs/source/code/*
 
+# standard venv directory
+.kanji_time/*
+
 # Ignore work-in-progress or private drafts but keep the directory
 docs/source/**/parking_lot/*
 
