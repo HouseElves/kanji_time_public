@@ -552,13 +552,13 @@ class KanjiSVG(metaclass=SVGCache):
         # We require a viewBox attribute for the glyph boundaries and centering.
         viewbox = root.attrib.get("viewBox", None)
         if viewbox is None:
-            raise ValueError(f"No viewBox found in {filename}")
+            raise ValueError(f"No viewBox found for {self.glyph}")
         self.min_x, self.min_y, self.width, self.height = map(float, viewbox.split())
 
         # Find the topmost group in the strokes then extract them from <path> elements
         strokes_group = root.find(f"svg:g[@id='kvg:{self.strokepaths_id}']", self.namespace)
         if strokes_group is None:
-            raise ValueError(f"Malformed SVG:  no strokes group found in {filename}")
+            raise ValueError(f"Malformed SVG:  no strokes group found for {self.glyph}")
         topmost_group = strokes_group.find(f"svg:g[@id='kvg:{self.topmost_id}']", self.namespace)
         assert not self._strokes, "Unexpected strokes present that are about to be clobbered."
         self._strokes = self._load_all_groups(topmost_group)  # need to eliminate all the side effects of this method
