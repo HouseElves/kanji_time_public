@@ -1,7 +1,6 @@
 """
 he svgwrite Transform mixin extracted.
 The svgwrite module does not allow you to make one of these independently.
-Pshaw, I say.
 """
 
 
@@ -77,4 +76,13 @@ class Transform:
         self.transform = f"{old_transform.strip()} {new_transform.strip()}"
 
     def __str__(self):
-        return self.transform
+        """
+        String version of the transformation.
+
+        Yields an identity transform if the contained transformation string is empty -
+        This behavior is to satisfy svgwrite - it will complain if it sees an empty string passed in a 
+        "transform" argument to its functions.
+
+        :return: svgwrite's string representation of this transformation sequence.
+        """
+        return "matrix(1,0,0,1,0,0)" if not self.transform else self.transform
