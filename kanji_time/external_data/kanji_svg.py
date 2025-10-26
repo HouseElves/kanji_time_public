@@ -20,28 +20,24 @@ Licensing/Credits:
  """
 # pylint: disable=fixme
 
-from contextlib import contextmanager
 import copy
 from itertools import product
-from pathlib import PosixPath, PurePosixPath
+from pathlib import PurePosixPath
 import threading
 
 from typing import Any, cast
-from functools import cache
 
 from collections import defaultdict
-from collections.abc import Callable, Generator, Iterable, Mapping
+from collections.abc import Callable, Iterable, Mapping
 from dataclasses import dataclass, field
 import xml.etree.ElementTree as ET
 import zipfile
 
-from IPython.display import SVG, display
 from svgwrite import Drawing as SVGDrawing
 
 from kanji_time.utilities.class_property import classproperty
 from kanji_time.svg_transform import Transform
 from kanji_time.external_data import settings
-from kanji_time.utilities.general import log
 from kanji_time.visual.layout.distance import Distance
 from kanji_time.visual.layout.region import Extent
 
@@ -99,7 +95,7 @@ class SVGCache(type):
         if no_cache:
             instance = super().__call__(glyph)
             assert glyph not in cls._cache or cls._cache[glyph] != instance
-            logger.info("%s created a unique KanjiSVG for '%s', returning id=%s", cls.__name__, glyph, f"{id(cls._cache[glyph]):x}")
+            logger.debug("%s created a unique KanjiSVG for '%s', returning id=%s", cls.__name__, glyph, f"{id(cls._cache[glyph]):x}")
             return instance
 
         result = "hit"
@@ -112,8 +108,45 @@ class SVGCache(type):
                     cls._cache[glyph] = instance
                 else:  # pragma: no branch
                     logger.info("trapped race condition on glyph %s.", glyph)  # pragma: no cover
-        logger.info("%s %s for '%s', returning id=%s", cls.__name__, result, glyph, f"{id(cls._cache[glyph]):x}")
+        logger.debug("%s %s for '%s', returning id=%s", cls.__name__, result, glyph, f"{id(cls._cache[glyph]):x}")
         return cls._cache[glyph]
+
+
+
+def materialize_selector(selector:  Iterable[int] | int | slice, max_idx: int) -> list[int]:
+    """
+    Transform an "index selector" into an explicit list of material indices.
+
+    REVIEW: I mislike this. I've gone way off the track of a simple slice indexing into an array.
+            I'd ideally like to defer any actual materializing of a list as long as possible.
+
+    REVIEW: this should be a named 'selector' type: "Iterable[int | slice] | int | slice"
+
+    REVIEW: I've isolated the offending "match" but still haven't solved the problem.
+            Convert this to a dispatch function and call it a win.
+    """
+    idxs: list[int] | None = None
+    match selector:
+        case int() as i:
+            idxs = [i]
+        case slice() as s:
+            # Materialize a slice as a list.
+            start, stop, step = s.indices(max_idx)
+            idxs = list(range(start, stop, step))
+        case list() as _idxs:
+            # keep caller’s order
+            idxs = _idxs
+        case set() as sidx:
+            # deterministic order for sets
+            idxs = sorted(sidx)
+        case range() as r:
+            idxs = list(r)            
+        case _ if isinstance(selector, Iterable):
+            # The type sig allows generic Iterables:  materialize these to a list.  This could (but should not) be a perf suck.
+            idxs = list(selector)  # may consume the iterator
+        case _:
+            raise TypeError("stroke_range must be int | slice | list[int] | set[int]")
+    return idxs
 
 
 class KanjiSVG(metaclass=SVGCache):
@@ -181,6 +214,9 @@ class KanjiSVG(metaclass=SVGCache):
     #:      - is this necessary still?
     #:
     DFLT_GLYPH_SIZE = Extent(Distance(2, "in"), Distance(2, "in"))
+
+    class Loader:
+        def __init__(self): ...
 
     @dataclass
     class StrokeGroup:
@@ -407,7 +443,7 @@ class KanjiSVG(metaclass=SVGCache):
         # Do a breadth first traversal of the kanji stroke groups
         #
         queue = [(topmost_group, group_attribs)]
-        completed_attribs, completed_groups = set(), set()
+        completed_groups, completed_attribs = set(), set()
         while queue:
             current_group, current_attribs = queue.pop(0)
             # we should only see each (group, attribs) pair once: setting attribute keys is expected behavior here.
@@ -440,7 +476,6 @@ class KanjiSVG(metaclass=SVGCache):
                     # Start a new kanji stroke group
                     group = dict(element.items())
                     _g = self.__class__.StrokeGroup.from_element(element)  # just a test, will replace "group = dict(element.items())"
-                    # deleted by GPT
                     current_radicals = current_attribs.get(radical_attrib, set())
                     new_radical = group.get(radical_attrib, "")
                     if current_radicals or new_radical:
@@ -451,7 +486,6 @@ class KanjiSVG(metaclass=SVGCache):
                                 radical_name.strip()
                                 for radical_name in new_radical.split(",")
                             })
-                    # end deleted by GPT
                     group["strokes"] = []  # type: ignore
                     group["groups"] = []  # type: ignore
                     queue.append((element, group))  # Add subgroup to queue
@@ -602,7 +636,7 @@ class KanjiSVG(metaclass=SVGCache):
             self,
             drawing: SVGDrawing,
             stroke_range: Iterable[int] | int | slice,
-            style: dict[str, Any],
+            style: Mapping[str, Any],
             transform: Transform | None,
             with_labels: bool = False
         ):
@@ -617,33 +651,41 @@ class KanjiSVG(metaclass=SVGCache):
 
         :return: None
         """
-        # hacksville
-        strokes = []
-        match stroke_range:
-            case stroke_list if isinstance(stroke_list, (list, set)):
-                strokes = [self._strokes[i] for i in stroke_list]
-                labels = [self._labels[i] for i in stroke_list]
-            case stroke_index if isinstance(stroke_index, int):
-                strokes = [self._strokes[stroke_index]]
-                labels = [self._labels[stroke_index]]
-                stroke_range = slice(stroke_index, stroke_index+1, 1)
-            case stroke_slice if isinstance(stroke_range, slice):
-                strokes = self._strokes[cast(slice, stroke_slice)]
-                labels = self._labels[cast(slice, stroke_slice)]
-            case _:  # pragma: no cover
-                raise ValueError("Unknown stroke range type.")  # pragma: no cover
+        with_labels = with_labels and bool(self._labels)  # only display labels if we have labels.
+        strokes: list[str] = []
+        labels: list[tuple[Transform, str]] = []
 
+        # The stroke_range is a selector that determines a subset of the Kanji's strokes.
+        # TODO: define a 'selector' type.
+        # TODO: probably would be better as an Iterable[int] that's materialized in the stroke/label fetcher
+        idxs = materialize_selector(stroke_range, len(self._strokes))
+        if idxs is not None:
+            try:
+                strokes = [self._strokes[i] for i in idxs]
+                if with_labels:
+                    labels = [self._labels[i] for i in idxs]
+            except IndexError as e:
+                raise IndexError(f"stroke index out of range: {e}") from e
+        assert labels == [] or with_labels  # it's possible to have no labels even when with_labels is true
+
+        # Make a container group; apply outer transform once.
+        group = drawing.g()
+        if transform:
+            group['transform'] = str(transform)  # outer transform
+
+        # Add strokes
         for stroke in strokes:
-            if transform:
-                drawing.add(drawing.path(d=stroke, transform=f"{transform}", **style))
-            else:
-                drawing.add(drawing.path(d=stroke, **style))
+            group.add(drawing.path(d=stroke, **style))
 
-        if with_labels:
-            for label in labels:
-                assert len(label) == 2
-                position_xform, stroke_label = label[0], label[1]
-                drawing.add(drawing.text(stroke_label, transform=f"{transform} {position_xform}", insert=(0.0, 0.0), **self.label_style))
+        # Add labels (each label carries its own local transform)
+        for position_xform, stroke_label in labels:  # labels are (transform_str, text)
+            group.add(
+                drawing.text(stroke_label, transform=str(position_xform), insert=(0.0, 0.0), **self.label_style)
+            )
+
+        # Add the group to the drawing
+        drawing.add(group)
+
 
     def draw_glyph(
             self,
@@ -755,28 +797,28 @@ class KanjiSVG(metaclass=SVGCache):
         image_px_width = cells_wide*cell_px_width
 
         # vertical practice lines
-        logger.info("Drawing vertical practice lines")
+        logger.debug("Drawing vertical practice lines")
         delta = cell_px_width/2
         for i in range(1, 2*cells_wide, 2):
             top, bottom = (i*delta, 0), (i*delta, cells_tall*cell_px_height)
-            logger.info("column %s: drawing a line from %s to %s", i, top, bottom)
+            logger.debug("column %s: drawing a line from %s to %s", i, top, bottom)
             drawing.add(drawing.line(start=top, end=bottom, **self.practice_line_style))
 
         # horizontal practice lines
-        logger.info("Drawing horizontal practice lines")
+        logger.debug("Drawing horizontal practice lines")
         delta = cell_px_height/2
         for j in range(1, 2*cells_tall, 2):
             left, right = (0, j*delta), (image_px_width, j*delta)
-            logger.info("row %s: drawing a line from %s to %s", j, left, right)
+            logger.debug("row %s: drawing a line from %s to %s", j, left, right)
             drawing.add(drawing.line(start=left, end=right, **self.practice_line_style))
 
         # Diagonal practice lines
         # Maybe candystripe instead of iterating over rows?
-        logger.info("Drawing diagonal practice lines")
+        logger.debug("Drawing diagonal practice lines")
         for (i, j) in product(range(1, cells_wide+1), range(cells_tall)):
             left_x, right_x = (i-1)*cell_px_width, i*cell_px_width
             top_y, bottom_y = j*cell_px_height, (j+1)*cell_px_height
-            logger.info(
+            logger.debug(
                 "cell = %s: drawing a line from top left %s to bottom right %s and %s to %s",
                 (i, j),
                 (left_x, top_y), (right_x, bottom_y),
@@ -805,14 +847,14 @@ class KanjiSVG(metaclass=SVGCache):
         image_px_size = (cells_wide*cell_px_width, cells_tall*cell_px_height)  # call out to an inner product function?
 
         # image frame
-        logger.info("Drawing the image frame rectangle")
-        logger.info("drawing a rect at %s size=%s", (0, 0), image_px_size)
+        logger.debug("Drawing the image frame rectangle")
+        logger.debug("drawing a rect at %s size=%s", (0, 0), image_px_size)
         drawing.add(drawing.rect(insert=(0, 0), size=image_px_size, **self.cell_border_style))
 
         # vertical cell dividers
-        logger.info("Drawing the vertical separators")
+        logger.debug("Drawing the vertical separators")
         for i in range(1, cells_wide):
-            logger.info("column %s: drawing a line from %s to %s", i, (i*cell_px_width, 0), (i*cell_px_width, cells_tall*cell_px_height))
+            logger.debug("column %s: drawing a line from %s to %s", i, (i*cell_px_width, 0), (i*cell_px_width, cells_tall*cell_px_height))
             drawing.add(drawing.line(
                 start=(i*cell_px_width, 0),
                 end=(i*cell_px_width, cells_tall*cell_px_height),
@@ -820,9 +862,9 @@ class KanjiSVG(metaclass=SVGCache):
             ))
 
         # horizontal cell dividers
-        logger.info("Drawing the horizontal separators")
+        logger.debug("Drawing the horizontal separators")
         for j in range(1, cells_tall):
-            logger.info("row %s: drawing a line from %s to %s", j, (0, j*cell_px_height), (cells_wide*cell_px_width, j*cell_px_height))
+            logger.debug("row %s: drawing a line from %s to %s", j, (0, j*cell_px_height), (cells_wide*cell_px_width, j*cell_px_height))
             drawing.add(drawing.line(
                 start=(0, j*cell_px_height),
                 end=(cells_wide*cell_px_width, j*cell_px_height),
@@ -875,7 +917,7 @@ class KanjiSVG(metaclass=SVGCache):
         centering_transform = Transform()
         centering_transform.translate((per_char_x//2 - char_center_x), (per_char_y//2 - char_center_y))
         line_start = centering_transform
-        line_cell_window = copy.copy(line_start)  # DO NOT FORGET TO COPY!
+        line_cell_window = copy.copy(line_start)  # TODO: known issue - the transform should be immutable - deferred
 
         # The meat of the matter.  Draw everybody - note the use of translations to slide the cell window in the for-loop
         self.draw_practice_axes(drawing, (grid_columns, grid_rows), per_char_x, per_char_y)
@@ -944,22 +986,3 @@ class KanjiSVG(metaclass=SVGCache):
         self.draw_strokes(drawing, slice(0, len(self.strokes)), self.stroke_styles["completed"], line_cell_window, with_labels=True)
 
         return drawing
-
-
-if __name__ == '__main__':  # pragma: no cover
-    with log("./kanji_svg.log", logging.DEBUG):
-        inline_svg = KanjiSVG("戸").draw_stroke_steps(grid_columns=6)
-        display(SVG(data=inline_svg))
-
-        logger.info(chr(int("f9ab", 16)))
-        inline_svg = KanjiSVG(chr(int("f9ab", 16))).draw_glyph(radical="general")
-        display(SVG(data=inline_svg))
-        inline_svg = KanjiSVG(chr(int("f9ab", 16))).draw_stroke_steps(grid_columns=6)
-        display(SVG(data=inline_svg))
-
-        logger.info(chr(int("04e94", 16)))
-        inline_svg = KanjiSVG(chr(int("04e94", 16))).draw_glyph(radical="tradit")
-        display(SVG(data=inline_svg))
-        inline_svg = (k := KanjiSVG(chr(int("04e94", 16)))).draw_stroke_steps(grid_columns=6)
-        logger.info(k.radical_strokes)
-        display(SVG(data=inline_svg))
