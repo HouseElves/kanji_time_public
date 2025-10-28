@@ -1,5 +1,9 @@
 """
 Test suite for KanjiSVG class with full branch coverage.
+
+TODO:  
+    - Replace empty Transform instances [ie created with Transform()] with something meaningful
+    - Forbid using improperly initialized KanjiSVG instances for happy path code tests.
 """
 # pylint: disable=fixme
 
@@ -16,13 +20,16 @@ from kanji_time.svg_transform import Transform
 from kanji_time.visual.layout.region import Extent
 from kanji_time.visual.layout.distance import Distance
 
+# Test fixtures for well- and ill-formed KanjiSVG instances
+from kanji_time.external_data.test.conftest import GOOD_KANJI_SVG
+
+
 # TEST INITIALIZATION AND CACHING
-def test_kanji_svg_initialization():
+@pytest.mark.parametrize("kanji_svg_fixture", GOOD_KANJI_SVG)
+def test_kanji_svg_initialization(kanji_svg_fixture, request):
     """Test initializing KanjiSVG instance."""
-    glyph = "戸"
-    kanji_svg = KanjiSVG(glyph)
-    assert kanji_svg.glyph == glyph
-    assert not kanji_svg.loaded
+    kanji_svg = request.getfixturevalue(kanji_svg_fixture)
+    assert kanji_svg.loaded
 
 
 def test_kanji_svg_caching():
@@ -336,15 +343,11 @@ def test_load_labels():
 
 
 # TEST DRAWING METHODS
-def test_draw_glyph():
+@pytest.mark.parametrize("kanji_svg_fixture", GOOD_KANJI_SVG)
+def test_draw_glyph(kanji_svg_fixture, request):
     """Test drawing the complete Kanji glyph."""
-    glyph = "戸"
-    kanji_svg = KanjiSVG(glyph)
-    # Mock up a loaded stoke + label
-    kanji_svg.loaded = True
-    kanji_svg._strokes = ["M10,10 L90,10"]
-    kanji_svg._labels = [(Transform(), "1")]
-
+    kanji_svg = request.getfixturevalue(kanji_svg_fixture)
+    assert kanji_svg.loaded
     drawing = kanji_svg.draw_glyph()
     assert isinstance(drawing, SVGDrawing)
     #: .. todo:: validate all the draw glyph options
@@ -352,25 +355,24 @@ def test_draw_glyph():
     assert isinstance(drawing, SVGDrawing)
 
 
-def test_draw_stroke_steps():
+@pytest.mark.parametrize("kanji_svg_fixture", GOOD_KANJI_SVG)
+def test_draw_stroke_steps(kanji_svg_fixture, request):
     """Test drawing Kanji stroke steps."""
-    glyph = "戸"
-    kanji_svg = KanjiSVG(glyph)
-    kanji_svg.loaded = True
-    kanji_svg._strokes = ["M10,10 L90,10", "M10,20 L90,20"]
-    kanji_svg._labels = [(Transform(), "1"), (Transform(), "2")]
+    kanji_svg = request.getfixturevalue(kanji_svg_fixture)
+    assert kanji_svg.loaded
     drawing = kanji_svg.draw_stroke_steps(grid_columns=3)
     assert isinstance(drawing, SVGDrawing)
 
 
-def test_draw_practice_strip():
+# TEST DRAWING METHODS
+@pytest.mark.parametrize("kanji_svg_fixture", GOOD_KANJI_SVG)
+def test_draw_practice_strip(kanji_svg_fixture, request):
     """Test drawing practice strip."""
-    glyph = "戸"
-    kanji_svg = KanjiSVG(glyph)
-    kanji_svg.loaded = True
-    kanji_svg._strokes = ["M10,10 L90,10"]
+    kanji_svg = request.getfixturevalue(kanji_svg_fixture)
+    assert kanji_svg.loaded
     drawing = kanji_svg.draw_practice_strip(grid_columns=5)
     assert isinstance(drawing, SVGDrawing)
+
 
 # TEST SVG UTILITIES
 def test_draw_practice_axes():
@@ -413,20 +415,25 @@ def test_no_strokes_in_glyph():
 # Flesh out the coverage
 
 # TEST STROKE COUNT VALIDATION
+
 def test_kanji_svg_stroke_count():
-    """Test accurate stroke count retrieval."""
+    """
+    Test accurate stroke count retrieval.
+
+    REVIEW: not using a fixture since it needs a "valid result" companion.
+    """
     glyph = "書"
     kanji_svg = KanjiSVG(glyph)
     kanji_svg._strokes = ["Stroke1", "Stroke2", "Stroke3"]
     assert len(kanji_svg._strokes) == 3
 
 # TEST PRACTICE STRIP DRAWING
-def test_kanji_svg_practice_strip():
-    """Test drawing a practice strip with strokes."""
-    glyph = "書"
-    kanji_svg = KanjiSVG(glyph)
-    kanji_svg.loaded = True
-    kanji_svg._strokes = ["M10,10 L90,10", "M10,20 L90,20"]
+
+@pytest.mark.parametrize("kanji_svg_fixture", GOOD_KANJI_SVG)
+def test_kanji_svg_practice_strip(kanji_svg_fixture, request):
+    """Test drawing practice strip."""
+    kanji_svg = request.getfixturevalue(kanji_svg_fixture)
+    assert kanji_svg.loaded
     strip_drawing = kanji_svg.draw_practice_strip(grid_columns=5)
     assert strip_drawing is not None
     assert isinstance(strip_drawing, SVGDrawing)
@@ -436,6 +443,7 @@ def test_kanji_svg_empty_practice_strip():
     """Test behavior when no strokes exist for practice strip."""
     glyph = "書"
     kanji_svg = KanjiSVG(glyph)
+    kanji_svg.loaded = True
     kanji_svg._strokes = []
     strip_drawing = kanji_svg.draw_practice_strip(grid_columns=5)
     assert strip_drawing is not None
@@ -452,43 +460,28 @@ def test_reportlab_drawing_factory():
     assert d2.attribs['viewBox'] == different_viewbox
 
 
-if 0:
-    # TEST RADICAL HIGHLIGHTING
-    def test_kanji_svg_radical_highlighting():
-        """Test rendering with radical highlights."""
-        glyph = "書"
-        kanji_svg = KanjiSVG(glyph)
-        kanji_svg._strokes = ["Stroke1", "Stroke2"]
-        kanji_svg._radicals = [0]
-        highlighted_drawing = kanji_svg.draw_glyph(highlight_radical=True)
-        assert highlighted_drawing is not None
+def test_draw_glyph_unloaded(unloaded_kanji_svg):
+    # Generated by Anthropic Claude Sonnet 4.5
+    with pytest.raises(AssertionError, match="Unexpected call"):
+        unloaded_kanji_svg.draw_glyph()
 
-    # TEST INVALID SVG LOAD
-    def test_kanji_svg_invalid_load():
-        """Ensure load() handles malformed SVG gracefully."""
-        glyph = "書"
-        kanji_svg = KanjiSVG(glyph)
-        with patch("external_data.kanji_svg.ET.parse", side_effect=Exception("Malformed SVG")):
-            with pytest.raises(Exception):
-                kanji_svg.load()
 
-    # TEST BRANCH COVERAGE FROM LINE 79 TO 83
-    def test_kanji_svg_branch_from_79():
-        """Ensure proper flow through branch from line 79 to 83."""
-        glyph = "書"
-        kanji_svg = KanjiSVG(glyph)
-        kanji_svg.loaded = False
-        with patch("external_data.kanji_svg.ET.parse") as mock_parse:
-            mock_tree = MagicMock()
-            mock_parse.return_value = mock_tree
-            kanji_svg.load()
-            assert kanji_svg.loaded
+def test_draw_strokes_missing_labels(kanji_svg_strokes_only):
+    # Should not crash due to defensive with_labels check
+    # Generated by Anthropic Claude Sonnet 4.5 & modified
+    with pytest.raises(AssertionError, match="unexpected call"):
+        kanji_svg_strokes_only.draw_stroke_steps(grid_columns=5)
+    kanji_svg_strokes_only.loaded = True
+    drawing = kanji_svg_strokes_only.draw_glyph()
+    assert isinstance(drawing, SVGDrawing)
+    
 
-    # TEST DRAW STROKE STEPS
-    def test_kanji_svg_draw_stroke_steps():
-        """Test drawing stroke steps with specific grid configuration."""
-        glyph = "書"
-        kanji_svg = KanjiSVG(glyph)
-        kanji_svg._strokes = ["M10,10 L90,10", "M10,20 L90,20"]
-        stroke_drawing = kanji_svg.draw_stroke_steps(grid_columns=3)
-        assert stroke_drawing is not None
+def test_draw_mismatched_counts(kanji_svg_mismatched_counts):
+    # Should either handle gracefully or raise IndexError
+    # Generated by Anthropic Claude Sonnet 4.5 & modified
+    with pytest.raises(AssertionError, match="unexpected call"):
+        kanji_svg_mismatched_counts.draw_stroke_steps(grid_columns=5)
+    kanji_svg_mismatched_counts.loaded = True
+    with pytest.raises(IndexError):
+        kanji_svg_mismatched_counts.draw_stroke_steps(grid_columns=5)
+
