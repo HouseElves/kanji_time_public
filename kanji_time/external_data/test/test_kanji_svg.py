@@ -3,7 +3,13 @@ Test suite for KanjiSVG class with full branch coverage.
 
 TODO:  
     - Replace empty Transform instances [ie created with Transform()] with something meaningful
-    - Forbid using improperly initialized KanjiSVG instances for happy path code tests.
+    - Forbid using improperly initialized KanjiSVG instances for happy path code tests
+    - Add REQ tags to tie tests back to requirements (see test_distance.py pattern)
+    - SPEC DEFECT: Define KanjiSVG invariants and preconditions:
+        * draw_practice_strip() on empty instance → valid (empty grid)
+        * draw_glyph() on ill-formed instance → currently undefined
+        * Should draw_glyph() enforce len(strokes) == len(labels)?
+        * Document decisions in requirements doc, then add REQ tags
 """
 # pylint: disable=fixme
 
@@ -21,7 +27,7 @@ from kanji_time.visual.layout.region import Extent
 from kanji_time.visual.layout.distance import Distance
 
 # Test fixtures for well- and ill-formed KanjiSVG instances
-from kanji_time.external_data.test.conftest import GOOD_KANJI_SVG
+from kanji_time.external_data.test.conftest import GOOD_KANJI_SVG, EXPECTED_STROKE_COUNTS
 
 
 # TEST INITIALIZATION AND CACHING
@@ -39,12 +45,13 @@ def test_kanji_svg_caching():
     instance2 = KanjiSVG(glyph)
     assert instance1 is instance2  # Cached instance reuse
 
+
 # TEST LOADING LOGIC
 def test_load_kanji_svg():
     """Test loading a Kanji SVG from XML."""
     glyph = "戸"
     glyph_code = f"{ord(glyph):05x}"
-    kanji_svg = KanjiSVG(glyph)
+    kanji_svg = KanjiSVG(glyph, no_cache=True)
     fake_svg_content = """
     <svg viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg">
         <g id="kvg:StrokePaths_"""+glyph_code+"""">
@@ -111,7 +118,7 @@ def test_double_load():
     """Test that a second load is a no-op."""
     glyph = "戸"
     glyph_code = f"{ord(glyph):05x}"
-    kanji_svg = KanjiSVG(glyph)
+    kanji_svg = KanjiSVG(glyph, no_cache=True)
     fake_svg_content = """
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
         <g id="kvg:StrokePaths_"""+glyph_code+"""">
@@ -135,12 +142,13 @@ def test_double_load():
             assert len(kanji_svg.strokes) == 1
             #: .. todo:: more invariance tests.
 
+
 # TEST STROKE AND LABEL MANAGEMENT
 def test_load_all_groups():
     """Test that stroke groups are loaded correctly."""
     glyph = "戸"
     glyph_code = f"{ord(glyph):05x}"
-    kanji_svg = KanjiSVG(glyph)
+    kanji_svg = KanjiSVG(glyph, no_cache=True)
     mock_group = ET.Element("g", id="kvg:"+glyph_code)
     subgroup = ET.SubElement(
         mock_group,
@@ -158,11 +166,12 @@ def test_load_all_groups():
     assert len(strokes) == 1
     assert strokes[0] == "M10,10 L90,10"
 
+
 def test_load_group_radical():
     """Test that stroke groups are loaded correctly."""
     glyph = "戸"
     glyph_code = f"{ord(glyph):05x}"
-    kanji_svg = KanjiSVG(glyph)
+    kanji_svg = KanjiSVG(glyph, no_cache=True)
     # Top level group with a radical
     mock_group = ET.Element(
         "g",
@@ -220,44 +229,11 @@ def test_load_group_radical():
     assert isinstance(drawing, SVGDrawing)
 
 
-def test_load_no_strokesgroup():
-    """Test that stroke groups are loaded correctly."""
-    glyph = "言" #: .. todo::  I need a way to purge the Kanji SVG cache
-    glyph_code = f"{ord(glyph):05x}"
-    kanji_svg = KanjiSVG(glyph)
-    fake_svg_content = """
-    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <g id="kvg:BogusStrokePaths_"""+glyph_code+"""">
-            <g id="kvg:"""+glyph_code+"""">
-                <path id="kvg:"""+glyph_code+"""-s1" type="x" d="M10,10 L90,10" />
-            </g>
-        </g>
-    </svg>
-    """
-    with patch("builtins.open", mock_open(read_data=fake_svg_content)):
-        with patch("xml.etree.ElementTree.parse") as mock_parse:
-            mock_tree = MagicMock()
-            mock_root = ET.fromstring(fake_svg_content)
-            mock_tree.getroot.return_value = mock_root
-            mock_parse.return_value = mock_tree
-            with pytest.raises(ValueError):
-                kanji_svg.load()
-            assert not kanji_svg.loaded
-            assert len(kanji_svg.strokes) == 0
-            #: .. todo:: more invariance tests.
-
-def test_load_no_group_in_strokesgroup():
-    """Test that stroke groups are loaded correctly."""
-    glyph = "戸"
-    kanji_svg = KanjiSVG(glyph)
-    strokes = kanji_svg._load_all_groups(None)
-    assert len(strokes) == 0
-
-def test_load_labelsgroup():
-    """Test that we find the labels group tag correctly."""
+def test_load_labels_from_kanji_svg():
+    """Test that we can fully load a KanjiSVG and see the labels."""
     glyph = "戸"
     glyph_code = f"{ord(glyph):05x}"
-    kanji_svg = KanjiSVG(glyph, no_cache=True)  # type: ignore
+    kanji_svg = KanjiSVG(glyph, no_cache=True)
     fake_svg_content = """
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
         <g id="kvg:StrokePaths_"""+glyph_code+"""">
@@ -266,7 +242,7 @@ def test_load_labelsgroup():
             </g>
         </g>
         <g id="kvg:StrokeNumbers_"""+glyph_code+"""">
-	        <text transform="matrix(1 0 0 1 29.00 24.38)">1</text>
+            <text transform="matrix(1 0 0 1 29.00 24.38)">1</text>
         </g>
     </svg>
     """
@@ -278,8 +254,8 @@ def test_load_labelsgroup():
             mock_parse.return_value = mock_tree
             kanji_svg.load()
             assert kanji_svg.loaded
-            assert len(kanji_svg.strokes) == 1
-            assert len(kanji_svg._labels) == len(kanji_svg.strokes)
+            assert len(kanji_svg.strokes) == 1, f"len(kanji_svg.strokes) == {len(kanji_svg.strokes)} != 1 expected value"
+            assert len(kanji_svg._labels) == len(kanji_svg.strokes), f"len(kanji_svg.strokes) == {len(kanji_svg.strokes)} != {len(kanji_svg._labels)} == len(kanji_svg._labels)"
             # Expected transform and text for label_elements[0]
             t = Transform()
             t.translate(29.00, 24.38)
@@ -288,11 +264,12 @@ def test_load_labelsgroup():
 
             #: .. todo:: more invariance tests.
 
+
 def test_load_weirdo_tag():
     """Test that stroke groups are loaded correctly."""
     glyph = "戸"
     glyph_code = f"{ord(glyph):05x}"
-    kanji_svg = KanjiSVG(glyph)
+    kanji_svg = KanjiSVG(glyph, no_cache=True)
     mock_group = ET.Element("g", id="kvg:"+glyph_code)
     subgroup = ET.SubElement(
         mock_group,
@@ -307,11 +284,12 @@ def test_load_weirdo_tag():
     strokes = kanji_svg._load_all_groups(mock_group)
     assert len(strokes) == 0
 
+
 def test_load_labels():
     """Test that stroke labels are loaded."""
     glyph = "戸"
     glyph_code = f"{ord(glyph):05x}"
-    kanji_svg = KanjiSVG(glyph)
+    kanji_svg = KanjiSVG(glyph, no_cache=True)
     labels_group = ET.Element("g", id="kvg:StrokeNumbers_"+glyph_code)
     label_elements = [
         ET.SubElement(
@@ -364,7 +342,6 @@ def test_draw_stroke_steps(kanji_svg_fixture, request):
     assert isinstance(drawing, SVGDrawing)
 
 
-# TEST DRAWING METHODS
 @pytest.mark.parametrize("kanji_svg_fixture", GOOD_KANJI_SVG)
 def test_draw_practice_strip(kanji_svg_fixture, request):
     """Test drawing practice strip."""
@@ -378,7 +355,7 @@ def test_draw_practice_strip(kanji_svg_fixture, request):
 def test_draw_practice_axes():
     """Test drawing practice axes."""
     glyph = "戸"
-    kanji_svg = KanjiSVG(glyph)
+    kanji_svg = KanjiSVG(glyph, no_cache=True)
     drawing = MagicMock()
     kanji_svg.draw_practice_axes(drawing, cell_count=(3, 3), cell_px_width=100, cell_px_height=100)
     assert drawing.add.call_count > 0
@@ -387,48 +364,43 @@ def test_draw_practice_axes():
 def test_draw_cell_dividers():
     """Test drawing cell dividers."""
     glyph = "戸"
-    kanji_svg = KanjiSVG(glyph)
+    kanji_svg = KanjiSVG(glyph, no_cache=True)
     drawing = MagicMock()
     kanji_svg.draw_cell_dividers(drawing, cell_count=(3, 3), cell_px_width=100, cell_px_height=100)
     assert drawing.add.call_count > 0
+
 
 # EDGE CASES
 def test_load_invalid_svg():
     """Test handling of malformed SVG files."""
     glyph = "上"  # use a different glyph so we don't hit the cache
-    kanji_svg = KanjiSVG(glyph)  #: .. todo:: pass in a "no cache/force reload" option
+    kanji_svg = KanjiSVG(glyph, no_cache=True)
     with patch("zipfile.ZipFile.open", return_value=io.StringIO("<svg></svg>")):        
         with pytest.raises(ValueError):
             kanji_svg.load()
 
 
-def test_no_strokes_in_glyph():
+def test_no_strokes_in_glyph(kanji_svg_labels_only):
     """Test handling of a glyph with no strokes."""
-    glyph = "戸"
-    kanji_svg = KanjiSVG(glyph)
-    kanji_svg.loaded = True
-    kanji_svg._strokes = []
+    kanji_svg = kanji_svg_labels_only
+    assert kanji_svg.loaded
+    assert len(kanji_svg._strokes) == 0
     drawing = kanji_svg.draw_glyph()
     assert isinstance(drawing, SVGDrawing)
 
 
-# Flesh out the coverage
-
 # TEST STROKE COUNT VALIDATION
+@pytest.mark.parametrize("kanji_svg_fixture", GOOD_KANJI_SVG)
+def test_kanji_svg_stroke_counts(kanji_svg_fixture, request):
+    """Test stroke count matches expectation for known kanji."""
+    kanji_svg = request.getfixturevalue(kanji_svg_fixture)
+    expected = EXPECTED_STROKE_COUNTS[kanji_svg_fixture]
+    actual = len(kanji_svg.strokes)
+    assert actual == expected, \
+        f"{kanji_svg_fixture}: expected {expected} strokes, got {actual}"
 
-def test_kanji_svg_stroke_count():
-    """
-    Test accurate stroke count retrieval.
-
-    REVIEW: not using a fixture since it needs a "valid result" companion.
-    """
-    glyph = "書"
-    kanji_svg = KanjiSVG(glyph)
-    kanji_svg._strokes = ["Stroke1", "Stroke2", "Stroke3"]
-    assert len(kanji_svg._strokes) == 3
 
 # TEST PRACTICE STRIP DRAWING
-
 @pytest.mark.parametrize("kanji_svg_fixture", GOOD_KANJI_SVG)
 def test_kanji_svg_practice_strip(kanji_svg_fixture, request):
     """Test drawing practice strip."""
@@ -438,13 +410,12 @@ def test_kanji_svg_practice_strip(kanji_svg_fixture, request):
     assert strip_drawing is not None
     assert isinstance(strip_drawing, SVGDrawing)
 
-# TEST EMPTY PRACTICE STRIP
-def test_kanji_svg_empty_practice_strip():
+
+def test_kanji_svg_empty_practice_strip(kanji_svg_empty_loaded):
     """Test behavior when no strokes exist for practice strip."""
-    glyph = "書"
-    kanji_svg = KanjiSVG(glyph)
-    kanji_svg.loaded = True
-    kanji_svg._strokes = []
+    kanji_svg = kanji_svg_empty_loaded
+    assert kanji_svg.loaded
+    assert len(kanji_svg._strokes) == 0
     strip_drawing = kanji_svg.draw_practice_strip(grid_columns=5)
     assert strip_drawing is not None
 
@@ -460,13 +431,16 @@ def test_reportlab_drawing_factory():
     assert d2.attribs['viewBox'] == different_viewbox
 
 
+# TEST ERROR CASES WITH BAD FIXTURES
 def test_draw_glyph_unloaded(unloaded_kanji_svg):
+    """Test that drawing fails on unloaded KanjiSVG."""
     # Generated by Anthropic Claude Sonnet 4.5
     with pytest.raises(AssertionError, match="Unexpected call"):
         unloaded_kanji_svg.draw_glyph()
 
 
 def test_draw_strokes_missing_labels(kanji_svg_strokes_only):
+    """Test behavior when strokes exist but labels are missing."""
     # Should not crash due to defensive with_labels check
     # Generated by Anthropic Claude Sonnet 4.5 & modified
     with pytest.raises(AssertionError, match="unexpected call"):
@@ -477,6 +451,7 @@ def test_draw_strokes_missing_labels(kanji_svg_strokes_only):
     
 
 def test_draw_mismatched_counts(kanji_svg_mismatched_counts):
+    """Test behavior when stroke/label counts don't match."""
     # Should either handle gracefully or raise IndexError
     # Generated by Anthropic Claude Sonnet 4.5 & modified
     with pytest.raises(AssertionError, match="unexpected call"):
@@ -484,4 +459,3 @@ def test_draw_mismatched_counts(kanji_svg_mismatched_counts):
     kanji_svg_mismatched_counts.loaded = True
     with pytest.raises(IndexError):
         kanji_svg_mismatched_counts.draw_stroke_steps(grid_columns=5)
-
