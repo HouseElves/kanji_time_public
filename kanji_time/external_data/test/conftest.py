@@ -110,6 +110,11 @@ GOOD_KANJI_SVG = [
     "loaded_kanji_svg_tori",
 ]
 
+EXPECTED_STROKE_COUNTS = {
+    "loaded_kanji_svg_sho": 10,  # 書 (write)
+    "loaded_kanji_svg_to": 4,  # 戸 (door)
+    "loaded_kanji_svg_tori": 11,  # 鳥 (bird)
+}
 
 # =============================================================================
 # BAD FIXTURES - Improperly Initialized KanjiSVG Instances
@@ -178,7 +183,7 @@ def kanji_svg_labels_only():
     kanji_svg = KanjiSVG(glyph, no_cache=True)
     
     # Manually set loaded flag and labels without strokes
-    kanji_svg._loaded = True
+    kanji_svg.loaded = True
     kanji_svg._strokes = []
     
     # Create dummy labels with identity transforms
@@ -211,7 +216,7 @@ def kanji_svg_empty_loaded():
     kanji_svg = KanjiSVG(glyph, no_cache=True)
     
     # Set loaded but leave everything empty
-    kanji_svg._loaded = True
+    kanji_svg.loaded = True
     kanji_svg._strokes = []
     kanji_svg._labels = []
     
