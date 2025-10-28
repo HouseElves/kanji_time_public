@@ -95,7 +95,7 @@ class SVGCache(type):
         if no_cache:
             instance = super().__call__(glyph)
             assert glyph not in cls._cache or cls._cache[glyph] != instance
-            logger.debug("%s created a unique KanjiSVG for '%s', returning id=%s", cls.__name__, glyph, f"{id(cls._cache[glyph]):x}")
+            logger.debug("%s created a unique KanjiSVG for '%s', returning id=%s", cls.__name__, glyph, f"{id(instance):x}")
             return instance
 
         result = "hit"
@@ -216,7 +216,7 @@ class KanjiSVG(metaclass=SVGCache):
     DFLT_GLYPH_SIZE = Extent(Distance(2, "in"), Distance(2, "in"))
 
     class Loader:
-        def __init__(self): ...
+        def __init__(self): ...  # pragma: no cover
 
     @dataclass
     class StrokeGroup:
