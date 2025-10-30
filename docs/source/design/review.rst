@@ -4,8 +4,8 @@
 Design Highlights
 =================
 
-The code architect, developer, and doc author for Kanji Time, Andrew Milton, has a strong preference for the clean hybrid Functional-OOP driven designs that Python is particularly well suited for.
-A crucial part of the Kanji Time design philosophy is preference for small immutable data objects, severely limited class hierarchy depth, and aggregated behaviors over specialization.
+Kanji Time favors a hybrid functional-OOP design philosophy that leverages Python's strengths in composition and immutability.
+Key parts of this philosophy are a preference for small immutable data objects, severely limited class hierarchy depth, and aggregated behaviors over specialization.
 
 Design Highlights Contents
 --------------------------
@@ -21,15 +21,15 @@ Design Highlights Contents
 Design Philosophy
 -----------------
 
-Guiding principals in Kanji Time that govern design choices include the below actions.
+Guiding principles in Kanji Time that govern design choices include the below actions.
 
 #. **Clarity over Cleverness**
 
-   Favor plain well-factored modules, predictable flow, and easily understood composition over clever, obscure, or gimicky structure.
+   Favor plain well-factored modules, predictable flow, and easily understood composition over clever, obscure, or gimmicky structure.
 
 #. **Practical Purity**
 
-   Hew to clear design ideals whereever possible but also be willing to be pragmatic about breaking purity in a well documented fashion in the
+   Hew to clear design ideals wherever possible but also be willing to be pragmatic about breaking purity in a well documented fashion in the
    interest of obtaining results.
 
 #. **Documentation-Driven Development**
@@ -61,23 +61,24 @@ Key Design Choices
 
   - Clear separation of concerns: data gathering, pagination, rendering.
   - Protocol-based interface via :class:`ReportingFrame` and :class:`PageController` allows pluggable reports.
-  - Whitelist mechanism ensures only authorized report modules are executed.
+  - Whitelisting authorized report modules ensures that Kanji Time only executes known code.
 
 **Well-Defined Reusable Layout System**
 
   - Geometric primitives (:class:`Distance`, :class:`Extent`, :class:`Region`, :class:`Pos`) are expressive and reusable.
-  - Positioning content and managing content data are seperated concerns via content frames, content containers and pluggable layout stratagies.
+  - The content frames and containers separate the positioning of content from the content data itself as distinct concerns.
+    This separation allows pluggable layout strategies to position page elements without requiring explicit knowledge of the page data.
   - The Stack-based layout strategy is simple, composable, and well-encapsulated.
   - Differing content types modeled as :class:`RenderingFrame` components are isolated, predictable, and testable.
 
 **Developer Awareness**
 
-  - Ideas for future growth and review notes about code weak points in well-labeled review and development notes reflect active thinking and design foresight.
-  - Mermaid diagrams and documentation are integrated into the codebase as first-class citzens with an eye to rapid on-boarding
+  - Development notes document known limitations and opportunities for future enhancement.
+  - Mermaid diagrams and documentation are integrated into the codebase as first-class citizens with an eye to rapid on-boarding
 
 **Intentional Design Patterns**
 
-  Kanji Time leverages several well-recognized Design Patterns [GoF]_ in the codebase either explictly or as emergent behavior.
+  Kanji Time leverages several well-recognized Design Patterns [GoF]_ in the codebase either explicitly or as emergent behavior.
 
   *Template Method Pattern*, *Model-View-Controller*
 
@@ -89,7 +90,7 @@ Key Design Choices
 
   *Strategy Pattern*
 
-      Layout behavior is encapsulated in swappable `LayoutStrategy` implementations.
+    Swappable `LayoutStrategy` implementations encapsulate layout behavior.
 
   *Plugin Architecture*
 
@@ -101,7 +102,7 @@ Key Design Choices
 
   *Domain-Specific Layering*
 
-      Data (kanji, radicals), presentation (layout/render), and logic (reports) are separated cleanly.
+      Data (kanji, radicals), presentation (layout/render), and logic (reports) separate cleanly.
 
   *Class-Level Configuration*
 
@@ -118,28 +119,27 @@ Design Weaknesses
 
 **Responsibility Boundary Ambiguity**
 
-    There's an unclear distinction of responsibility and ownership between `measure()` and `layout()` in some nested components
-    This makes the :class:`RenderingFrame` protocol a little wishy-washy in places.
+    - There's an unclear distinction of responsibility and ownership between `measure()` and `layout()` in some nested components that makes the :class:`RenderingFrame` protocol inconsistent.
 
 **Overflow Behavior**
 
-    Discarded content and off-page elements are inconsistently handled or logged.
-    Robustness on the "unhappy path" handling of out-of-bounds or overflowing content is a significant concern for the next round of development.
+    - Kanji Time inconsistently handles or logs discarded content and off-page elements.
+    - Kanji Time's "unhappy path" handling of out-of-bounds or overflowing content must be made robust in the next release.
 
 **Thread Safety**
 
-    Some style and layout elements are not safe under concurrency.
-    This isn't that much of a concern since Kanji Time is single threaded under the Python GIL right now.
-    However, changes coming to the GIL could make robust multi-threading a more compelling story to have in Kanji Time.
+    - Some style and layout elements in Kanji Time are not safe under concurrency.
+    - This issue is not critical right now because Kanji Time is single threaded under the Python GIL.
+    - PEP 703 and "no-GIL" support in Python 3.14 make robust multi-threading a compelling Kanji Time feature in the future.
 
 **Import Safety**
 
-    There is potential security vulnerablilty in the report add-in mechanism as-implemented that is mitigated by explicit whitelisting of report modules.
+    - The report add-in mechanism as-implemented has a potential security vulnerability to malicious code that explicit whitelisting mitigates but does not resolve.
 
 **Data Consistency**
 
-    There is minimal sanity checking on imported data - it simply wasn't a priorty for this round of developement.
-    Radical/Unicode/SVG alignment is fragile and lacks schema enforcement.
+    - Kanji Time has minimal sanity checking on imported data.
+    - The loaders for the Radical/Unicode/SVG data do not enforce the XML schema or validate against the embedded DTD.
 
 Back to :ref:`highlights_contents`
 
