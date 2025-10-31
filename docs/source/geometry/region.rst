@@ -8,7 +8,7 @@ A `Region` represents a rectangular local coordinate system defined by an origin
 All `ContentFrame` objects are positioned within a `Region`.
 This tactic allows each frame to operate in its own local coordinates independent of global page state.
 
-`Region`` supports:
+`Region` supports:
 
     - containment checks (`in`) against other regions, extents, and positions,
     - absolute bounding box queries via `.bounds(unit)`, and,

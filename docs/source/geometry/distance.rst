@@ -6,7 +6,7 @@ Python module: `visual.geometry.distance`
 `Distance` is the foundational unit of length in Kanji Time. It models physical measurements like inches, centimeters, points, and pixels
 using rational arithmetic for precision-safe layout operations.
 
-The reasoning behind creating this Distance type is to have an immutable distance measurement that supports seemless conversion between
+The reasoning behind creating this Distance type is to have an immutable distance measurement that supports seamless conversion between
 different units via properties.
 
 For example:
