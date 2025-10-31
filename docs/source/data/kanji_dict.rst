@@ -5,8 +5,8 @@ Python module: `external_data.kanji_dict`
 
 ----
 
-The `kanji_dict` module extracts entry-level dictionary data from the legacy KanjiDict XML dataset. We use it to retrieve readings,
-glosses, and grammatical tags for each character or kana.
+The `kanji_dict` module extracts entry-level dictionary data from the legacy KanjiDict XML dataset.
+It contains readings, glosses, and grammatical tags for each character or kana.
 
 The interface exposes:
 
@@ -15,7 +15,7 @@ The interface exposes:
 
 The resulting dictionary includes orthographic variants, frequency indicators, kana readings, and semantic glosses grouped by sense.
 
-This module is useful when we need to supplement structured kanji metadata with looser dictionary-style glossing.
+This module supplements structured kanji metadata with looser dictionary-style glossing.
 
 ----
 

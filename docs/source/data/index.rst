@@ -14,16 +14,17 @@ Currently integrated sources include:
     - **KanjiVG** - Vector SVG diagrams for rendering stroke order
     - **Unicode Radical Definitions** - Used to annotate traditional radicals with Unicode-standard naming and references
 
-The first three of these sources contain XML data which we load and query using XPath expressions via the `xml.etree.ElementTree` standard library.
-The last source is as delimited text file obtained from the Unicode database that we parse using regular expressions.
+The first three of these sources contain XML data which Kanji Time loads and queries using custom XPath expressions that it passes to the `xml.etree.ElementTree` library.
+The last source is a delimited text file obtained from the Unicode database that Kanji Time parses using regular expressions.
+
 
 ----
 
 Kanji Dictionary Interface
 --------------------------
 
-Kanji Time uses a common informal interface to extract kanji-related dictionary data from XML.
-The interface ensures that we fetch data in a consistent fashion across the two dictionaries.
+Kanji Time uses an informal interface common to the two dictionary sources to extract kanji-related data from XML.
+The interface imposes consistent data access protocols between the two dictionaries.
 
     - `get_glyph_xml(glyph)` - to retrieve raw XML nodes
     - `flatten_xml(xml_node)` - to produce robust flat dictionaries keyed by field
@@ -43,16 +44,16 @@ Kanji SVG Interface
 Kanji Time draws stroke order diagrams using scalable vector graphics files from the KanjiVG project.
 These SVG files provide structural metadata for each stroke, radical group, and drawing order.
 
-The `KanjiSVG` class acts as a cached drawing server. We instantiate this class for a particular glyph, and then call specialized drawing
-methods that create diagrams for stroke sequences, ruled practice cells, and the kanji character itself.
-In particular,
+The `KanjiSVG` class acts as a cached drawing server.
+Kanji Time instantiates this class for a particular glyph and uses the specialized drawing
+methods (below) to create SVG content for output.
 
     - `draw_stroke_steps()` - creates a step-by-step sequence of cells with one new stroke per cell,
     - `draw_practice_strip()` - draws the kanji with each stroke labeled with its sequence number followed by empty practice cells, and,
     - `draw_glyph()` - draws the kanji with optional radical highlighting.
 
 The system uses `svgwrite` for drawing and `xml.etree.ElementTree` for SVG parsing.
-Each drawing method returns a ready-to-render SVG object that Kanji Time integrates directly into report output.
+Each drawing method returns a ready-to-render SVG object that Kanji Time integrates directly into a report.
 
 ----
 
@@ -60,7 +61,7 @@ Radical Lookup Interface
 ------------------------
 
 Kanji Time extracts radical metadata from a text file published by the Unicode Consortium (`CJKRadicals.txt`).
-We map each Kangxi radical number (1-214) to one or more Unicode characters, using the preferred form when available and falling back to
+It maps each Kangxi radical number (1-214) to one or more Unicode characters, using the preferred form when available and falling back to
 variants if needed.
 
 The `Radical` class loads this data and provides accessors for
@@ -69,7 +70,7 @@ The `Radical` class loads this data and provides accessors for
     - English glosses (`.interpretations`), and,
     - kana/romanized names (`.hiragana_names`, `.romanji_name`)
 
-We also expose `radical_map()` and `meaning_map()` functions to retrieve the full lookup tables.
+The containing module also exposes `radical_map()` and `meaning_map()` functions to retrieve the full lookup tables.
 
 This mechanism supports radical labeling in reports and SVG rendering, and complements structural stroke information from KanjiVG.
 
