@@ -9,7 +9,7 @@ Sample Output
 Kanji Summary for 生
 --------------------
 
-Obtain this PDF by typing the below at the command line
+Obtain this PDF by typing this at the command line
 
 .. code-block:: bash
 
@@ -24,7 +24,7 @@ Obtain this PDF by typing the below at the command line
 Practice Sheet for 生
 ---------------------
 
-Obtain this PDF by typing the below at the command line
+Obtain this PDF by typing this at the command line
 
 .. code-block:: bash
 

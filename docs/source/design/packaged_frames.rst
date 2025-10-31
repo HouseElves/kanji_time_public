@@ -9,7 +9,7 @@ What Rendering Frames are built into Kanji Time?
 Kanji Time provides 6 simple implementations for the :class:`RenderingFrame` protocol that model common use cases or demonstrate solving common layout problems as follows.
 
     Atomic Frames
-        Frames that contain a single type content to be rendered inside one rectangle: ReportLabDrawing, FormattedText, HorizontalRule, and EmptySpace.
+        Frames that contain a single type of content to be rendered inside one rectangle: ReportLabDrawing, FormattedText, HorizontalRule, and EmptySpace.
 
     SimpleElement Base Frame
         The SimpleElement is a default do-nothing implementation of :class:`RenderingFrame` suitable for deriving custom atomic frames or custom container frames.
@@ -23,9 +23,9 @@ Content such as text *flows* across its bounding box, wrapping to a new line whe
 It also flows down its bounding box until it hits the bottom where it needs a new bounding box on a new page.
 
 Content such as a diagram is *fixed* in that it either fits in its bounding box or it doesn't.
-Vector graphics may be scaled to fit the drawing it the available space or we could split the drawing across multiple bounding boxes on different pages.
+Vector graphics may be scaled to fit the drawing in the available space or we could split the drawing across multiple bounding boxes on different pages.
 
-These considerations were in large part responsible for driving the design decision to leave pagination up to the individual rendering frames on a page.
+These considerations drove the design decision to leave pagination up to the individual rendering frames on a page.
 
 The measurement algorithms are good but there's still some vestigial issues to be resolved in the next development cycle.
 
@@ -86,8 +86,8 @@ Back to :ref:`builtin_frames`
 FormattedText
 ~~~~~~~~~~~~~
 
-A :class:`FormattedText` frame contains a block of text possibly marked up with a simplifed HTML-like set of tags for formatting.
-FormattedText instances consume their bound data as it rendered on each page, thus simplifying the pagination process.
+A :class:`FormattedText` frame contains a block of text possibly marked up with a simplified HTML-like set of tags for formatting.
+FormattedText instances consume their bound data as it is rendered on each page, thus simplifying the pagination process.
 There is also an initialization flag to suppress this behavior for static text to be presented on all pages.
 
 The simplified HTML language for formatting is inherited from ReportLab_.
@@ -121,9 +121,9 @@ Back to :ref:`builtin_frames`
 HorizontalRule
 ~~~~~~~~~~~~~~
 
-A :class:`HorizontalRule` frame contains a horizontal seperator line flowing across the full width of its bounding box.
+A :class:`HorizontalRule` frame contains a horizontal separator line flowing across the full width of its bounding box.
 
-The Kanji Summary report uses a :class:`HorizontalRule` instance to separate the banner section from the dictionary defintion content section.
+The Kanji Summary report uses a :class:`HorizontalRule` instance to separate the banner section from the dictionary definition content section.
 
 There is no vertical version of a page rule at this time.
 There is planned work to do so -- and there are also some design issues to resolve around the best owner for a page rule.
@@ -139,8 +139,8 @@ Frame Base Classes
 
 .. _simple:
 
-SimpleElemement
-~~~~~~~~~~~~~~~
+SimpleElement
+~~~~~~~~~~~~~
 
 ** work in progress **
 
@@ -173,7 +173,7 @@ The Kanji Summary report contains some vestigial custom frames derived from :cla
     - :class:`RadicalSummary`.
 
 I've left these two classes as-is instead of converting them to a generic :class:`Container` as demonstration code for creating a custom container frame.
-They are a little rough around edges representing early work in the project.
+They are also representative of the early exploratory stages in the project.
 
 Back to :ref:`builtin_frames`
 

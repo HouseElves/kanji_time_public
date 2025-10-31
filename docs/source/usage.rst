@@ -2,7 +2,7 @@
 Kanji Time Command Line
 =======================
 
-From the shell, the Kanji Time CLI allows you, the user, to generate one or more Kanji Time report PDFs by giving their aliases and passing one or more kanji glyph parameters for each report.
+From the shell, the Kanji Time CLI allows you to generate one or more Kanji Time report PDFs by giving their aliases and passing one or more kanji glyph parameters for each report.
 
 Command Line Examples
 ---------------------
@@ -27,7 +27,7 @@ The CLI options for Kanji Time are as follows.
         Run the specified report. Can be used multiple times.
 
     --output-dir=DIR, -o DIR
-        Directory where output PDF files will be saved. Defaults to the current directory.
+        Directory for the output PDF files. Defaults to the current directory.
 
     --help-report=REPORT
         Show help text for a specific report, including its glyph-specific behavior.
@@ -63,7 +63,7 @@ These are the currently registered report aliases and their backing modules:
 Exit Codes
 ----------
 
-Kanji Time sends an exit code back to its host shell when it finishes generating the requsted reports.
+Kanji Time sends an exit code back to its host shell when it finishes generating the requested reports.
 
 .. list-table::
    :header-rows: 1

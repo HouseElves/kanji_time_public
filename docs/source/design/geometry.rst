@@ -21,11 +21,11 @@ All elements are grounded in a shared system of immutable types:
         A rectangular area identified by an origin (a :class:`Pos`) and a size (an :class:`Extent`) used to scope layout frames in their own local coordinate system.
 
   :class:`AnchorPoint`
-       A collection of symbolic compass-style labels for alignment hints when nesting geometery objects.
+       A collection of symbolic compass-style labels for alignment hints when nesting geometry objects.
 
 All these types support simple arithmetic methods appropriate to their semantic type.
 
-Instances of the :class:`RenderingFrame` protocol pass around geometry objects during layout and render phases. These geometry object provide the backbone for all geometry-aware layout
+Instances of the :class:`RenderingFrame` protocol pass around geometry objects during layout and render phases. These geometry objects provide the backbone for all geometry-aware layout
 strategies.
 
 Each geometry class is derived from `namedtuple`, thus making them immutable, and extended with layout-specific operations such as anchoring, intersection, and scaling.

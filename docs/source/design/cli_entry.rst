@@ -9,8 +9,8 @@ It includes a dynamic report loader, a generic report runner/pagination loop fun
 This is what happens when Kanji Time starts up:
 
 #. Once the user hits "enter" on command line, the function :func:`kanji_time.cli_entry_point` takes over.
-#. If we've received a legitimate request for a report, we'll hand off to :func:`kanji_time.execute_report`, which will load up the appropriate report driver code and enter a pagination loop.
-#. When the report says that's finished generating pages, Kanji Time exits with an exit code of 0.
+#. If the received request is legitimate for a report, Kanji Time passes control to :func:`kanji_time.execute_report`, which will load up the appropriate report driver code and enter a pagination loop.
+#. When the report says that it is finished generating pages, Kanji Time exits with a code of 0.
 
 That's it.  That's the happy path in a nutshell.
 
@@ -71,9 +71,9 @@ The below diagram outlines the big pieces of the puzzle of generating a Kanji Ti
 Execution Flow
 --------------
 
-Once the CLI resolves the requested report by name and gathers the report's data it and enters a page-rendering loop.
+Once the CLI resolves the requested report by name and gathers the report's data it enters a page-rendering loop.
 The pagination logic interacts with other Kanji Time components as below.
-The overriding consideration for this loop is simplicity: all the complexity of page layout, keeping track of data, and deciding page breaks & report completion is handed off to the report's controller.
+The overriding consideration for this loop is simplicity: the page-rendering loop delegates all the complexity of page layout, tracking data, and deciding page breaks & report completion to the report controller in a Template Algorithm software pattern.
 
 .. mermaid::
     :name: sd_pagination

@@ -8,7 +8,7 @@ Kanji Time exploits Python's dynamic code loading capabilities via the `LoadModu
 Each Kanji Time report has a well-known command line alias that also names a subpackage of `reports` that contains its supporting code objects.
 E.g. the `reports.kanji_summary` package contains all the code objects necessary to run the "kanji_summary" report.
 
-Since we do not want arbitary code to run from the command line, each report alias must also be present in Kanji Times report whitelist table :data:`kanji_time.VALID_REPORTS`.
+Since running arbitrary code from the command line is a security breach, each report alias must also be present in Kanji Time's report whitelist table :data:`kanji_time.VALID_REPORTS`.
 
 .. rubric:: Report Add On Model Contents
     :heading-level: 2
@@ -26,19 +26,19 @@ The Report Add-on Contract
 
 A report provider creates a Python package that fulfils a simple contract around the existence of certain special symbols in order for Kanji Time to call into the report's code.
 
-Reporting packages need to be placed into Kanji Time's :mod:`reports` package as a subpackage with the same name as the report alias.
+Put reporting packages in Kanji Time's :mod:`reports` package as a subpackage with the same name as the report alias.
 (At some point in the future there will be an automated "add a report to Kanji Time" process.)
 
 The report package must contain module named `report.py` that contains all of the following:
 
-#. a data type named `Report` that implements the :class:`RenderingFrame` and :class:`PageController` behaviors
-#. an opaque data type name `Report.Data` that is an alias for the source data type accepted by the `Report` class initializer,
+#. a data type, `Report`, that implements the :class:`RenderingFrame` and :class:`PageController` behaviors
+#. an opaque data type, `Report.Data`, that is an alias for the source data type accepted by the `Report` class initializer,
 #. a function `Report.gather_report_data` that creates and populates an instance of `Report.Data`, and,
 #. a string property `output_file` that is an output file name unique to the report alias and a kanji glyph.
 
 This contract is very rough and still under development.
 
-    - It may change subtlely in the next development round.
+    - It may change subtly in the next development round.
     - Future plans include enforcing it by a Python protocol.
 
 .. seealso::
@@ -56,7 +56,7 @@ Contract Enforcement
 --------------------
 
 Enforcing the Add-on Contract is very primitive right now.
-It is implemented as a simple sequence of attribute checks:
+The enforcement algorithm uses a simple sequence of attribute checks:
 
 .. code-block:: python
    :caption: Enforcing the Add-on Contract
@@ -86,15 +86,15 @@ Acting on the Add-on Contract
 
 The most important aspect of the Add-on contract is to give a standard location for finding a report's code and data.
 
-:func:`kanji_time.execute_report` seperates the actions of loading inital data and instantiating the report generator.
+:func:`kanji_time.execute_report` separates the actions of loading initial data and instantiating the report generator.
 This is with an eye to the future of possibly sending a lengthy data access off into the background while attending to other tasks.
 
-The key player once we've loaded data and bound it to the report is the report's implementatino of PageController.
+The key player once we've loaded data and bound it to the report is the report's implementation of PageController.
 
 :class:`reports.controller.PageController`
 
     This protocol defines the behavior for generating any paginated report.
-    It lets reports define different layouts based on a page type (say summary vs detail pages) and allows reports to populate thier layouts with data on a per-page basis.
+    It lets reports define different layouts based on a page type (say summary vs detail pages) and allows reports to populate their layouts with data on a per-page basis.
 
 There is a lot going on in a page controller.  So much that Kanji Time provides a solid implementation of the protocol in the form of a mixin.
 
@@ -103,9 +103,9 @@ There is a lot going on in a page controller.  So much that Kanji Time provides 
     This mix-in provides a typical implementation of the `PageController` logic, including page state management, layout switching, and lazy instantiation of page containers.
 
 
-These players drive the paginiation loop in the below code (or as diagrammed at :ref:`sd_pagination`).
-Most of this code pertains to directing output properly and isn't very illuminating to us here.
-The important bits to this discussion are on lines 1, 2, 9, and 11.
+These players drive the pagination loop in the below code as shown in the sequence diagram at :ref:`sd_pagination`.
+Most of this loop isn't central to understanding the Add On Contract.
+For that understanding, let's examine lines 1, 2, 9, and 11.
 
 .. code-block:: python
     :caption: a pagination loop
@@ -128,7 +128,7 @@ The important bits to this discussion are on lines 1, 2, 9, and 11.
                 page_number += 1
         print(f"done! PDF result in {full_path}")
 
-- **lines 1 & 2** show the separation of data aquisition and instantiating the report generator
+- **lines 1 & 2** show the separation of data acquisition and instantiating the report generator
 - **line 9** shows a call to `begin_page`, which is a method of the :class:`PageController`.
   This call back informs the report that it's time to get all its content frames positioned and bound to data so that we can draw the page on **line 11**.
 

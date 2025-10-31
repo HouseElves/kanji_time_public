@@ -9,6 +9,5 @@ Design Q & A
    report_addon
    page_layout
    packaged_frames
-   pagination
    external
    geometry

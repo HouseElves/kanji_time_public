@@ -2,8 +2,8 @@
 
 .. include:: open_data.rst
 
-The first three of these sources contain XML data which we load and query using XPath expressions via the `xml.etree.ElementTree` standard library.
-The last source is as delimited text file obtained from the Unicode database that we parse using regular expressions.
+The first three of these sources contain XML data which Kanji Time loads and queries using custom XPath expressions that it passes to the `xml.etree.ElementTree` library.
+The last source is a delimited text file obtained from the Unicode database that Kanji Time parses using regular expressions.
 
 ----
 
@@ -33,7 +33,7 @@ Such an instance serves up SVG drawings as needed for the glyph:
     - `draw_practice_strip()` - draws the kanji with each stroke labeled with its sequence number followed by empty practice cells, and,
     - `draw_glyph()` - draws the kanji with optional radical highlighting.
 
-Internally, we use `svgwrite` for drawing and `xml.etree.ElementTree` for SVG parsing.
+Internally, Kanji Time uses `svgwrite` for drawing SVG graphics and `xml.etree.ElementTree` for parsing them.
 
 ----
 
@@ -42,7 +42,7 @@ Radical Lookup Interface
 
 Kanji Time extracts radical metadata from a text file published by the Unicode Consortium (`CJKRadicals.txt`).
 Each Kangxi radical has a well-known number in the range 1-214.
-The radical map associates each radical number with up to 3 distinct Unicode glyph variants for radical.
+The radical map associates each radical number with up to 3 distinct Unicode codepoints for its glyph variants.
 
 The `Radical` class is the interface into this bundle of glyphs that also provides value added data:
 
