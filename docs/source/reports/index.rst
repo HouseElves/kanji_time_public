@@ -11,7 +11,7 @@ Each report implements the `RenderingFrame` and `PageController` protocols, coor
 Individual report modules provide:
 
     - a `Report` class conforming to the rendering and controller protocols,
-    - a `gather_report_data()` method to prepare glyph-specific input. and,
+    - a `gather_report_data()` method to prepare glyph-specific input, and,
     - a `generate()` method for batch execution, debugging, or CLI use.
 
 Reports define **named page layouts** using symbolic layout names (e.g., `"first page"`, `"practice_sheet"`) to support multiple page templates. Layouts are rendered by delegating to nested content frames via the `DelegatingRenderingFrame` base class. Controllers manage flow using the `PaginatedReport` mixin.

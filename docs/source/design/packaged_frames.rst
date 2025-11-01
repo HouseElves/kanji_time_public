@@ -172,8 +172,8 @@ The Kanji Summary report contains some vestigial custom frames derived from :cla
     - :class:`KanjiSummary`, and
     - :class:`RadicalSummary`.
 
-I've left these two classes as-is instead of converting them to a generic :class:`Container` as demonstration code for creating a custom container frame.
-They are also representative of the early exploratory stages in the project.
+These two classes serve as demonstration code for creating a custom container frame without deriving from :class:`Container`.
+They illustrate early exploratory stages in the project.
 
 Back to :ref:`builtin_frames`
 

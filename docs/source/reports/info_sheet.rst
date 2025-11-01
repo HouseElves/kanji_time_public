@@ -18,16 +18,16 @@ Report Structure
 
 - **Subsequent pages** feature a compact banner and continue with additional dictionary content formatted as a scrollable, vertically stacked text region.
 
-All content is rendered using nested `RenderingFrame` instances coordinated through the standard `PaginatedReport` controller.
+Nested `RenderingFrame` instances render all content as clients of the control code in :class:`PaginatedReport`.
 
 Implementation Notes
 --------------------
 
 This report demonstrates modular layout design:
 
-  - **Data** is collected by `gather_report_data()`, returning a `KanjiReportData` instance.
-  - **Content Frames** include `KanjiSummary`, `RadicalSummary`, `FormattedText`, and `HorizontalRule`, composed inside a `Container`.
-  - **Layout** is managed with a vertical `StackLayoutStrategy`.
+  - The `gather_report_data` method collects required **Data** as a `KanjiReportData` instance.
+  - A :class:`Container` instance hosts **Content Frames** such as `KanjiSummary`, `RadicalSummary`, `FormattedText`, and `HorizontalRule`, that collectively define a report page.
+  - A vertical :class:`StackLayoutStrategy` instance manages the **layout** of these content frames within the host container.
 
 ----
 
@@ -52,7 +52,7 @@ Autoclass Documentation
 The Data Class
 --------------
 
-By convention, a report implementation puts all of its top-level data access logic inside a python module named :mod:`document.py`.
+By convention, the top-level data access logic for a report resides inside a python module named :mod:`document.py`.
 
 ----
 
@@ -67,10 +67,11 @@ Automodule Documentation
 Auxiliary Frames
 ----------------
 
-The Kanji Summary report was the underlying prototype for developing Kanji Time as a full application.
-It has custom frame logic that illustrates how to do customized layout calcuations or manually managing child frames.
-Much of the functionality in these frames has been subsumed into the greater architecture - but I have left these 'as is'
-as a discussion point in the evolution of the program design.
+The Kanji Summary report has historic interest as the underlying prototype for developing Kanji Time as a full application.
+It has custom frame logic that illustrates how to do customized layout calculations or manually managing child frames.
+
+Much of the functionality in these frames has been subsumed into the greater architecture.
+It now serves as a discussion point in the evolution of the program design.
 
 ----
 
@@ -90,8 +91,8 @@ Autoclass Documentation
 Alternate entry point
 ---------------------
 
-A report may also define a function `generate` its `report` module as an alternate entry point.
-The generate function is free to apply any logic it needs for the report independant of the Report class behavior.
+A report may also define a function `generate` in its `report` module as an alternate entry point.
+The generate function is free to apply any logic it needs for the report independent of the Report class behavior.
 This makes it a convenient location for debugging and diagnostics outside of the command line framework.
 
 Autofunction Documentation

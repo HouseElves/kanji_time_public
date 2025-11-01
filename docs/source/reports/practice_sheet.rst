@@ -19,10 +19,10 @@ All content is arranged vertically using the `StackLayoutStrategy`, and drawn us
 Implementation Notes
 --------------------
 
-- `gather_report_data()` returns a `PracticeSheetData` object with lazily evaluated drawing content
-- Stroke diagrams and practice areas are SVGs converted on demand to ReportLab graphics
+- `gather_report_data()` returns a `PracticeSheetData` object with lazily evaluated drawing content.
+- The report control logic converts SVG graphic commands to ReportLab graphics on-demand to render stroke diagrams and practice areas.
 - The report itself inherits from both `PaginatedReport` and `DelegatingRenderingFrame`
-- Only a single layout is used: `"practice_sheet"`
+- It uses only a single layout: `"practice_sheet"`
 
 ----
 
@@ -35,7 +35,7 @@ Automodule Documentation
 The Data Class
 --------------
 
-By convention, a report implementation puts all of its top-level data access logic inside a python module named 'document.py'.
+By convention, the top-level data access logic for a report resides inside a python module named :mod:`document.py`.
 
 ----
 
