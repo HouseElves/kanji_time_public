@@ -1,7 +1,11 @@
+.. _kanji_time-reports-kanji_summary-report-py:
+
 ===============================
 reports/kanji_summary/report.py
 ===============================
 
-.. literalinclude:: /code/reports/kanji_summary/report.py
-   :language: python
-   :linenos:
+.. automodule:: kanji_time.reports.kanji_summary.report
+   :members:
+   :undoc-members:
+   :member-order: bysource
+   :show-inheritance:

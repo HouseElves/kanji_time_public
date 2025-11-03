@@ -1,7 +1,11 @@
+.. _kanji_time-visual-layout-_init_-py:
+
 =========================
 visual/layout/__init__.py
 =========================
 
-.. literalinclude:: /code/visual/layout/__init__.py
-   :language: python
-   :linenos:
+.. automodule:: kanji_time.visual.layout.__init__
+   :members:
+   :undoc-members:
+   :member-order: bysource
+   :show-inheritance:

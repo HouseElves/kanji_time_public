@@ -1,7 +1,11 @@
-================================
-reports/practice_sheet/report.py
-================================
+.. _kanji_time-reports-practice_sheet-report-py:
 
-.. literalinclude:: /code/reports/practice_sheet/report.py
-   :language: python
-   :linenos:
+=================================
+reports/practice_sheet/report.py
+=================================
+
+.. automodule:: kanji_time.reports.practice_sheet.report
+   :members:
+   :undoc-members:
+   :member-order: bysource
+   :show-inheritance:

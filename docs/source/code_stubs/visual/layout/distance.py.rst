@@ -1,7 +1,11 @@
+.. _kanji_time-visual-layout-distance-py:
+
 =========================
 visual/layout/distance.py
 =========================
 
-.. literalinclude:: /code/visual/layout/distance.py
-   :language: python
-   :linenos:
+.. automodule:: kanji_time.visual.layout.distance
+   :members:
+   :undoc-members:
+   :member-order: bysource
+   :show-inheritance:

@@ -1,7 +1,11 @@
+.. _kanji_time-visual-frame-drawing-py:
+
 =======================
 visual/frame/drawing.py
 =======================
 
-.. literalinclude:: /code/visual/frame/drawing.py
-   :language: python
-   :linenos:
+.. automodule:: kanji_time.visual.frame.drawing
+   :members:
+   :undoc-members:
+   :member-order: bysource
+   :show-inheritance:

@@ -1,7 +1,11 @@
+.. _kanji_time-visual-frame-empty_space-py:
+
 ===========================
 visual/frame/empty_space.py
 ===========================
 
-.. literalinclude:: /code/visual/frame/empty_space.py
-   :language: python
-   :linenos:
+.. automodule:: kanji_time.visual.frame.empty_space
+   :members:
+   :undoc-members:
+   :member-order: bysource
+   :show-inheritance:

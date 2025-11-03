@@ -1,7 +1,11 @@
+.. _kanji_time-adapter-svg-py:
+
 ==============
 adapter/svg.py
 ==============
 
-.. literalinclude:: /code/adapter/svg.py
-   :language: python
-   :linenos:
+.. automodule:: kanji_time.adapter.svg
+   :members:
+   :undoc-members:
+   :member-order: bysource
+   :show-inheritance:

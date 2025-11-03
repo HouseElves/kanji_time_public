@@ -1,7 +1,11 @@
+.. _kanji_time-visual-layout-stack_layout-py:
+
 =============================
 visual/layout/stack_layout.py
 =============================
 
-.. literalinclude:: /code/visual/layout/stack_layout.py
-   :language: python
-   :linenos:
+.. automodule:: kanji_time.visual.layout.stack_layout
+   :members:
+   :undoc-members:
+   :member-order: bysource
+   :show-inheritance:

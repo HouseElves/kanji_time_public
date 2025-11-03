@@ -1,7 +1,11 @@
+.. _kanji_time-visual-layout-paper_names-py:
+
 ============================
 visual/layout/paper_names.py
 ============================
 
-.. literalinclude:: /code/visual/layout/paper_names.py
-   :language: python
-   :linenos:
+.. automodule:: kanji_time.visual.layout.paper_names
+   :members:
+   :undoc-members:
+   :member-order: bysource
+   :show-inheritance:

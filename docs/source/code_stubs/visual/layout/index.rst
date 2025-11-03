@@ -2,10 +2,8 @@
 Visual Layout Package
 =====================
 
-.. automodule:: kanji_time.visual.layout.__init__
-
-Module Source Code
-------------------
+Layout Modules
+--------------
 
 .. toctree::
    :maxdepth: 1

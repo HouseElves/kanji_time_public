@@ -1,7 +1,11 @@
+.. _kanji_time-utilities-singleton-py:
+
 ======================
 utilities/singleton.py
 ======================
 
-.. literalinclude:: /code/utilities/singleton.py
-   :language: python
-   :linenos:
+.. automodule:: kanji_time.utilities.singleton
+   :members:
+   :undoc-members:
+   :member-order: bysource
+   :show-inheritance:

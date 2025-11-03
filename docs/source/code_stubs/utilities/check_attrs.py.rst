@@ -1,7 +1,11 @@
+.. _kanji_time-utilities-check_attrs-py:
+
 ========================
 utilities/check_attrs.py
 ========================
 
-.. literalinclude:: /code/utilities/check_attrs.py
-   :language: python
-   :linenos:
+.. automodule:: kanji_time.utilities.check_attrs
+   :members:
+   :undoc-members:
+   :member-order: bysource
+   :show-inheritance:

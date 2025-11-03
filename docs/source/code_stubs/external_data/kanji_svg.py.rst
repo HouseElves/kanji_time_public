@@ -1,9 +1,11 @@
+.. _kanji_time-external_data-kanji_svg-py:
+
 ==========================
 external_data/kanji_svg.py
 ==========================
 
-:ref:`kanji_svg.py.dev_notes`
-
-.. literalinclude:: /code/external_data/kanji_svg.py
-   :language: python
-   :linenos:
+.. automodule:: kanji_time.external_data.kanji_svg
+   :members:
+   :undoc-members:
+   :member-order: bysource
+   :show-inheritance:

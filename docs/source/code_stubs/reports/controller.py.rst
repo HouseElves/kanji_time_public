@@ -1,7 +1,11 @@
+.. _kanji_time-reports-controller-py:
+
 =====================
 reports/controller.py
 =====================
 
-.. literalinclude:: /code/reports/controller.py
-   :language: python
-   :linenos:
+.. automodule:: kanji_time.reports.controller
+   :members:
+   :undoc-members:
+   :member-order: bysource
+   :show-inheritance:

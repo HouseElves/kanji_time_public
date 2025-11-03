@@ -1,7 +1,11 @@
+.. _kanji_time-visual-frame-page_rule-py:
+
 =========================
 visual/frame/page_rule.py
 =========================
 
-.. literalinclude:: /code/visual/frame/page_rule.py
-   :language: python
-   :linenos:
+.. automodule:: kanji_time.visual.frame.page_rule
+   :members:
+   :undoc-members:
+   :member-order: bysource
+   :show-inheritance:

@@ -1,7 +1,11 @@
+.. _kanji_time-utilities-general-py:
+
 ====================
 utilities/general.py
 ====================
 
-.. literalinclude:: /code/utilities/general.py
-   :language: python
-   :linenos:
+.. automodule:: kanji_time.utilities.general
+   :members:
+   :undoc-members:
+   :member-order: bysource
+   :show-inheritance:

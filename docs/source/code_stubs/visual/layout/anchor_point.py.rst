@@ -1,7 +1,11 @@
+.. _kanji_time-visual-layout-anchor_point-py:
+
 =============================
 visual/layout/anchor_point.py
 =============================
 
-.. literalinclude:: /code/visual/layout/anchor_point.py
-   :language: python
-   :linenos:
+.. automodule:: kanji_time.visual.layout.anchor_point
+   :members:
+   :undoc-members:
+   :member-order: bysource
+   :show-inheritance:

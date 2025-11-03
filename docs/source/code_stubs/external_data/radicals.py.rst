@@ -1,7 +1,11 @@
+.. _kanji_time-external_data-radicals-py:
+
 =========================
 external_data/radicals.py
 =========================
 
-.. literalinclude:: /code/external_data/radicals.py
-   :language: python
-   :linenos:
+.. automodule:: kanji_time.external_data.radicals
+   :members:
+   :undoc-members:
+   :member-order: bysource
+   :show-inheritance:

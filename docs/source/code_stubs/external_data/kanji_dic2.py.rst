@@ -1,7 +1,11 @@
+.. _kanji_time-external_data-kanji_dic2-py:
+
 ===========================
 external_data/kanji_dic2.py
 ===========================
 
-.. literalinclude:: /code/external_data/kanji_dic2.py
-   :language: python
-   :linenos:
+.. automodule:: kanji_time.external_data.kanji_dic2
+   :members:
+   :undoc-members:
+   :member-order: bysource
+   :show-inheritance:

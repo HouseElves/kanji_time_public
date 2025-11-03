@@ -1,7 +1,11 @@
+.. _kanji_time-visual-protocol-layout_strategy-py:
+
 ==================================
 visual/protocol/layout_strategy.py
 ==================================
 
-.. literalinclude:: /code/visual/protocol/layout_strategy.py
-   :language: python
-   :linenos:
+.. automodule:: kanji_time.visual.protocol.layout_strategy
+   :members:
+   :undoc-members:
+   :member-order: bysource
+   :show-inheritance:

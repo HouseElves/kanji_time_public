@@ -1,7 +1,11 @@
+.. _kanji_time-visual-protocol-_init_-py:
+
 ===========================
 visual/protocol/__init__.py
 ===========================
 
-.. literalinclude:: /code/visual/protocol/__init__.py
-   :language: python
-   :linenos:
+.. automodule:: kanji_time.visual.protocol.__init__
+   :members:
+   :undoc-members:
+   :member-order: bysource
+   :show-inheritance:
