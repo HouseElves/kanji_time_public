@@ -1,3 +1,5 @@
+:orphan:
+
 History of Kanji Time
 =====================
 
