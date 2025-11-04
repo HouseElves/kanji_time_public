@@ -17,12 +17,14 @@ class DrawingForRL(SVGDrawing):  # pylint: disable=too-many-ancestors
     svgwrite is very strict with the SVG standard, but reportlab not-so-much.
     This is were we'll reconcile these differences of opinion.
 
-    Our initializer bypasses the Drawing initializer to prevent unwanted XML attributes:
-            - xmlns:xlink
-            - xmlns:ev
-            - version
-            - baseProfile
-    on the SVG tag.  We also intercept the size and viewBox keywords out of **kwargs to
+    Our initializer bypasses the Drawing initializer to prevent these unwanted XML attributes
+
+        - xmlns:xlink
+        - xmlns:ev
+        - version
+        - baseProfile
+    
+    on the SVG tag.  We also intercept the size and viewBox keywords out of *kwargs* to
     to prevent unwanted 'height' and 'width' attributes and to force svgwrite to accept
     length parameters for the 'viewBox' attribute.
 
