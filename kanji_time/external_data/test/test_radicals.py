@@ -162,7 +162,7 @@ def test_radical_initialization(maps):
     assert radical.radical_num == 1
     assert radical.glyphs == [chr(0x4E00)]
     assert radical.hiragana_names == {"いち"}
-    assert radical.romanji_name == "one"
+    assert radical.romaji_name == "one"
     assert radical.interpretations == {"one"}
 
 # TEST INVALID RADICAL INITIALIZATION
@@ -183,7 +183,7 @@ def test_radical_interpretations(maps):
     """Test extracting unique meanings from radical interpretations."""
     _, _ = maps
     radical = Radical(2)
-    assert radical.romanji_name == "one"
+    assert radical.romaji_name == "one"
     assert radical.interpretations == {"line"}
 
 # EDGE CASES
@@ -193,4 +193,4 @@ def test_radical_missing_meanings(maps):
     radical = Radical(3)
     assert radical.interpretations == set()
     assert radical.hiragana_names == set()
-    assert radical.romanji_name is None
+    assert radical.romaji_name is None
