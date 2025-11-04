@@ -133,6 +133,4 @@ paper in various sizes etc.)
         svg --> sw_data
         svg --> sw_data
 
-----
-
 """

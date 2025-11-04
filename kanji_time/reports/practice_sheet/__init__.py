@@ -99,6 +99,4 @@ External Dependencies
         ps_report --> settings
         ps_report --> xml
 
-----
-
 """
