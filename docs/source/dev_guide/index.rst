@@ -9,5 +9,3 @@ Developer's Guide
     ../frames/index
     ../geometry/index
     ../reports/index
-    ../misc_helpers/index
-    ../code_stubs/development
