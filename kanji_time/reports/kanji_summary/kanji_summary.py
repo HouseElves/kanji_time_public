@@ -201,7 +201,7 @@ class KanjiSummary(SimpleElement):
             - `region.origin` = the offset into the target extent to set the coordinate origin
             - `region.extent` = the actual rendering size of that content.
 
-        .. only:: dev_notes::
+        .. only:: dev_notes
 
             - Overflows - ReportLab handles text that doesn't fit for us, but that won't be true on all platforms.
               we'll need a way to trap text that doesn't fit and hold it for the future in the general case.

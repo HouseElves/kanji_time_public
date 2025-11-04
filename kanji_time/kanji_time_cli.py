@@ -55,7 +55,9 @@ practice_sheet       reports.practice_sheet.report
 
 ----
 
-.. seealso:: :doc:`dev_notes/kanji_time_notes`
+.. only:: dev_notes
+
+    .. seealso:: :doc:`dev_notes/kanji_time_cli_notes`
 
 ----
 
@@ -292,7 +294,7 @@ def show_report_help(report_alias: str):
     :return: None
     :raises: ValueError if we don't find any help text.
 
-    .. only:: dev_notes::
+    .. only:: dev_notes
 
         - Add short/long help string properties to the report implementation's `Report` class.
 

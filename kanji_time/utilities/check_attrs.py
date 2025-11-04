@@ -4,13 +4,13 @@ check_attrs.py
 Attribute-based contract decorators for enforcing class invariants on entry or exit of methods.
 
 This module provides:
-- `check_attrs`: a general-purpose decorator for validating one or more
-  instance attributes using a predicate
-- `@require_attr`: shorthand for entry-time attribute checks
-- `@ensure_attr`: shorthand for exit-time attribute checks
 
-All validation failures are logged with `logger.error()` in addition to
-raising `ValueError`, for auditability even if exceptions are caught.
+    - `check_attrs`: a general-purpose decorator for validating one or more
+      instance attributes using a predicate
+    - `@require_attr`: shorthand for entry-time attribute checks
+    - `@ensure_attr`: shorthand for exit-time attribute checks
+
+All validation failures are logged with `logger.error()` in addition to raising `ValueError`, for auditability even if exceptions are caught.
 """
 
 import logging

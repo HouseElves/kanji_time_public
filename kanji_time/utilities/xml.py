@@ -28,7 +28,7 @@ def xml_tag(file_handle: io.TextIOBase, tag_name: str, **kwargs):
 
     .. only:: dev_notes
 
-        - what about my indent level |rarr| derive an "indented buffer" off `StringIO` or one of its chums.
+        - what about my indent level? derive an "indented buffer" off `StringIO` or one of its chums.
 
     """
     # Code to acquire resource, e.g.:
