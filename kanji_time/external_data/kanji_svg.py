@@ -1,9 +1,9 @@
 """
 Model SVG drawings of Kanji characters.
 
-The Kanji vector graphics SVG files are are copyright © 2009-2024 Ulrich Apel & used under the
+The Kanji vector graphics SVG files are copyright © 2009-2024 Ulrich Apel & used under the
 `Creative Commons Attribution-Share Alike 3.0 <https://creativecommons.org/licenses/by-sa/3.0/>`_ license.
-Original SVG content is located `here <https://kanjivg.tagaini.net/>_`.
+Original SVG content is located `here <https://kanjivg.tagaini.net/>`_.
 
 These Kanji SVG files are used and redistributed unaltered.
 
@@ -13,9 +13,11 @@ Licensing/Credits:
 
 ----
 
-.. seealso:: :doc:`dev_notes/kanji_svg_notes`
+.. only:: dev_notes
 
-----
+    .. seealso:: :doc:`dev_notes/kanji_svg_notes`
+
+    ----
 
  """
 # pylint: disable=fixme
@@ -831,10 +833,10 @@ class KanjiSVG(metaclass=SVGCache):
         """
         Draw vertical divider lines between each of the kanji stroke step cells.
 
-        :param drawing: - SVG drawing entity that receives the guidelines
-        :param cell_count: the total number of kanji stroke step cells
-        :param cell_width: width of each cell
-        :param cell_height: (optional) - height of each cell, defaults to the width
+        :param drawing: SVG drawing entity that receives the guidelines
+        :param cell_count: the total number of kanji stroke step cells (width, height)
+        :param cell_px_width: width of each cell in pixels
+        :param cell_px_height: height of each cell in pixels
 
         :return: None
 
