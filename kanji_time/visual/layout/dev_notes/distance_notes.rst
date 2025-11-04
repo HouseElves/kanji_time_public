@@ -1,3 +1,5 @@
+:orphan:
+
 .. _distance.py.dev_notes:
 
 =============================

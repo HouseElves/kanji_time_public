@@ -1,3 +1,5 @@
+:orphan:
+
 .. _drawing.py.dev_notes:
 
 ============================

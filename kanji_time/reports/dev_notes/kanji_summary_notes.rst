@@ -88,12 +88,12 @@ Code Review/Adjustments
     - Factor: use my coalesce helpers for distance instead of 'or None'
     - Doc: is the `sd_infosheet_dynamic_layout` Mermaid diagram in :python:`kanji_summary.report.Report` in the wrong spot?
       Generalize it and put that with `PaginatedReport`?
-    - Doc: the `fc_infosheet_generate` Mermaid diagram in :python:`kanji_summary.report.generate` is also releveant to `PaginatedReport`.
+    - Doc: the `fc_infosheet_generate` Mermaid diagram in kanji_summary.report.generate is also releveant to `PaginatedReport`.
       Move it or copy a generalized version.
     - Review: :python:`kanji_summary.report.Report.get_page_layout` is not very robust - needs a review of the possible failure
       modes and appropriate error handling.
 
-        - Same story for :python:`kanji_summary.report.generate` - what about unrecognized kanji input (ie a "no data" case)?
+        - Same story for kanji_summary.report.generate - what about unrecognized kanji input (ie a "no data" case)?
 
     - Review: a nice-to-have is multiple kanji in one report with practice sheets interleaved.
       See the dev note about the "Report chaining" features - seems a logical place to do this.

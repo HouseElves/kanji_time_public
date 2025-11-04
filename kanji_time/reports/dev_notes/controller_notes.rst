@@ -1,10 +1,12 @@
-.. controller.py.dev_notes:
+:orphan:
+
+.. kanji_time-reports-controller-py-dev_notes:
 
 ===============================
 controller.py Development Notes
 ===============================
 
-For: :mod:`visual.frame.controller`
+For: :mod:`kanji_time.reports..controller`
 
 .. include:: /common
 

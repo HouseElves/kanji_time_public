@@ -1,10 +1,12 @@
+:orphan:
+
 .. _kanji_svg.py.dev_notes:
 
 =================
 Development Notes
 =================
 
-For: :mod:`external_data.kanji_svg`
+For: :mod:`kanji_time.external_data.kanji_svg`
 
 .. include:: /common
 
@@ -27,7 +29,7 @@ Thread Safety (for a multithreaded future)
 ------------------------------------------
 
     - Protect methods (like `kanji_svg.KanjiSVG.load`) with instance mutators with some kind of lock.
-    - Maybe provide a guarantee mechanism that certain classs instances only live on one thread at a time?
+    - Maybe provide a guarantee mechanism that certain class instances only live on one thread at a time?
       Possibly even a many reader / one writer model?
 
 Linter Complaints
@@ -63,7 +65,7 @@ Code Review/Adjustments
     - Review: do the `completed_{attribs, groups}` audit sets in `kanji_svg.KanjiSVG._load_all_groups` need to be distinct?
     - Factor: eliminate the need for the `image_size` parameter in `kanji_svg.KanjiSVG.draw{glyph, stroke_steps}`.
 
-        - Review: I could probably do this by instiating a drawing factory with a default image size.  Does that make sense in the
+        - Review: I could probably do this by instantiating a drawing factory with a default image size.  Does that make sense in the
           abstractions?
         - Review: The whole drawing factory concept seems off.  I should be able to late-bind an image size whenever I want.
           The drawing instance itself is only a recipie for generating text, not the text itself.

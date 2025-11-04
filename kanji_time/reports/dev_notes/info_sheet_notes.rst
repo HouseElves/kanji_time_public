@@ -1,10 +1,12 @@
-.. kanji_summary.py.dev_notes:
+:orphan:
+
+.. kanji_time-reports-kanji_summary-py-dev_notes:
 
 ======================================
 Kanji Summary Report Development Notes
 ======================================
 
-For: :mod:`reports.kanji_summary`
+For: :mod:`kanji_time.reports.kanji_summary`
 
 .. include:: /common
 

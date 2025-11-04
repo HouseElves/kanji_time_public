@@ -1,3 +1,5 @@
+:orphan:
+
 .. _formatted_text.py.dev_notes:
 
 ===================================

@@ -1,3 +1,5 @@
+:orphan:
+
 .. _empty_space.py.dev_notes:
 
 ================================

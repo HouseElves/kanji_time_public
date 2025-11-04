@@ -1,3 +1,5 @@
+:orphan:
+
 .. _settings.py.dev_notes:
 
 ===============================

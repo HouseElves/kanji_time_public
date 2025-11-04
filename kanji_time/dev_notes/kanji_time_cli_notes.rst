@@ -1,8 +1,10 @@
-.. _kanji_time.py.dev_notes:
+:orphan:
 
-===============================
-kanji_time.py Development Notes
-===============================
+.. _kanji_time_cli.py.dev_notes:
+
+===================================
+kanji_time_cli.py Development Notes
+===================================
 
 For: :mod:`kanji_time`
 

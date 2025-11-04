@@ -1,3 +1,5 @@
+:orphan:
+
 .. _page_rule.py.dev_notes:
 
 ==============================

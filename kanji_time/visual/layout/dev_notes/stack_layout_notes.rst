@@ -1,3 +1,5 @@
+:orphan:
+
 .. _stack_layout.py.dev_notes:
 
 =================================

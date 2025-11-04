@@ -1,10 +1,12 @@
-.. practice_sheet.dev_notes:
+:orphan:
+
+.. kanji_time-reports-practice_sheet-py-dev_notes:
 
 =======================================
 Practice Sheet Report Development Notes
 =======================================
 
-For: :mod:`reports.practice_sheet`
+For: :mod:`kanji_time.reports.practice_sheet`
 
 .. include:: /common
 
