@@ -1,3 +1,7 @@
+:orphan:
+
+.. include:: /common
+
 .. only:: singlehtml
 
     .. toctree::

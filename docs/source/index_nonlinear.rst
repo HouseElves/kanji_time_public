@@ -1,3 +1,7 @@
+:orphan:
+
+.. include:: /common
+
 .. only:: html
 
     .. image:: _static/kanji_time_title_byline.svg
