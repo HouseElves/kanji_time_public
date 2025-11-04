@@ -129,4 +129,3 @@ Feature and Architecture Roadmap
     - KanjiSVG already has SVGs to draw kana on practice sheets.
       This work item is to identify, gather, and make available the explanatory material for a supporting "kana summary" report to the "practice sheet" analogous to the "kanji summary" report.
 
-----
