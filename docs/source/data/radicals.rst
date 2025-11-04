@@ -21,6 +21,8 @@ Two helper functions return global lookup tables:
 
 ----
 
-.. automodule:: kanji_time.external_data.radicals
-     :members:
+Module Header and API Reference
+-------------------------------
+
+:ref:`kanji_time-external_data-radicals-py`
 

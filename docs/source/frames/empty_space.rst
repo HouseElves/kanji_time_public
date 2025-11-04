@@ -16,5 +16,7 @@ Useful for layout tuning or placeholder spacing.
 
 ----
 
-.. automodule:: kanji_time.visual.frame.empty_space
-     :members:
+Module Header and API Reference
+-------------------------------
+
+:ref:`kanji_time-visual-frame-empty_space-py`

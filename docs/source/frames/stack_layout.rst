@@ -51,5 +51,7 @@ Class Relationships
 
 ----
 
-.. automodule:: kanji_time.visual.layout.stack_layout
-     :members:
+Module Header and API Reference
+-------------------------------
+
+:ref:`kanji_time-visual-layout-stack_layout-py`

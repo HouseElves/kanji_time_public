@@ -12,5 +12,7 @@ While currently bound to ReportLab, it is designed to support future adapter-bas
 
 ----
 
-.. automodule:: kanji_time.visual.frame.drawing
-     :members:
+Module Header and API Reference
+-------------------------------
+
+:ref:`kanji_time-visual-frame-drawing-py`

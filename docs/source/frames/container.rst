@@ -57,5 +57,7 @@ Class Relationships:
 
 ----
 
-.. automodule:: kanji_time.visual.frame.container
-     :members:
+Container Code Link
+-------------------
+
+:ref:`kanji_time-visual-frame-container-py`

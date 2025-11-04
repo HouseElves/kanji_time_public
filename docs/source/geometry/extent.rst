@@ -1,9 +1,9 @@
 Extent Data Type
 ================
 
-Python module: `visual.geometry.region`
+Python module: :mod:`visual.geometry.region`
 
-`Extent` models the size of a 2D rectangular area, representing width and height as `Distance` objects.
+:class:`Extent` models the size of a 2D rectangular area, representing width and height as :class:`Distance` objects.
 It defines an area, but not a position, making it suitable for layout negotiation, bounding box calculation, and visual composition.
 
 Extent includes arithmetic, anchoring, and scaling logic:
@@ -20,9 +20,9 @@ This type plays a central role in layout sizing and is used extensively in frame
 AnchorPoint Enumeration
 -----------------------
 
-Python module: `visual.layout.anchor_point`
+Python module: :mod:`visual.layout.anchor_point`
 
-The `AnchorPoint` enum defines symbolic alignment flags for positioning one frame inside another.
+The :class:`AnchorPoint` enum defines symbolic alignment flags for positioning one frame inside another.
 The flags are compass-style anchor hints — such as `N`, `SW`, or `CENTER` — used by layout engines to place child content within a parent container.
 
 This enum is used primarily by `Extent.anchor_at()` to align an inner extent relative to a larger one. It supports:
@@ -42,11 +42,9 @@ These anchors are layout-agnostic but assume PDF-style coordinates by default (o
 
 ----
 
-.. autoclass:: kanji_time.visual.layout.region.Extent
-     :members:
+Code Links
+----------
 
-----
-
-.. autoclass:: kanji_time.visual.layout.anchor_point.AnchorPoint
-     :members:
+    - :class:`kanji_time.visual.layout.region.Extent`
+    - :class:`kanji_time.visual.layout.anchor_point.AnchorPoint``
 

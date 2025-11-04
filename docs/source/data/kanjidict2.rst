@@ -17,5 +17,7 @@ Kanji Time uses `kanji_dic2` as the primary source of kanji metadata in both pra
 
 ----
 
-.. automodule:: kanji_time.external_data.kanji_dic2
-     :members:
+Module Header and API Reference
+-------------------------------
+
+:ref:`kanji_time-external_data-kanji_dic2-py`

@@ -26,6 +26,4 @@ The module includes caching, layout calculation, and drawing style helpers.
 Module Header and API Reference
 -------------------------------
 
-.. automodule:: kanji_time.external_data.kanji_svg
-     :members:
-
+:ref:`kanji_time-external_data-kanji_svg-py`

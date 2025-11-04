@@ -1,9 +1,14 @@
 Geometric Foundations
 =====================
 
+
+Module Header and API Reference
+-------------------------------
+
 Python module :mod:`visual.layout.region`
 
-.. automodule:: kanji_time.visual.layout.region
+:ref:`kanji_time-visual-layout-region-py`
+
 
 Details
 -------

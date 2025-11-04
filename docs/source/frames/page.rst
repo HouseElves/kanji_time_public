@@ -19,5 +19,7 @@ A `Page` is measured and drawn like any other content frame, but must also manag
 
 ----
 
-.. automodule:: kanji_time.visual.frame.page
-     :members:
+Module Header and API Reference
+-------------------------------
+
+:ref:`kanji_time-visual-frame-page-py`

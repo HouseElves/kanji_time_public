@@ -24,13 +24,6 @@ Implementation Notes
 - The report itself inherits from both `PaginatedReport` and `DelegatingRenderingFrame`
 - It uses only a single layout: `"practice_sheet"`
 
-----
-
-Automodule Documentation
-------------------------
-
-.. automodule:: kanji_time.reports.practice_sheet.report
-    :members:
 
 The Data Class
 --------------
@@ -39,9 +32,8 @@ By convention, the top-level data access logic for a report resides inside a pyt
 
 ----
 
-Automodule Documentation
-------------------------
+Module Header and API Reference
+-------------------------------
 
-.. automodule:: kanji_time.reports.practice_sheet.document
-    :members:
-
+:ref:`kanji_time-reports-practice_sheet-report-py`
+:ref:`kanji_time-reports-practice_sheet-document-py`

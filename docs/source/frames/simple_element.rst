@@ -53,6 +53,7 @@ Inheritance Diagram:
 
 ----
 
-.. automodule:: kanji_time.visual.frame.simple_element
-     :members:
+Module Header and API Reference
+-------------------------------
 
+:ref:`kanji_time-visual-layout-stack_layout-py`

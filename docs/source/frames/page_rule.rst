@@ -10,11 +10,13 @@ This implementation is specialized as a `HorizontalRule`, but the design allows 
 
 Key properties:
 
-- Fully reusable
-- Anchored by layout context
-- Treated as content, not decoration
+    - Fully reusable
+    - Anchored by layout context
+    - Treated as content, not decoration
 
 ----
 
-.. automodule:: kanji_time.visual.frame.page_rule
-     :members:
+Module Header and API Reference
+-------------------------------
+
+:ref:`kanji_time-visual-frame-page_rule-py`

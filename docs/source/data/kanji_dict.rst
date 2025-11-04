@@ -19,9 +19,7 @@ This module supplements structured kanji metadata with looser dictionary-style g
 
 ----
 
-Automodule Documentation
-------------------------
+Module Header and API Reference
+-------------------------------
 
-.. automodule:: kanji_time.external_data.kanji_dict
-     :members:
-
+:ref:`kanji_time-external_data-kanji_dict-py`

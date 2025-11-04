@@ -20,6 +20,7 @@ Report Structure
 
 Nested `RenderingFrame` instances render all content as clients of the control code in :class:`PaginatedReport`.
 
+
 Implementation Notes
 --------------------
 
@@ -31,36 +32,18 @@ This report demonstrates modular layout design:
 
 ----
 
-Automodule Documentation
-~~~~~~~~~~~~~~~~~~~~~~~~
+The Report & Data Classes
+-------------------------
 
-.. automodule:: kanji_time.reports.kanji_summary.report
+    - Each KanjiTime report exposes a class named `Report` that implements both the `RenderingFrame` and `PageController` behaviors.
+    - By convention, the top-level data access logic for a report resides inside a python module named document.py.
 
 
-The Report Class
-----------------
-
-Each KanjiTime report exposes a class named `Report` that implements both the `RenderingFrame` and `PageController` behaviors.
-
-----
-
-Autoclass Documentation
-~~~~~~~~~~~~~~~~~~~~~~~
-
-.. autoclass:: kanji_time.reports.kanji_summary.report.Report
-
-The Data Class
---------------
-
-By convention, the top-level data access logic for a report resides inside a python module named :mod:`document.py`.
-
-----
-
-Automodule Documentation
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. automodule:: kanji_time.reports.kanji_summary.document
-    :members:
+Code Links
+~~~~~~~~~~
+    
+    - :class:`kanji_time.reports.kanji_summary.report.Report`
+    - :mod:`kanji_time.reports.kanji_summary.document`
 
 ----
 
@@ -73,18 +56,15 @@ It has custom frame logic that illustrates how to do customized layout calculati
 Much of the functionality in these frames has been subsumed into the greater architecture.
 It now serves as a discussion point in the evolution of the program design.
 
-----
 
-Autoclass Documentation
-~~~~~~~~~~~~~~~~~~~~~~~
+Code Links
+~~~~~~~~~~
 
-.. autoclass:: kanji_time.reports.kanji_summary.banner.SummaryBanner
+    - :class:`kanji_time.reports.kanji_summary.banner.SummaryBanner`
+    - :class:`kanji_time.reports.kanji_summary.banner.SummaryBannerPage2On`
+    - :class:`kanji_time.reports.kanji_summary.kanji_summary.KanjiSummary`
+    - :class:`kanji_time.reports.kanji_summary.radical_summary.RadicalSummary`
 
-.. autoclass:: kanji_time.reports.kanji_summary.banner.SummaryBannerPage2On
-
-.. autoclass:: kanji_time.reports.kanji_summary.kanji_summary.KanjiSummary
-
-.. autoclass:: kanji_time.reports.kanji_summary.radical_summary.RadicalSummary
 
 ----
 
@@ -94,9 +74,3 @@ Alternate entry point
 A report may also define a function `generate` in its `report` module as an alternate entry point.
 The generate function is free to apply any logic it needs for the report independent of the Report class behavior.
 This makes it a convenient location for debugging and diagnostics outside of the command line framework.
-
-Autofunction Documentation
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. autofunction:: kanji_time.reports.kanji_summary.report.generate
-

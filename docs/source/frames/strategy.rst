@@ -43,5 +43,7 @@ This abstraction allows different strategies — like stacked, wrapped, or grid 
 
 ----
 
-.. automodule:: kanji_time.visual.protocol.layout_strategy
-     :members:
+Module Header and API Reference
+-------------------------------
+
+:ref:`kanji_time-visual-protocol-layout_strategy-py`]

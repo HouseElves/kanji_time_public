@@ -43,5 +43,8 @@ All layout primitives (`Extent`, `Region`, etc.) build on this class to maintain
 
 ----
 
-.. automodule:: kanji_time.visual.layout.distance
-     :members:
+Module Header and API Reference
+-------------------------------
+
+:ref:`kanji_time-visual-layout-distance-py`
+
