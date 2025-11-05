@@ -1,7 +1,11 @@
+.. _kanji_time-external_data-_init_-py:
+
 =========================
 external_data/__init__.py
 =========================
 
-.. literalinclude:: /code/external_data/__init__.py
-   :language: python
-   :linenos:
+.. automodule:: kanji_time.external_data.__init__
+   :members:
+   :undoc-members:
+   :member-order: bysource
+   :show-inheritance:
