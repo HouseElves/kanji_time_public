@@ -1,0 +1,1 @@
+../../../../../../kanji_time/visual/frame/dev_notes/page_rule_notes.rst

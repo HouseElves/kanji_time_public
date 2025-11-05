@@ -1,0 +1,1 @@
+../../../../../../kanji_time/visual/frame/dev_notes/empty_space_notes.rst

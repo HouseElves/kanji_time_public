@@ -1,0 +1,1 @@
+../../../../../kanji_time/external_data/dev_notes/radicals_notes.rst

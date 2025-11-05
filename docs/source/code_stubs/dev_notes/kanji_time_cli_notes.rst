@@ -1,0 +1,1 @@
+../../../../kanji_time/dev_notes/kanji_time_cli_notes.rst

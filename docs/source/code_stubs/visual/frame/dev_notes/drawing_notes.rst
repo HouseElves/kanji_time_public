@@ -1,0 +1,1 @@
+../../../../../../kanji_time/visual/frame/dev_notes/drawing_notes.rst

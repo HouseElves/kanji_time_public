@@ -1,0 +1,1 @@
+../../../../../../kanji_time/visual/protocol/dev_notes/content_notes.rst
