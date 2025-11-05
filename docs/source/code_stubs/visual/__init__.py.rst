@@ -1,7 +1,11 @@
+.. _kanji_time-visual-_init_-py:
+
 ==================
 visual/__init__.py
 ==================
 
-.. literalinclude:: /code/visual/__init__.py
-   :language: python
-   :linenos:
+.. automodule:: kanji_time.visual.__init__
+   :members:
+   :undoc-members:
+   :member-order: bysource
+   :show-inheritance:
