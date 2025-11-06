@@ -65,16 +65,13 @@
                        design/review
                        design/q_and_a
                        road_ahead_redux
-                       dev_notes_index
 
                   - .. toctree::
                        :maxdepth: 1
 
-                       data/index
-                       frames/index
-                       geometry/index
-                       reports/index
+                       dev_guide/index
                        code_stubs/development
+                       code_stubs/dev_notes_index
 
           -
         * - .. figure:: _static/grid_image.png

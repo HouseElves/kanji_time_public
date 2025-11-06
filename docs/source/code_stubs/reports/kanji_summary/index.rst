@@ -1,18 +1,20 @@
 Kanji Summary Report Package
 ============================
 
-.. automodule:: kanji_time.reports.kanji_summary.__init__
+TODO: describe the Kanji Summary report and give sample output
 
-Module Source Code
-------------------
+Implementation Modules
+----------------------
 
-.. toctree::
-   :maxdepth: 1
+    .. toctree::
+       :maxdepth: 1
 
-   __init__.py
-   report.py
-   document.py
-   banner.py
-   kanji_summary.py
-   radical_summary.py
+       __init__.py
+       report.py
+       document.py
+       banner.py
+       kanji_summary.py
+       radical_summary.py
+
+
 

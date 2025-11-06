@@ -1,4 +1,6 @@
-.. utilities.py.dev_notes:
+:orphan:
+
+.. _kanji_time-utilities-py-dev_notes:
 
 =====================================
 `utilities` Package Development Notes

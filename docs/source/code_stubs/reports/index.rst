@@ -1,27 +1,43 @@
+.. include:: /common
+
 ===============
 Reports Package
 ===============
 
-.. automodule:: kanji_time.reports.__init__
+All reports are defined by subpackages for the |KT| report module subject to the constraints below:
 
-Top Level Code
---------------
+    #) A report subpackage must contain a class named `Report` in a module named `report.py`.
+    #) The `Report` class must expose a mechanism to obtain and represent its initial data set via the `gather_report_data` method and `Data` type declaration.
+    #) The `Report` class must also expose its preferred output file name that is unique to its initialization parameters.
 
-A report subpackage must contain a class named `Report` in a module named `report.py`.
-The Report class will typically derive from :class:`controller.PaginatedReport` to get a simple pagination loop.
-All the report has to do is manage its data and bind it to rendering frames in its presentation.
+In the vast majority of |KT| reporting use cases, a particular `Report` class obtains a simple pagination controller by deriving from :class:`controller.PaginatedReport`.
 
-.. toctree::
-   :maxdepth: 1
+    - The direct advantage of using this controller is that it frees the report to focus on data management and binding data to its rendering frames as needed.
+    - The report instance does *not* have to handle details of page layout and page breaks unless it wants exceptional behavior.
+      Even then, it only needs to handle those exceptions ad hoc.
+    - The parent PaginatedReport class handles all the typical layout and pagination cases itself.
 
-   __init__.py
-   controller.py
+TODO:  I need a "seealso" to the relevant design doc pages.
 
-Indvidual Report Subpackages
+
+Pagination Controller Modules
+-----------------------------
+
+    .. toctree::
+       :maxdepth: 1
+       
+       __init__.py
+       controller.py
+
+
+|KT| Packaged Report Modules
 ----------------------------
 
-.. toctree::
-   :maxdepth: 1
+    .. toctree::
+       :maxdepth: 2
 
-   kanji_summary/index
-   practice_sheet/index
+       kanji_summary/index
+       practice_sheet/index
+
+   
+   

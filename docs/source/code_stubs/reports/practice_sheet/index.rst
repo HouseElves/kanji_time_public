@@ -2,15 +2,16 @@
 Practice Sheet Report Package
 =============================
 
-.. automodule:: kanji_time.reports.practice_sheet.__init__
+TODO: describe the Practice Sheet report and sample output
 
-Module Source Code
-------------------
 
-.. toctree::
-   :maxdepth: 1
+Implementation Code Links
+-------------------------
 
-   __init__.py
-   report.py
-   document.py
+    .. toctree::
+       :maxdepth: 1
+
+       __init__.py
+       report.py
+       document.py
 

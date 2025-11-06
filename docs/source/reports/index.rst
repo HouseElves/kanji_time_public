@@ -1,3 +1,5 @@
+.. _reports-dev_guide:
+
 Report Output
 =============
 
@@ -28,8 +30,7 @@ Framework Classes
 
 The key to the process is using the PageController protocol and its derived PaginatedReport mixin to take care of all the bookkeeping.
 
-.. automodule:: kanji_time.reports.controller
-    :members:
+:ref:`kanji_time-reports-controller-py`
 
 
 Putting it together: from raw data to output

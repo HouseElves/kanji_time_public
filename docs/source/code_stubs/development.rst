@@ -93,7 +93,10 @@ The project root contains the main entry point for Kanji time and the internal p
 .. toctree::
    :maxdepth: 2
 
-   kanji_time.py
+   __init__.py
+   __main__.py
+   settings.py
+   kanji_time_cli.py
    svg_transform.py
 
 
@@ -115,8 +118,5 @@ Raw Development Notes
 
 Raw code development notes extracted from the source files.
 
-.. toctree::
-   :maxdepth: 2
-
-   ../dev_notes/index
+   :ref:`dev_notes`
 

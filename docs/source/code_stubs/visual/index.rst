@@ -2,8 +2,6 @@
 Visual module
 =============
 
-.. automodule:: kanji_time.visual.__init__
-
 Source Code
 -----------
 

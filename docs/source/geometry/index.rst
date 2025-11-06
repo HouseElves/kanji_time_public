@@ -1,3 +1,5 @@
+.. _visual-geometry-dev_guide:
+
 Geometric Foundations
 =====================
 

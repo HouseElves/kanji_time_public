@@ -1,3 +1,5 @@
+.. _visual-frames-dev_guide:
+
 Content Frames
 ==============
 

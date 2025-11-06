@@ -16,4 +16,5 @@
        design/q_and_a
        road_ahead_redux
        dev_guide/index
-       code_stubs/development       
+       code_stubs/development
+       code_stubs/dev_notes_index

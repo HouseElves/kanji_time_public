@@ -2,8 +2,10 @@
 Helpers for Python's `logging` Library
 ======================================
 
-utilities/general.py
+`utilities/general.py``
 
-.. automodule:: kanji_time.utilities.general
-     :members: log
+Module Header and API Reference
+-------------------------------
+
+:ref:`kanji_time-utilities-general-py`
 

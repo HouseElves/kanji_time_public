@@ -2,10 +2,9 @@
 Visual Protocol Package
 =======================
 
-.. automodule:: kanji_time.visual.protocol.__init__
 
-Source Code
------------
+Protocol Modules
+----------------
 
 .. toctree::
    :maxdepth: 1
