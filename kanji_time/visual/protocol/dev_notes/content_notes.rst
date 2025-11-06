@@ -1,3 +1,5 @@
+:orphan:
+
 .. _content.py.dev_notes:
 
 ============================
