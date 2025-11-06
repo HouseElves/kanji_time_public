@@ -13,7 +13,7 @@ README: Kanji Time!
 
 Kanji Time is also a powerful launching platform for plug-in database-to-PDF report execution.
 
-Today Kanji Time generates Japanese language learning aids... with future-forward design and plug-in reporting, tomorrow's possibilities for Kanji Time are limitless!.
+Today Kanji Time generates Japanese language learning aids... with future-forward design and plug-in reporting, tomorrow's possibilities for Kanji Time are limitless!
 
 
 What sets Kanji Time apart?
@@ -174,7 +174,7 @@ I wanted a simple, *easily reusable* and intuitive codebase a general purpose la
 
 Simplicity, ease of use, and most of all, utility are the driving forces behind the Kanji Time design philosophy.
 
-The net result is robust, reusable platform for framing text and vector graphics on a page, automatically laying out framed page elements, and paginatating the output -- all while keeping code that generates a report completely isolated from the code in these supporting presentation artifacts.
+The net result is a robust, reusable platform for framing text and vector graphics on a page, automatically laying out framed page elements, and paginating the output -- all while keeping code that generates a report completely isolated from the code in these supporting presentation artifacts.
 
 This isolation enables Kanji Time to use Python's dynamic module loading capabilities so that adding a new report is as simple as *dropping in and whitelisting the Python package that generates it.*
 
