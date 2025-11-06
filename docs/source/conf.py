@@ -81,14 +81,19 @@ def on_builder_init_set_master_doc(app: Sphinx):
     # Now bind the master document for the flow type.
     flow_type = 'nonlinear_flow' if non_linear else 'linear_flow'    
     master_doc = master_docs[flow_type]
-    excluded_masters = list(all_masters - {master_doc})
+    excluded_masters = [
+        # Include a file extension?  Don't include a file extension?
+        # Sphinx is a little inconsistent on it's protocol. In this case, the exclusion list needs a full file name.
+        f"{doc}.rst" for doc in all_masters if doc != master_doc  # more clear than "doc in (all_masters - {master_doc})"
+    ]
     app.config.master_doc = master_doc
     app.config.exclude_patterns += excluded_masters
 
     NL = '\n\t'
     print("\n-----")
-    print(f"[KANJITIME] Builder: {builder} ({'non-linear' if non_linear else 'linear'}) → master_doc: {master_doc}")
-    print(f"[KANJITIME] exclusions:{NL}{NL.join(app.config.exclude_patterns)}")
+    print(f"[KANJITIME Sphinx] Builder: {builder} ({'non-linear' if non_linear else 'linear'}) → master_doc: {master_doc}")
+    print(f"[KANJITIME Sphinx] Tags: {app.tags}")
+    print(f"[KANJITIME Sphinx] Exclusions:{NL}{NL.join(app.config.exclude_patterns)}")
     print("-----\n")
 
 
