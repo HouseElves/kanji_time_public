@@ -77,10 +77,10 @@ external_data/kanji_svg.py
 external_data/settings.py
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    - Review: can I do better for the `external_data.settings.project_root` string and use a stdpath.Path?
-      `project_root` is specifically for Sphinx so it's a little less whiney.
+    - Review: can I do better for the `external_data.settings.PROJECT_ROOT` string and use a stdpath.Path?
+      `PROJECT_ROOT` is specifically for Sphinx so it's a little less whiney.
 
-        - is `project_root` even in the correct settings module?
+        - is `PROJECT_ROOT` even in the correct settings module?
 
 
 visual/frame/container.py

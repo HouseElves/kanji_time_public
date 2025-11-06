@@ -23,7 +23,4 @@ Implementation classes track their own rendering state and may support multi-pag
 Automodule Documentation
 ------------------------
 
-.. automodule:: kanji_time.visual.protocol.content
-    :members:
-    :undoc-members:
-    :show-inheritance:
+:ref:`kanji_time.visual.protocol.content.py`
