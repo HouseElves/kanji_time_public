@@ -111,3 +111,8 @@ kanji_time/external_data/kanji_dict
 
 # Ignore wheels/dist
 *.whl
+docs/Sphinx_object_at_setup_time
+kanji_time/external_data/claude_notes/*
+kanji_time/external_data/experimental/*
+docs/parking_lot/*
+docs/parking_lot/*
