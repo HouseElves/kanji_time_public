@@ -1,1 +1,1 @@
-../../../../../kanji_time/reports/dev_notes/kanji_summary_notes.rst
+../../../../../../kanji_time/reports/kanji_summary/dev_notes/kanji_summary_notes.rst
