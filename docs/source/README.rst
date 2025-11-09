@@ -26,7 +26,7 @@ What sets Kanji Time apart?
 Sample Study Aids
 -----------------
 
-The artifacts that you see here were produced by Kanji Time's own pipeline from :ref:`raw data <open_source_data_text>` to PDF output.
+The artifacts that you see here were produced by Kanji Time's own pipeline from :ref:`raw data <open_source_data>` to PDF output.
 
 **These artifacts are not just throw-away demos!  They power real-world Japanese study.**
 
