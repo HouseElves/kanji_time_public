@@ -15,6 +15,7 @@ from sphinx.application import Sphinx
 logger = logging.getLogger(__name__)
 sys.path.insert(0, os.path.abspath("../.."))
 sys.path.insert(0, os.path.abspath('../../kanji_time/**/dev_notes'))
+sys.path.insert(0, os.path.abspath('./_ext'))
 
 def setup(app: Sphinx):
     """
@@ -88,6 +89,7 @@ def on_builder_init_set_master_doc(app: Sphinx):
     ]
     app.config.master_doc = master_doc
     app.config.exclude_patterns += excluded_masters
+    app.tags.add(flow_type)
 
     NL = '\n\t'
     print("\n-----")
@@ -110,8 +112,14 @@ author = 'Andrew Milton (code and docs)'
 version = 'α - 0.1.0'
 release = 'External Alpha 0.1.0.20250531'
 
-# -- General configuration ---------------------------------------------------
+# -- General configuration -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
+
+templates_path: list[str] = ['_templates']
+exclude_patterns = [
+    '**/parking_lot/',  # Exclude contents of parking_lot folders
+    '**/parking_lot/*',  # Exclude the folders themselves (belt & suspenders)
+]
 
 extensions: list[str] = [
     "myst_parser",
@@ -120,17 +128,21 @@ extensions: list[str] = [
     "sphinx_autodoc_typehints",
     "sphinxcontrib.mermaid",
     "sphinx.ext.todo",
+    "unique_section_ids"
 ]
 
-templates_path: list[str] = ['_templates']
-exclude_patterns = [
-    '**/parking_lot/',  # Exclude contents of parking_lot folders
-    '**/parking_lot/*',  # Exclude the folders themselves (belt & suspenders)
-]
+# -- Extension Options ---------------------------------------------------------
+
+# sphinx.ext.todo
 todo_include_todos = True
 
-mermaid_version = "11.6.0"
-mermaid_include_elk = "0.1.4"
+# sphinxcontrib.mermaid
+mermaid_version = "11"
+mermaid_include_elk = "0"
+
+# local unique_section_ids
+unique_section_ids_separator = '-'  # Default separator
+unique_section_ids_exclude = []     # List of docnames to skip
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
