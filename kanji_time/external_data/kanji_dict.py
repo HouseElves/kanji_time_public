@@ -15,8 +15,7 @@ No changes have been made to the original XML data.
 
 ----
 
-Andrew Milton has created added value building on the Kanji Dict data by defining a simple Python interface to extract XML nodes
-particular to a kanji (or kana) glyph as defined in this Python module.
+Kanji Time adds value to the Kanji Dict data by defining a simple Python interface to extract XML nodes particular to a kanji (or kana) glyph.
 
 ----
 
