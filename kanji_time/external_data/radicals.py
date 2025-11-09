@@ -193,20 +193,23 @@ class Radical:
                 class Radical
                 class RadicalVariants
                 class MeaningVariants
-                class RadicalMap
                 class MeaningMap
-                RadicalMap --o "214" RadicalVariants
-                MeaningMap --o "214" MeaningVariants
-                Radical --* RadicalMap : radicals
-                Radical --* MeaningMap : meanings
+                class RadicalMap
+                RadicalMap o-- "214" RadicalVariants
+                MeaningMap o-- "214" MeaningVariants
 
-                Radical : int radical_num
-                Radical --o RadicalVariants : variants
-                Radical --o MeaningVariants : significance
-                Radical : set~str~ glyphs
-                Radical : set~str~ interpretations
-                Radical : set~str~ hiragana_names
-                Radical : set~str~ romanji_name
+                class Radical {
+                    +radical_num : int 
+                    +glyphs : set~str~ 
+                    +interpretations : set~str~ 
+                    +hiragana_names : set~str~ 
+                    +romaji_name : set~str~ 
+                }
+                Radical *-- RadicalMap : radicals
+                Radical *-- MeaningMap : meanings
+                Radical o-- RadicalVariants : variants
+                Radical o-- MeaningVariants : significance
+
     """
 
     radicals: RadicalMap | None = None  #: static mapping from radical number to unicode code points

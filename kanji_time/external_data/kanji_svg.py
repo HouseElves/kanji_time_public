@@ -181,32 +181,35 @@ class KanjiSVG(metaclass=SVGCache):
             class StrokeDictionary
             class NamespaceMap
             class DrawingFactory{
-                +__call__(*args, **kwargs) SVGDrawing
+                +\_\_call\_\_(\*args, \*\*kwargs) SVGDrawing
             }
+            class Group
+            class Label
+            class Stroke
 
-            class Kanji_SVG {
-                +str glyph
-                +bool loaded
-                +Pos center
-                +str viewbox
+            class KanjiSVG {
+                +glyph : str
+                +loaded : bool
+                +center : Pos
+                +viewbox : str
 
+                +load()  None
+                +draw_glyph(radical_name: str, radical_only: bool, no_center: bool, image_size: Extent) SVGDrawing
+                +draw_stroke_steps(grid_columns: int, cell_size: Extent) SVGDrawing
+                +draw_practice_strip(grid_columns: int, cell_size: Extent) SVGDrawing
 
-                +load()
-                +draw_glyph(str radical_name, bool radical_only, bool no_center, Extent image_size) SVGDrawing
-                +draw_stroke_steps(int grid_columns, Extent cell_size) SVGDrawing
-                +draw_practice_strip(int grid_columns, Extent cell_size) SVGDrawing
-
-                -compute_layout(Distance cell_width, int cell_count, Distance cell_height) tuple
-                -draw_strokes(SVGDrawing drawing, Iterable[int] stroke_range, dict[str, Any] style, Transform transform, bool with_labels = False)
-                -draw_practice_axes(SVGDrawing drawing, tuple[int, int] cell_count, int cell_px_width, int cell_px_height)
-                -draw_cell_dividers(SVGDrawing drawing, tuple[int, int] cell_count, int cell_px_width, int cell_px_height)
+                -compute_layout(cell_width: Distance, cell_count: int, cell_height: Distance) tuple
+                -draw_strokes(drawing: SVGDrawing, stroke_range: Iterable[int], style: dict[str, Any], transform: Transform, with_labels: bool) None
+                -draw_practice_axes(drawing: SVGDrawing, cell_count: tuple[int, int], cell_px_width: int, cell_px_height: int) None
+                -draw_cell_dividers(drawing: SVGDrawing, cell_count: tuple[int, int], cell_px_width: int, cell_px_height: int) None
             }
-            Kanji_SVG --o DrawingFactory : drawing_factory
-            Kanji_SVG --* "m" Group : _groups
-            Kanji_SVG --* "n" Stroke : strokes
-            Kanji_SVG --* "n" Label : _labels
-            Kanji_SVG --* StrokeDictionary : radical_strokes
-            Kanji_SVG --* NamespaceMap : xml_namespace
+            KanjiSVG o-- DrawingFactory : drawing_factory
+            KanjiSVG *-- "m" Group : _groups
+            KanjiSVG *-- "n" Label : _labels
+            KanjiSVG *-- "n" Stroke : strokes
+            KanjiSVG *-- StrokeDictionary : radical_strokes
+            KanjiSVG *-- NamespaceMap : xml_namespace
+
     """
 
     #: The default size for a drawn kanji glyph's bounding box.
