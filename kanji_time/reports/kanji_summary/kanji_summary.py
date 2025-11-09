@@ -35,7 +35,6 @@ class KanjiSummary(SimpleElement):
 
         ---
         config:
-            mermaid_include_elk: "0.1.7"
             layout: elk
             class:
                 hideEmptyMembersBox: true
@@ -51,9 +50,9 @@ class KanjiSummary(SimpleElement):
             SimpleElement <|-- KanjiSummary
 
             class KanjiSummary {
-                +measure(self, Extent extent) Extent
-                +do_layout(self, Extent target_extent) Region
-                +draw(self, DisplaySurface c, Region region)
+                +measure(self, Extent extent) -> Extent
+                +do_layout(self, Extent target_extent) -> Region
+                +draw(self, DisplaySurface c, Region region) -> None
             }
             <<realization>> KanjiSummary
             KanjiSummary --* "3" FormattedText : children
