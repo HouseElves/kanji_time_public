@@ -14,6 +14,11 @@ Configuration (optional):
     # In conf.py
     unique_section_ids_separator = '-'  # Default separator
     unique_section_ids_exclude = []     # List of docnames to skip
+
+LLM Disclosure: 
+    - Initial code generated with Anthropic Claude Sonnet 4.5 
+    - Tweaked using OpenAI ChatGPT 5
+    - Reviewed and hand-edited to fit to purpose.
 """
 
 from pathlib import Path
