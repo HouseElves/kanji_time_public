@@ -59,7 +59,6 @@ The overall class relationships in this model are as follows.
 
     ---
     config:
-        mermaid_include_elk: "0.1.7"
         layout: elk
         class:
             hideEmptyMembersBox: true

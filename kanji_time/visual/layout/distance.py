@@ -25,6 +25,11 @@ As a foundational utility type, the Distance class has a very small dependency s
     :name: cd_geometry_distance
     :caption: Class structure of a distance measurement.
 
+    ---
+    config:
+        class:
+            hideEmptyMembersBox: true
+    ---
     classDiagram
         class Distance {
             <<immutable>>
@@ -32,7 +37,7 @@ As a foundational utility type, the Distance class has a very small dependency s
             +inch : float
             +pt : float
             +fix_to(other: Distance) Distance
-            +__add__(other) Distance
+            +\_\_add\_\_(other) Distance
         }
         Distance ..> DistanceUnit : the units for the enclosed distance measure
         Distance ..> Fraction : used for exact measure arithmetic

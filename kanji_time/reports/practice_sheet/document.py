@@ -17,11 +17,10 @@ I see this process as a variant of the model-view-controller design pattern.
 
 .. mermaid::
     :name: cd_practicesheet_data
-    :caption: Class relationships for the kanji practice sheet data container.
+    :caption: Class relationships for the kanji practice sheet data.
 
     ---
     config:
-        mermaid_include_elk: "0.1.7"
         layout: elk
         class:
             hideEmptyMembersBox: true
@@ -96,8 +95,8 @@ class PracticeSheetData:
             class PracticeSheetData {
                 +svg_stroke_diagram(int step_columns, Extent size) DrawingForRL
                 +svg_practice_strip(int step_columns, Extent size) DrawingForRL
-                +stroke_diagram(int step_columns, Extent image_size) -> RLDrawing
-                +practice_strip(int step_columns, Extent image_size) -> RLDrawing
+                +stroke_diagram(int step_columns, Extent image_size) RLDrawing
+                +practice_strip(int step_columns, Extent image_size) RLDrawing
             }
             PracticeSheetData : str glyph
             PracticeSheetData : KanjiSVG glyph_svg

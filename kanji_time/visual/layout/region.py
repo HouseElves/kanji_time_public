@@ -29,51 +29,52 @@ These classes have a small dependency footprint.  They model spatial abstraction
 
     ---
     config:
-        mermaid_include_elk: "0.1.7"
-        layout: elk
-        class:
-            hideEmptyMembersBox: true
+      defaultRenderer: elk
+      class:
+        hideEmptyMembersBox: true
+      look: classic
+      layout: elk
     ---
     classDiagram
-        note "All of Pos, Extent, and Region have  a rich set of arithmetic methods beyond what is shown here."
+        note "All of Pos, Extent, and Region have a rich set of arithmetic methods beyond what is shown here."
+
         class namedtuple
         namedtuple <|-- Pos
         namedtuple <|-- Extent
         namedtuple <|-- Region
+
         class Distance {
             <<immutable>>
+            measure : Number
+            unit : str
         }
 
         class Pos {
             <<immutable>>
-            +x : Distance
-            +y : Distance
-            +__add__(Pos) : Pos
-            +__neg__() : Pos
+            +\_\_add\_\_(Pos) Pos
+            +\_\_neg\_\_() Pos
         }
+        Pos *-- Distance : x
+        Pos *-- Distance : y
 
         class Extent {
             <<immutable>>
-            +width : Distance
-            +height : Distance
-            +__add__(Extent) : Extent
-            +__sub__(Extent) : Extent
-            +anchor_at(anchor, Extent) : Pos
-            +coalesce(other) : Extent
+            +\_\_add\_\_(Extent) Extent
+            +\_\_sub\_\_(Extent) Extent
+            +anchor_at(anchor, Extent) Pos
+            +coalesce(other) Extent
         }
+        Extent *-- Distance : width
+        Extent *-- Distance : height
 
         class Region {
             <<immutable>>
-            +origin : Pos
-            +extent : Extent
-            +__contains__(other) : bool
-            +bounds(unit) : tuple
+            +\_\_contains\_\_(other) bool
+            +bounds(unit) tuple
         }
 
-        Region --> Pos : origin
-        Region --> Extent : extent
-        Extent --> Distance : width, height
-        Pos --> Distance : x, y
+        Region *-- Pos : origin
+        Region *-- Extent : extent
 
 ----
 

@@ -86,7 +86,7 @@ class Container(RenderingFrame):
             }
             class LayoutStrategy{
                 <<interface>>
-                +measure(list[Extent] element_extents, fit_elements: Extent) -> Extent
+                +measure(list[Extent] element_extents, fit_elements: Extent) Extent
                 +layout(Extent target_extent, list[Extent] element_extents, Extent fit_elements) tuple[Extent, list[Region]]
             }
             class Container{

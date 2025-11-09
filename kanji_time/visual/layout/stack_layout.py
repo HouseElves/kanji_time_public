@@ -45,7 +45,6 @@ The stack layout strategy fits into the general pagination and layout model as a
 
     ---
     config:
-        mermaid_include_elk: "0.1.7"
         layout: elk
         class:
             hideEmptyMembersBox: true
@@ -55,7 +54,7 @@ The stack layout strategy fits into the general pagination and layout model as a
 
         class Container {
             <<realization: RenderingFrame>>
-            + begin_page(int page_number) bool
+            + begin_page(page_number: int) bool
             + measure(extent: Extent) Extent
             + do_layout(target_extent: Extent) Region
             + draw(c: DisplaySurface, region: Region) None
@@ -69,8 +68,8 @@ The stack layout strategy fits into the general pagination and layout model as a
 
         class LayoutStrategy {
             <<interface>>
-            +measure(list~Extent~ element_extents,  Extent fit_elements) Extent*
-            +layout(Extent target_extent, list~Extent~ element_extents, Extent fit_elements) (Extent, list~Region~)*
+            +measure(list~Extent~ element_extents,  Extent fit_elements) Extent
+            +layout(Extent target_extent, list~Extent~ element_extents, Extent fit_elements) (Extent, list~Region~)
         }
         class StackLayoutStrategy
         LayoutStrategy <|-- StackLayoutStrategy
@@ -129,7 +128,6 @@ class StackLayoutStrategy:
 
         ---
         config:
-            mermaid_include_elk: "0.1.7"
             layout: elk
             class:
                 hideEmptyMembersBox: true
@@ -139,26 +137,26 @@ class StackLayoutStrategy:
 
             class LayoutStrategy {
                 <<interface>>
-                +measure(list~Extent~ element_extents,  Extent fit_elements) Extent*
-                +layout(Extent target_extent, list~Extent~ element_extents, Extent fit_elements) (Extent, list~Region~)*
+                +measure(list~Extent~ element_extents,  Extent fit_elements) -> Extent
+                +layout(Extent target_extent, list~Extent~ element_extents, Extent fit_elements) -> (Extent, list~Region~)
             }
             class StackLayoutStrategy
             LayoutStrategy <|-- StackLayoutStrategy
             class StackLayoutStrategy {
                 <<realization>>
-                +measure(list~Extent~ element_extents,  Extent fit_elements) Extent
-                +layout(Extent target_extent, list~Extent~ element_extents, Extent fit_elements) (Extent, list~Region~)
+                +measure(list~Extent~ element_extents,  Extent fit_elements) -> Extent
+                +layout(Extent target_extent, list~Extent~ element_extents, Extent fit_elements) -> (Extent, list~Region~)
             }
 
             class GeometryHelpers {
                 <<embedded methods>>
-                +get_stack_pos(Pos pos) Distance
-                +get_other_pos(Pos pos) Distance
-                +get_stack_dim(Extent size) Distance
-                +get_other_dim(Extent size) Distance
-                +make_extent(Distance stack, Distance other) Extent
-                +make_pos(Distance stack, Distance other) Pos
-                +stack_idx() int
+                +get_stack_pos(Pos pos) -> Distance
+                +get_other_pos(Pos pos) -> Distance
+                +get_stack_dim(Extent size) -> Distance
+                +get_other_dim(Extent size) -> Distance
+                +make_extent(Distance stack, Distance other) -> Extent
+                +make_pos(Distance stack, Distance other) -> Pos
+                +stack_idx() -> int
             }
 
             StackLayoutStrategy ..> GeometryHelpers : abstracts stack direction using
