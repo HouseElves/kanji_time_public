@@ -1,5 +1,5 @@
-Overview
---------
+Next Steps for Kanji Time
+=========================
 
 Kanji Time is a living project.
 Like all living projects, it has accrued some technical debt out of a preference for releasing a stable well-defined product over chasing perfection.
