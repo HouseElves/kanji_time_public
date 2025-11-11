@@ -1,3 +1,7 @@
+# banner.py
+# Copyright (C) 2024, 2025 Andrew Milton
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 """Define a custom frame for the Kanji Summary banner."""
 
 from kanji_time.reports.kanji_summary.document import KanjiReportData

@@ -1,3 +1,7 @@
+# test_svg.py
+# Copyright (C) 2024, 2025 Andrew Milton
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 """
 Comprehensive test suite for radicals.py, utilities.general.py, and adapter.svg.py ensuring no regressions during refactor.
 """

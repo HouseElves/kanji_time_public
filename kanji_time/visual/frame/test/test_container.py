@@ -1,3 +1,7 @@
+# test_container.py
+# Copyright (C) 2024, 2025 Andrew Milton
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 """
 Test suite for Container class with full branch coverage.
 """

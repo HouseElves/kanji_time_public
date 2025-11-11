@@ -1,3 +1,7 @@
+# test_cli.py
+# Copyright (C) 2024, 2025 Andrew Milton
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 """Perform coverage tests for the Kanji time CLI."""
 
 import pytest

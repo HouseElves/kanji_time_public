@@ -1,3 +1,7 @@
+# test_drawing.py
+# Copyright (C) 2024, 2025 Andrew Milton
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 """Test suite, with full branch coverage, for a rendering frame containing a ReportLab drawing class instance."""
 
 import pytest

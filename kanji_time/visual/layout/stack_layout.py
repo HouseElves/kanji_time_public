@@ -1,3 +1,7 @@
+# stack_layout.py
+# Copyright (C) 2024, 2025 Andrew Milton
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 """
 Define a layout strategy that places content frames in a horizontal or vertical stack.
 

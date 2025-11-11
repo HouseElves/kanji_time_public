@@ -1,3 +1,7 @@
+# kanji_summary.py
+# Copyright (C) 2024, 2025 Andrew Milton
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 """Define a custom frame for the summary portion of the Kanji Summary banner."""
 
 from typing import cast

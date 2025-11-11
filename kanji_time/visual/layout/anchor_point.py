@@ -1,3 +1,7 @@
+# anchor_point.py
+# Copyright (C) 2024, 2025 Andrew Milton
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 """
 Compass-style alignment flags used to anchor content frames within their parent containers.
 

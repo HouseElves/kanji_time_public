@@ -1,3 +1,7 @@
+# formatted_text.py
+# Copyright (C) 2024, 2025 Andrew Milton
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 """
 Model a block of text represented in a ReportLab paragraph set.
 

@@ -1,3 +1,7 @@
+# test_kanji_dicts.py
+# Copyright (C) 2024, 2025 Andrew Milton
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 """
 Test suite for kanji_dict.py and kanji_dic2.py modules with full branch coverage.
 """

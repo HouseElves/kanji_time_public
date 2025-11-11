@@ -1,3 +1,7 @@
+# test_general.py
+# Copyright (C) 2024, 2025 Andrew Milton
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 """
 Comprehensive test suite for general.py covering lines that are not covered elsewhere.
 """

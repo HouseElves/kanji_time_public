@@ -1,3 +1,7 @@
+# test_distance.py
+# Copyright (C) 2024, 2025 Andrew Milton
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 """Provide branch coverage tests for the fundamental Distance type."""
 
 import math

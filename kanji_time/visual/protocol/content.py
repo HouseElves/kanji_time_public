@@ -1,3 +1,7 @@
+# content.py
+# Copyright (C) 2024, 2025 Andrew Milton
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 """
 Define a common interface for sized and renderable report content.
 

@@ -1,3 +1,7 @@
+# test_run_reports.py
+# Copyright (C) 2024, 2025 Andrew Milton
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 """Try to run both Kanji Time reports and check for output."""
 import pathlib
 from kanji_time.kanji_time_cli import execute_report

@@ -1,3 +1,7 @@
+# kanji_dic2.py
+# Copyright (C) 2024, 2025 Andrew Milton
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 """
 Simple as possible interface into the local KanjiDic2 XML file.
 

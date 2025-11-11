@@ -1,3 +1,7 @@
+# test_protocols.py
+# Copyright (C) 2024, 2025 Andrew Milton
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 """
 Simple classes implementing RenderingFrame and LayoutStrategy protocols to exercise default code paths.
 """

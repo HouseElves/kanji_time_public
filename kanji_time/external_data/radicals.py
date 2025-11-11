@@ -1,3 +1,7 @@
+# radicals.py
+# Copyright (C) 2024, 2025 Andrew Milton
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 """
 Provide Unicode data for Kanji radicals cross-referenced into KanjiDic2.
 

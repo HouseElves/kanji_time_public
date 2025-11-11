@@ -1,3 +1,7 @@
+# xml.py
+# Copyright (C) 2024, 2025 Andrew Milton
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 """Provide useful accessories for writing to XML-like files."""
 # pylint: disable=fixme
 
