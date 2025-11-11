@@ -1,3 +1,6 @@
+# kanji_time_cli.py
+# Copyright (C) 2024, 2025 Andrew Milton
+# SPDX-License-Identifier: AGPL-3.0-or-later
 """
 Implement the kanji_time CLI entry point.
 
@@ -15,18 +18,19 @@ The command line is intentionally simple.  We use the standard argparse library 
     --help=<report name> ==> help specific to the the <report_name> report.
 
 Each report has an entry point that lives in its own subpackage of the `reports` package in the (aptly called) module `report.py`.
-Currently there are only two report subpackages: 'kanji_summary' and 'practice_sheet'.
+Currently there are only two report sub-packages: 'kanji_summary' and 'practice_sheet'.
 
 The `execute` function in this module is the heart of report generation.
 
     - It loads a report entry point from a whitelisted report module then enters a page-pump loop to produce the report output.
     - This page-pump interacts with the report via the well-known `ReportingFrame` and `PageController` protocols.
 
-The result is an easily extensible reporting suite where any entry point that plays by the contracted reporting protocol rules can be invoked
-as a report.
+*Any entry point that obeys the rules of the reporting protocol contract can be invoked as a report*.
 
-Reporting Protocol Rules
-------------------------
+.. rubric:: Reporting Protocol Rules
+    :heading-level: 2
+
+These three rules define the reporting protocol contract.
 
     1. The `report.py` module for the report contains a class definition named `Report` that implements both the ReportingFrame and
        PageController Python protocols.
@@ -35,8 +39,8 @@ Reporting Protocol Rules
 
 The page-pump in `execute` interacts with report via the protocol rules in roughly a Template Method pattern (see [GoF]_, pg 325)
 
-Whitelisting Reports
---------------------
+.. rubric:: Whitelisting Reports
+    :heading-level: 2
 
 To help in blocking malicious code injection, kanji_time only runs registered well-known reports.
 
@@ -52,8 +56,6 @@ Report Alias         Report Module
 kanji_summary        reports.kanji_summary.report
 practice_sheet       reports.practice_sheet.report
 ===================  =============================
-
-----
 
 .. only:: dev_notes
 
