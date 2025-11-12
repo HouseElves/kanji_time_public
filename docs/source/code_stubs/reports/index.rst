@@ -17,27 +17,29 @@ In the vast majority of |KT| reporting use cases, a particular `Report` class ob
       Even then, it only needs to handle those exceptions ad hoc.
     - The parent PaginatedReport class handles all the typical layout and pagination cases itself.
 
-TODO:  I need a "seealso" to the relevant design doc pages.
+.. only:: dev_notes
+
+    TODO:  I need a "seealso" to the relevant design doc pages.
 
 
 Pagination Controller Modules
 -----------------------------
 
-    .. toctree::
-       :maxdepth: 1
-       
-       __init__.py
-       controller.py
+.. toctree::
+   :maxdepth: 1
+
+   __init__.py
+   controller.py
 
 
 |KT| Packaged Report Modules
 ----------------------------
 
-    .. toctree::
-       :maxdepth: 2
+.. toctree::
+   :maxdepth: 2
 
-       kanji_summary/index
-       practice_sheet/index
+   kanji_summary/index
+   practice_sheet/index
 
    
    

@@ -6,15 +6,14 @@ The :mod:`adapter` package contains shoehorning code to make ReportLab and gener
 
 The adapter library will continue to grow as new technologies are integrated into Kanji Time.
 
-.. seealso:: See :ref:`rendering technology <rendering_technology>` for planned development of a formal separation of reports and their supporting rendering platform.
+.. only:: dev_notes
 
-Modules
--------
+    .. seealso:: See :ref:`rendering technology <rendering_technology>` for planned development of a formal separation of reports and their supporting rendering platform.
 
 .. toctree::
    :maxdepth: 2
+   :hidden:
 
-   __init__.py
    svg.py
 
 

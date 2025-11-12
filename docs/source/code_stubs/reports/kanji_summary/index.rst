@@ -1,20 +1,21 @@
 Kanji Summary Report Package
 ============================
 
-TODO: describe the Kanji Summary report and give sample output
+.. only:: dev_notes
 
-Implementation Modules
-----------------------
+    TODO: describe the Kanji Summary report and give sample output
 
-    .. toctree::
-       :maxdepth: 1
+.. toctree::
+   :maxdepth: 1
+   :caption: Report Implementation
+   :hidden:
 
-       __init__.py
-       report.py
-       document.py
-       banner.py
-       kanji_summary.py
-       radical_summary.py
+   __init__.py
+   report.py
+   document.py
+   banner.py
+   kanji_summary.py
+   radical_summary.py
 
 
 
