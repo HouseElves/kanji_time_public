@@ -5,3 +5,7 @@ sphinx-autodoc-typehints
 sphinxcontrib-mermaid==1.0.0
 sphinx-design==0.6.1
 
+# Runtime dependencies needed for autodoc
+reportlab==4.2.5
+svgwrite==1.4.3
+svglib>=1.5.1
