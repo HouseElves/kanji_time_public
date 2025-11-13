@@ -20,7 +20,7 @@ What sets Kanji Time apart?
 ---------------------------
 
 - **On-demand, from-the-command-line:** Type one command, get a professional-quality practice sheet for any kanji.
-- **Plug-in reporting:** Add new study aids or analytics reports by simply dropping in a Python module —  there’s no need to change the core codebase.
+- **Plug-in reporting:** Add new study aids or analytics reports by simply dropping in a Python module -  there’s no need to change the core codebase.
 - **Built for learners and builders:** This tool is my daily study companion *and* a living case study for teaching robust software engineering.
 
 :ref:`Jump straight to the install guide <install_guide>`
@@ -85,7 +85,7 @@ Key Features
 	 **Instantly generate** practice sheets for any kanji, with stroke order and radical cross-referencing.
 
 **Extensible plug-in architecture**
-	 **Add new reports** or data sources by simply dropping in a new Python package—no changes to the core code required.
+	 **Add new reports** or data sources by simply dropping in a new Python package-no changes to the core code required.
 
 **Separation of data and presentation**
 	 **Decouples data acquisition** from layout and rendering for maximum flexibility and maintainability.
@@ -109,12 +109,12 @@ Technical Features
 	 Core interfaces (e.g., `RenderingFrame`, `PageController`) are defined with Python protocols (PEP 544), ensuring plug-in compatibility and future-proof extensibility.
 
 **Comprehensive frame and layout library**
-	 Includes reusable layout frames—containers, formatted text, SVG and ReportLab drawing, page rules, horizontal/vertical stacks, and more.
+	 Includes reusable layout frames-containers, formatted text, SVG and ReportLab drawing, page rules, horizontal/vertical stacks, and more.
 
 **Advanced geometry modeling**
 	 Built on robust geometric primitives:
 
-        - **Distance**: A unit-aware, immutable value type for working with points, dimensions, and scaling—enabling precise layout, alignment, and measurement across all outputs.
+        - **Distance**: A unit-aware, immutable value type for working with points, dimensions, and scaling-enabling precise layout, alignment, and measurement across all outputs.
         - **Pos, Extent, Region**: Compose cleanly with Distance to represent positions, bounding boxes, and page areas for flexible and reliable layout math.
         - **Anchor points and stacking strategies**: Provide responsive, scalable arrangement of all content, whether text or vector graphics.
 
@@ -219,8 +219,8 @@ Notes
 -----
 
 - **Virtual environments are strongly recommended** to avoid polluting your system Python.
-- **You do not need to install ``build`` in your main requirements.txt**—it’s only needed for packaging, not for running Kanji Time.
-- **Development and documentation requirements** are separated for clarity—install them only if you want to run tests or build the docs.
+- **You do not need to install ``build`` in your main requirements.txt**-it’s only needed for packaging, not for running Kanji Time.
+- **Development and documentation requirements** are separated for clarity-install them only if you want to run tests or build the docs.
 - **If you only want to run the program, you can skip steps 2–3 and just install from source:**
 
    .. code-block:: bash
@@ -280,6 +280,6 @@ It also fosters respect for good programming habits such as first-class document
 
 Beyond these, the best lesson inside Kanji Time is that **it is not perfect.**
 
-Kanji Time demonstrates that code does not need to be perfect to ship—but—one does need to be smart about what imperfections to ship and have a plan to correct them.
+Kanji Time demonstrates that code does not need to be perfect to ship-but-one does need to be smart about what imperfections to ship and have a plan to correct them.
 
 :ref:`Install Kanji Time now! <install_guide>`
