@@ -12,9 +12,7 @@ Global data for the external_data package.
       PROJECT_ROOT is specifically for Sphinx so it's a little less whiney.
     - for that matter, is `PROJECT_ROOT` even in the correct settings module?
 
-----
-
-.. seealso:: :doc:`dev_notes/settings_notes`
+    .. seealso:: :doc:`dev_notes/settings_notes`
 
 ----
 

@@ -137,4 +137,18 @@ External Dependencies
     radical_summary --> drawing
     radical_summary --> formatted_text
 
+Package  Contents
+-----------------
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Kanji Summary
+
+   report.py <report.py>
+   document.py <document.py>
+   banner.py <banner.py>
+   kanji_summary.py <kanji_summary.py>
+   radical_summary.py <radical_summary.py>
+
+
 """

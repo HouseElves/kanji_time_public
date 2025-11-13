@@ -17,4 +17,5 @@ Place all well-known symbols for the entire project across all packages in this 
 """
 # pylint: disable=invalid-name
 
+#: Directory containing report add-ins
 report_directory = "./reports/"

@@ -5,9 +5,9 @@
 """
 Model empty space on a page as a frame.
 
-----
+.. only:: dev_notes
 
-.. seealso:: :doc:`dev_notes/empty_space_notes`
+    .. seealso:: :doc:`dev_notes/empty_space_notes`
 
 ----
 

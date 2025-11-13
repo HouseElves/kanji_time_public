@@ -16,7 +16,7 @@ The Python code modules in :mod:`external_data` depend on each other per the bel
     ---
     config:
         layout: elk
-        look: handDrawn
+        :zoom:
     ---
     flowchart TD
 
@@ -39,6 +39,7 @@ The Python code modules in :mod:`external_data` depend on modules external to th
 
 .. mermaid::
     :caption: external_data - External Module Dependencies
+    :zoom:
 
     ---
     config:
@@ -79,6 +80,30 @@ The Python code modules in :mod:`external_data` depend on modules external to th
     kanji_svg --> region
 
     radicals --> check_attrs
+
+Package Contents
+----------------
+
+.. toctree::
+   :maxdepth: 1
+   :caption: External Data Package
+
+   kanji_dic2.py   <kanji_dic2.py>
+   kanji_dict.py   <kanji_dict.py>
+   kanji_svg.py    <kanji_svg.py>
+   radicals.py     <radicals.py>
+   settings.py     <settings.py>
+
+----
+
+.. only:: dev_notes
+
+    .. seealso::
+
+        - :ref:`embedded_content` for credits and licensing for 3rd party data used in Kanji Time.
+        - :ref:`data plans <data_plans>` for notes about converting XML data to an SQL RDBMS platform.
+        - :ref:`radicals <radicals>` for notes about extending the range of radical and kana data available in Kanji Time
+        - :ref:`external_data_notes` for raw developer source code notes
 
 """
 import pathlib

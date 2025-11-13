@@ -21,8 +21,8 @@ be used as a base class to a report controller to handle these chores in a consi
 The end result of the PageController and the two convenience classes is an uncluttered interface. We've freed up ReportController classes to
 focus on their job:  creating rendering frames and directing data to them on each page as needed.
 
-Class Interactions
-------------------
+.. rubric:: Class Interactions
+    :heading-level: 2
 
 The below class diagram illustrates the high level interactions of a page controller.
 

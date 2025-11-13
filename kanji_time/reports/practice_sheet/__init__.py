@@ -103,4 +103,16 @@ External Dependencies
         ps_report --> settings
         ps_report --> xml
 
+Package Contents
+----------------
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Practice Sheet
+
+   report.py <report.py>
+   document.py <document.py>
+
+
 """
+

@@ -5,25 +5,21 @@
 """
 Provide Unicode data for Kanji radicals cross-referenced into KanjiDic2.
 
-Copyright (c) 2024-2025, Andrew Milton and House Elves.
-
-Credits/Data Licensing:
+.. admonition:: Licensing/Credits
 
     The source data contained in CJKRadicals.txt is copyright © 1991-2024 Unicode, Inc.
     The bundled file is an unaltered copy of the original data located online at
     https://www.unicode.org/Public/15.1.0/ucd/CJKRadicals.txt,
 
-    Use of this source data by this program, Andrew Milton, and House Elves, is made under the
-    Unicode License V3.
+    Use of this source data is made under the Unicode License V3.
 
     The license allows for unrestricted use of the data provided that their copyright notice is included.
 
-    In compliance with that requirement, the full text of the Unicode License V3 appears in the bundled file
-    UnicodeV3.txt. It can also be viewed online at https://www.unicode.org/license.txt.
+    In compliance with that requirement, the full text of the Unicode License V3 appears in the bundled file UnicodeV3.txt. It can also be viewed online at https://www.unicode.org/license.txt.
 
-----
+.. only:: dev_notes
 
-.. seealso:: :doc:`dev_notes/radicals_notes`
+    .. seealso:: :doc:`dev_notes/radicals_notes`
 
 ----
 
@@ -264,7 +260,7 @@ class Radical:
 
     @property
     def romanji_name(self) -> str | None:
-        """Extract the Romanji version of the radical name from the meanings."""
+        """Extract the Romaji version of the radical name from the meanings."""
         for meaning in self.significance:  # type: ignore
             if (m := meaning.get("meanings")) is not None and (r := [match[1] for x in m if (match := romanji_name.match(x))]):
                 return r[0]

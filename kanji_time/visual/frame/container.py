@@ -57,13 +57,14 @@ class Container(RenderingFrame):
     :param child_elements: content frames to be laid out and drawn in this container
     :param layout_strategy: aggregated helper to lay out children in an extent
 
-    Issues
-    ------
+    .. only:: dev_notes
 
-        - can a rendering frame exist in multiple containers?  Well, no, because of its hardcoded state.
-        - can I make a rendering frame stateless? or at least externalize the state into a context?
-        - does this issue even matter?
+        Issues
+        ------
 
+            - can a rendering frame exist in multiple containers?  Well, no, because of its hardcoded state.
+            - can I make a rendering frame stateless? or at least externalize the state into a context?
+            - does this issue even matter?
 
     High level class relationships are as follows.
 

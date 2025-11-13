@@ -89,7 +89,7 @@ logger = logging.getLogger(__name__)
 # Globals ---------------------------------------------------------------------------------------------------------------------------------- #
 
 
-# Safe Report Registry
+#: Safe Report Registry
 VALID_REPORTS = {
     "practice_sheet": "kanji_time.reports.practice_sheet.report",
     "kanji_summary": "kanji_time.reports.kanji_summary.report"
@@ -104,9 +104,12 @@ def init_reportlab():
     Make ReportLab ready to receive our output.
 
     The technology-specific global initialization entry point for ReportLab.
+    We inform ReportLab that
 
-        - we need a Unicode font supporting kanji glyphs.
-        - we're being forgiving about boundary checking on tables.
+    - we need a Unicode font supporting kanji glyphs.
+    - we're being forgiving about boundary checking on tables.
+
+    via globally visible data.
 
     .. only:: dev_notes
 

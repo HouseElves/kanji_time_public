@@ -31,5 +31,34 @@ Internal Dependencies
     formatted_text --> simple_element
     page_rule --> simple_element
 
+
+Foundation Modules
+------------------
+
+These define the basic framing functionality for atomic content, content containers, and page containers.
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Basic Frames
+
+   simple_element.py
+   container.py
+   page.py
+
+
+Specialized Atomic Content Modules
+----------------------------------
+
+These provide specific rendering logic for formatted text, vector graphics, horizontal rules, and spacing blocks.
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Atomic Content
+
+   formatted_text.py <formatted_text.py>
+   drawing.py <drawing.py>
+   page_rule.py <page_rule.py>
+   empty_space.py <empty_space.py>
+
 """
 

@@ -20,4 +20,14 @@ Protocols
         RenderingFrame ()-- visual.protocol
         LayoutStrategy ()-- visual.protocol
 
+Package Contents
+----------------
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Visual Protocols
+
+   content.py <content.py>
+   layout_strategy.py <layout_strategy.py>
+
 """

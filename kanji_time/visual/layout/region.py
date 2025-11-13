@@ -33,10 +33,8 @@ These classes have a small dependency footprint.  They model spatial abstraction
 
     ---
     config:
-      defaultRenderer: elk
       class:
         hideEmptyMembersBox: true
-      look: classic
       layout: elk
     ---
     classDiagram

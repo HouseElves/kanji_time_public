@@ -13,16 +13,15 @@ There is also singleton (`PaperOrientations`) that has rotation services to prod
 The intended consumer of these is the `PageSettings` class.
 They are equally applicable in any scenario that needs to specify page size symbolically or by English name.
 
-Licensing
----------
+.. admonition:: Licensing
 
-This file wraps and re-exports page size constants from ReportLab.
-Original values sourced from reportlab.lib.pagesizes
+    This file wraps and re-exports page size constants from ReportLab.
+    Original values sourced from reportlab.lib.pagesizes
 
-ReportLab is licensed under a BSD-style license:
-https://www.reportlab.com/devfaq/license/
+    ReportLab is licensed under a BSD-style license:
+    https://www.reportlab.com/devfaq/license/
 
-Copyright (c) 2000-2023, ReportLab Inc. All rights reserved.
+    Copyright (c) 2000-2023, ReportLab Inc. All rights reserved.
 
 ----
 """

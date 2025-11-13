@@ -11,9 +11,7 @@ Define a layout container for ReportLab format scalable vector drawings.
     - this should be a generic SVG container with a ReportLab adapter.
       I.e. decouple the ReportLab implementation from the SVG vector graphics in :python:`visual.frame.drawing.Drawing`.
 
-----
-
-.. seealso:: :doc:`dev_notes/drawing_notes`
+    .. seealso:: :doc:`dev_notes/drawing_notes`
 
 ----
 

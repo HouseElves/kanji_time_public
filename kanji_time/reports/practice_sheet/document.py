@@ -3,8 +3,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 """
-Kanji Practice Sheet Data
-=========================
+.. rubric:: Kanji Practice Sheet Data
+    :heading-level: 1
 
 Support data document for creating a Kanji Practice Sheet
 
@@ -52,6 +52,7 @@ I see this process as a variant of the model-view-controller design pattern.
 
     - Nomenclature: DrawingForRL, RLDrawing to adapter.fromSVG.toRL.Drawing, adapter.fromRL.toSVG.Drawing?
 
+----
 """
 # pylint: disable=fixme
 

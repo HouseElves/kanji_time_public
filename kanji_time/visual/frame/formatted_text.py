@@ -13,9 +13,7 @@ Model a block of text represented in a ReportLab paragraph set.
          - ReportLab's paragraphs are really a simplified HTML that would be useful in general.
          - Maybe take the XML as input and derive a ReportLab version of this container?
 
-----
-
-.. seealso:: :doc:`dev_notes/formatted_text_notes`
+    .. seealso:: :doc:`dev_notes/formatted_text_notes`
 
 ----
 

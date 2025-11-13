@@ -137,4 +137,15 @@ paper in various sizes etc.)
         svg --> sw_data
         svg --> sw_data
 
+Package Contents
+----------------
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Visual Package
+
+   Protocols <protocol/__init__.py>
+   Layout Control <layout/__init__.py>
+   Content Frames <frame/__init__.py>
+
 """

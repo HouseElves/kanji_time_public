@@ -27,8 +27,8 @@ The heart the reporting algorithm is that we minimize duplicated work for mundan
 A given report doesn't really have much to do beyond defining frames for content and hooking up the data.
 The report itself uses one or more visual.frames.Container instances to hold the content and defers to a LayoutStrategy instance to present it.
 
-Class Relationships
--------------------
+.. rubric:: Class Relationships
+    :heading-level: 2
 
 The Kanji Information Sheet interacts with other classes as below.
 
@@ -168,8 +168,8 @@ class Report(PaginatedReport, DelegatingRenderingFrame):
     :param size: - the total requested size to reserve for this element and all of its child elements, if possible.
     :param report_data: The "document" for this "view" element that contains source data for its rendering frames.
 
-    Class Interactions
-    ------------------
+    .. rubric:: Class Interactions
+        :heading-level: 2
 
     The KanjiReport uses the BeginPage method to produce and abbreviated version of the banner on the 2nd and subsequent pages.
     This diagram shows the players in this interaction.

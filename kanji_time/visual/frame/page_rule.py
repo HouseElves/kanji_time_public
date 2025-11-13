@@ -11,9 +11,7 @@ Model various page rules as content frames.
 
         - my thoughts are "as appropriate" to the diagram.
 
-----
-
-.. seealso:: :doc:`dev_notes/page_rule_notes`
+    .. seealso:: :doc:`dev_notes/page_rule_notes`
 
 ----
 

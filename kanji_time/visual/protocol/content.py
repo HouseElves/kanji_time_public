@@ -19,9 +19,9 @@ that either replace the implementation outright or tweak the well-known output f
     - We're not quite there on this vision yet -- Kanji Time is highly dependant on ReportLab for PDF output right now.
       I'm striving to keep technology and semantics decoupled - but this is an ideal.
 
-----
+.. only:: dev_notes
 
-.. seealso:: :doc:`dev_notes/content_notes`
+    .. seealso:: :doc:`dev_notes/content_notes`
 
 ----
 

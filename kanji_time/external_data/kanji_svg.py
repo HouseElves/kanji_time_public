@@ -5,15 +5,14 @@
 """
 Model SVG drawings of Kanji characters.
 
-The Kanji vector graphics SVG files are copyright © 2009-2024 Ulrich Apel & used under the
-`Creative Commons Attribution-Share Alike 3.0 <https://creativecommons.org/licenses/by-sa/3.0/>`_ license.
-Original SVG content is located `here <https://kanjivg.tagaini.net/>`_.
 
-These Kanji SVG files are used and redistributed unaltered.
+.. admonition:: Licensing/Credits
 
-Licensing/Credits:
-    - The KanjiTime program and all its code is copyright (c) 2024-2025 by Andrew Milton (HouseElves).
-    - The underlying SVG files released under the Creative Commons Attribution-Share Alike 3.0 license
+    The Kanji vector graphics SVG files are copyright © 2009-2024 Ulrich Apel & used under the `Creative Commons Attribution-Share Alike 3.0 <https://creativecommons.org/licenses/by-sa/3.0/>`_ license.
+
+    Original SVG content is located `here <https://kanjivg.tagaini.net/>`_.
+
+    These Kanji SVG files are used and redistributed unaltered.
 
 ----
 
@@ -173,6 +172,7 @@ class KanjiSVG(metaclass=SVGCache):
     .. mermaid::
         :name: cd_kanjisvg
         :caption: Class relationships for the kanji drawing service.
+        :zoom:
 
         ---
         config:

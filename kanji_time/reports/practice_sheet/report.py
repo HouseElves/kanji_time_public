@@ -3,8 +3,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 """
-Kanji Practice Sheet
-====================
+.. rubric:: Kanji Practice Sheet
+    :heading-level: 2
 
 Create a stroke order diagram and practice grids for a particular kanji or kana.
 

@@ -49,9 +49,9 @@ As a foundational utility type, the Distance class has a very small dependency s
 
 ----
 
-.. seealso:: :doc:`dev_notes/distance_notes`
+.. only:: dev_notes
 
-----
+    .. seealso:: :doc:`dev_notes/distance_notes`
 
 """
 

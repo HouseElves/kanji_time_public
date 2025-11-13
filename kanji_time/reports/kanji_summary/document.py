@@ -3,8 +3,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 """
-Kanji Summary Sheet Data
-========================
+.. rubric:: Kanji Summary Sheet Data
+    :heading-level: 2
 
 Support data document for creating a Kanji Practice Sheet
 
@@ -95,10 +95,10 @@ class KanjiReportData:
         - ReportLab drawing instances for the large kanji and small radical vector graphics
         - HTML-like formatted text for
 
-            - "banner" |rarr| simple kanji meaning, readings, frequency
-            - "radical" |rarr| radical number, romanji/hiragana name, interpretation
-            - "body" |rarr| full dictionary definition with reading and frequency for each sense of the kanji
-            - "page2on" |rarr| short banner text for after the first page
+            - "banner" -- simple kanji meaning, readings, frequency
+            - "radical" -- radical number, romaji/hiragana name, interpretation
+            - "body" -- full dictionary definition with reading and frequency for each sense of the kanji
+            - "page2on" -- short banner text for after the first page
 
     Most of this dataclass consists of helper functions go get specific data items on demand.
 

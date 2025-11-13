@@ -26,4 +26,19 @@ Internal Dependencies
     region --> distance
     stack_layout --> region
 
+Package Contents
+----------------
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Visual Layout
+
+   distance.py <distance.py>
+   region.py <region.py>
+   anchor_point.py <anchor_point.py>
+   stack_layout.py <stack_layout.py>
+   paper_names.py <paper_names.py>
+
 """
+
+

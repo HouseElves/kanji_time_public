@@ -4,7 +4,7 @@
 """
 Top level entry point to Kanji Time via "Python -m"
 
-.. seealso:: `__main__.py <https://docs.python.org/3.11/library/__main__.html#main-py-in-python-packages>`_
+.. seealso:: `__main__.py in the Python docs <https://docs.python.org/3.11/library/__main__.html#main-py-in-python-packages>`_
 
 This entry point transfers control to the Kanji Time CLI in :mod:`kanji_time_cli`.
 """

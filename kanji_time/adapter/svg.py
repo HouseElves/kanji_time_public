@@ -18,21 +18,21 @@ class DrawingForRL(SVGDrawing):  # pylint: disable=too-many-ancestors
     """
     A customized version of svgwrite.Drawing for reportlab's svg reader.
 
-    svgwrite is very strict with the SVG standard, but reportlab not-so-much.
-    This is were we'll reconcile these differences of opinion.
+    svgwrite is very strict with the SVG standard, but reportlab is not.
+    This class reconciles these differences of opinion about strictness.
 
-    Our initializer bypasses the Drawing initializer to prevent these unwanted XML attributes
+    Our initializer bypasses the SVGDrawing initializer to prevent these unwanted XML attributes
 
         - xmlns:xlink
         - xmlns:ev
         - version
         - baseProfile
     
-    on the SVG tag.  We also intercept the size and viewBox keywords out of *kwargs* to
+    appearing on the SVG tag.  We also intercept the size and viewBox keywords out of *kwargs*
     to prevent unwanted 'height' and 'width' attributes and to force svgwrite to accept
     length parameters for the 'viewBox' attribute.
 
-    Finally, we'll put the xmlns namespace back on the SVG tag.
+    After we finish with our tweaks, we put the xmlns namespace attribute back on the SVG tag.
     """
 
     def __init__(self, *args, size: tuple[str, str] | None = None, viewBox: str | None = None, **kwargs):
