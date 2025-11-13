@@ -253,11 +253,11 @@ See the [Run Sample Reports](#run-sample-reports) section for details.
 
 # Documentation
 
-Full documentation will be available soon. RST files are under final review in the 'docs' directory.
+The Kanji Time usage & develpment guide is now live on ReadTheDocs!
 
-Watch this space for a ReadTheDocs or GitHub Pages link!
+➡️ [Full Documentation »](https://kanji-time-public.readthedocs.io/en/latest/)
 
-➡️ [Full CLI usage and report options »](cli_usage.md)
+➡️ [Just CLI usage and report options »](cli_usage.md)
 
 ---
 
