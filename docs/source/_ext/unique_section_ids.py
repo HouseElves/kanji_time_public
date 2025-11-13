@@ -138,6 +138,9 @@ def make_unique_section_id(docname: str, original_id: str, separator: str = '-')
     return unique_id
 
 
+def process_section_ids_on_read(app: Sphinx, doctree: nodes.document):
+    return process_section_ids(app, doctree, "kt")
+
 def process_section_ids(app: Sphinx, doctree: nodes.document, docname: str):
     """
     Process all section nodes in the doctree to make their IDs unique.
@@ -150,36 +153,24 @@ def process_section_ids(app: Sphinx, doctree: nodes.document, docname: str):
     exclude = app.config.unique_section_ids_exclude or []
     source_dir = app.config.source_dir if hasattr(app.config, 'source_dir') else ""
     
-    # Skip excluded documents
-    if docname in exclude:
-        logger.debug(f"Skipping section ID processing for excluded document: {docname}")
-        return
+    logger.debug(f"[KANJITIME Sphinx] re-mapping ids for {docname}")
     
     # Find all section nodes
     section_count = 0
-    for node in doctree.traverse(nodes.section):
+    for node in doctree.findall(nodes.section):
         # Get the current IDs
-        old_ids = node['ids']
-        
+        old_ids = list(node.get('ids', []))
         if not old_ids:
             continue
-        
-        # Make each ID unique by prepending document path
-        node_file = normalize_doc_path(node_to_filepath(node), source_dir) or docname
-        new_ids = []
-        for old_id in old_ids:
-            new_id = make_unique_section_id(node_file, old_id, separator)
-            new_ids.append(new_id)
-        
-        # Replace the IDs
-        node['ids'] = new_ids
-        
-        # Also update any direct references to this node
-        # (though Sphinx usually handles this automatically)
-        if 'names' in node:
-            # Keep the names unchanged - only IDs change
-            pass
-        
+
+        doc_prefix = normalize_doc_path(node_to_filepath(node), source_dir) or docname
+        clean_prefix = doc_prefix.replace('/', separator).replace('\\', separator)
+        unique_ids = [
+            f"{clean_prefix}{separator}{oid}" 
+            for oid in old_ids
+        ]
+        node['ids'] = unique_ids + [oid for oid in old_ids if oid not in unique_ids]
+
         section_count += 1
     
     if section_count > 0:
@@ -197,6 +188,7 @@ def setup(app: Sphinx):
     # Connect to the doctree-resolved event
     # This fires after the doctree is built but before output is written
     app.connect('doctree-resolved', process_section_ids)
+    # app.connect('doctree-read', process_section_ids_on_read)
     
     return {
         'version': '1.0',
