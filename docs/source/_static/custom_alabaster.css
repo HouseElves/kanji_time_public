@@ -1,0 +1,85 @@
+table.docutils {
+    width: 100%;
+    border: none;
+    border-collapse: collapse;
+}
+
+table.docutils td, table.docutils th {
+    border: none;
+    padding: 0.5em;
+    vertical-align: top;
+}
+
+.center {text-align: center;}
+
+/* Never let images overflow the viewport */
+.body img,
+.figure img,
+.align-center img {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+/* Keep SVGs responsive too */
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Horizontal scroll instead of blowing out the layout */
+.highlight pre,
+div.highlight pre,
+pre {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  white-space: pre;   /* don't wrap code; let it scroll */
+}
+
+/* Make docutils tables scroll on small screens */
+table.docutils {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-collapse: collapse; /* avoids double borders when block-level */
+}
+
+@media (max-width: 640px) {
+  .body, .document, .bodywrapper {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .toctree-wrapper {
+    margin-left: 0;
+  }
+}
+
+.mermaid {
+  max-width: 100%;
+  overflow: auto;          /* horizontal scroll if needed */
+}
+
+.pdf-fallback {
+  text-align: center;
+  margin-top: 0.3rem;
+  font-size: 0.9rem;
+}
+.pdf-fallback a {
+  text-decoration: underline;
+}
+
+
+:root {
+  --sidebar-width: 12rem;
+}
+
+/* Make the nav text smaller to fit better */
+.sidebar-tree .caption,
+.sidebar-tree li > a {
+  font-size: 0.875rem;  /* slightly smaller */
+}
+
+/* Reduce padding in nav items */
+.sidebar-tree li > a {
+  padding-left: 1.5rem;  /* default is larger */
+}

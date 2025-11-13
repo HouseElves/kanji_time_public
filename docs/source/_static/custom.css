@@ -1,14 +1,225 @@
-table.docutils {
-    width: 100%;
-    border: none;
-    border-collapse: collapse;
-}
-
-table.docutils td, table.docutils th {
-    border: none;
-    padding: 0.5em;
-    vertical-align: top;
-}
 
 .center {text-align: center;}
 
+/* Make Mermaid diagrams use full available width */
+.mermaid {
+  max-width: 100%;
+  width: 100%;
+  overflow: visible;  /* Let diagrams breathe */
+}
+
+/* Keep boxes/notes/cluster backgrounds truly transparent */
+.mermaid svg .node rect,
+.mermaid svg .cluster rect,
+.mermaid svg .note rect {
+  fill: none !important;
+}
+
+/* Ensure lines/edges/arrows use the neutral stroke */
+.mermaid svg .edgePath path,
+.mermaid svg .arrowheadPath,
+.mermaid svg .connection,
+.mermaid svg line,
+.mermaid svg path.edge {
+  stroke: #6a6f76 !important;
+  stroke-width: 1.5px;            /* slightly thicker for mobile legibility */
+}
+
+/* Text should inherit the page color in both modes */
+.mermaid svg .label,
+.mermaid svg text {
+  fill: currentColor !important;
+}
+
+/* Lifelines/borders in sequence/state/activity diagrams */
+.mermaid svg .actor rect,
+.mermaid svg .activation,
+.mermaid svg .state-start,
+.mermaid svg .state-end,
+.mermaid svg .divider,
+.mermaid svg .flowchart-link {
+  stroke: #6a6f76 !important;
+  fill: none !important;
+}
+
+.pdf-fallback {
+  text-align: center;
+  margin-top: 0.3rem;
+  font-size: 0.9rem;
+}
+.pdf-fallback a {
+  text-decoration: underline;
+}
+
+:root {
+  --sidebar-width: 12rem;
+}
+
+/* Make the nav text smaller to fit better */
+.sidebar-tree .caption,
+.sidebar-tree li > a {
+  font-size: 0.875rem;  /* slightly smaller */
+}
+
+/* Reduce padding in nav items */
+.sidebar-tree li > a {
+  padding-left: 1.5rem;  /* default is larger */
+}
+
+
+/* Zoom hint on all Mermaid diagrams */
+.mermaid {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+/* Light mode - diagrams stay as configured */
+[data-theme="light"] .mermaid text {
+  fill: #2d3748 !important;
+}
+
+/* Dark mode - override for better visibility */
+[data-theme="dark"] .mermaid {
+  /* Make backgrounds darker */
+  --mermaid-primary: #2D3748;
+  --mermaid-secondary: #4A5568;
+  --mermaid-tertiary: #718096;
+}
+
+[data-theme="dark"] .mermaid text {
+  fill: #E2E8F0 !important;  /* Light text */
+}
+
+[data-theme="dark"] .mermaid .node rect,
+[data-theme="dark"] .mermaid .node circle,
+[data-theme="dark"] .mermaid .node polygon {
+  fill: #4A5568 !important;
+  stroke: #A0AEC0 !important;
+}
+
+[data-theme="dark"] .mermaid .edgePath .path {
+  stroke: #A0AEC0 !important;
+}
+
+[data-theme="dark"] .mermaid .cluster rect {
+  fill: rgba(74, 85, 104, 0.2) !important;
+  stroke: #718096 !important;
+}
+
+/* Note boxes in dark mode */
+[data-theme="dark"] .mermaid .note {
+  fill: #2c5282 !important;
+  stroke: #4299e1 !important;
+}
+
+[data-theme="dark"] .mermaid .noteText {
+  fill: #E2E8F0 !important;
+}
+
+.mermaid::after {
+  content: "Press and hold to pan • Scroll to zoom";
+  display: block;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--color-foreground-muted);
+  margin-top: 0.75rem;
+  opacity: 0.7;
+}
+
+/* Desktop gets more specific text */
+@media (min-width: 768px) {
+  .mermaid::after {
+    content: "Click and drag to pan • Scroll to zoom";
+  }
+}
+
+/* Dark mode adjustment */
+[data-theme="dark"] .mermaid::after {
+  color: var(--color-foreground-muted);
+}
+
+
+/* 
+Furo sets [data-theme="dark"] on <html> 
+[data-theme="dark"] .mermaid svg .edgePath path,
+[data-theme="dark"] .mermaid svg .arrowheadPath,
+[data-theme="dark"] .mermaid svg .actor rect,
+[data-theme="dark"] .mermaid svg .cluster rect,
+[data-theme="dark"] .mermaid svg .node rect {
+  stroke: #c8cbd0 !important; 
+}
+*/
+
+/* Make dropdowns inside cards match card styling */
+.sd-card-body .sd-summary-title,
+.sd-card-body .sd-summary-content {
+  background: inherit !important;
+  color: inherit !important;
+}
+
+.sd-card-body .sd-summary-title {
+  padding: 0.5rem 0;
+  margin: 0;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.sd-card-body details.sd-dropdown {
+  background: transparent !important;
+  border: none !important;
+  margin: 0.5rem 0;
+}
+
+.sd-card-body details.sd-dropdown > summary {
+  background: transparent !important;
+  color: inherit !important;
+  padding: 0.25rem 0;
+  border: none !important;
+  font-weight: normal;
+}
+
+.sd-card-body details.sd-dropdown[open] > summary {
+  margin-bottom: 0.5rem;
+}
+
+/* Keep the chevron visible but subtle */
+.sd-card-body .sd-summary-chevron-right,
+.sd-card-body .sd-summary-chevron-down {
+  color: inherit !important;
+  opacity: 0.6;
+}
+
+/* Dropdown content inherits card styles */
+.sd-card-body .sd-summary-content {
+  padding-left: 1.5rem;
+  margin-top: 0.25rem;
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .sd-card-body details.sd-dropdown {
+  background: transparent !important;
+}
+
+/* Dropdown titles look like text but indicate interactivity */
+.sd-card-body details.sd-dropdown > summary {
+  color: var(--color-foreground-primary) !important;
+  font-weight: 500;  /* Slightly bolder to indicate it's special */
+  cursor: pointer;
+}
+
+.sd-card-body .sd-summary-title {
+  color: var(--color-foreground-primary) !important;
+}
+
+/* Subtle hover to show it's interactive */
+.sd-card-body details.sd-dropdown > summary:hover {
+  color: var(--color-foreground-primary) !important;
+  opacity: 0.8;
+}
+
+/* The chevron provides the "this is interactive" cue */
+.sd-card-body .sd-summary-chevron-right,
+.sd-card-body .sd-summary-chevron-down {
+  color: var(--color-link) !important;  /* Chevron uses link color as the cue */
+  opacity: 0.7;
+}
