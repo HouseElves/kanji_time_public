@@ -3,7 +3,7 @@
 Third-Party Licenses
 ====================
 
-This documentation describes third-party Python packages used in the **Kanji Time** project. Each dependency is either bundled during development or used at runtime under the terms of its original license.
+Development of Kanji Time requires several third-party Python packages disclosed below. Each dependency is either bundled during development or used at runtime under the terms of its original license.
 
 pytest 8.3.5
 ------------
@@ -30,7 +30,7 @@ reportlab 4.2.5
 **License**: BSD 3-Clause License
 **URL**: https://www.reportlab.com/devops/open-source/
 
-`reportlab` is used at runtime to generate PDFs. If you redistribute a modified version of this library, the BSD 3-Clause License requires you to retain the original copyright.
+`reportlab` is used at runtime to generate PDFs. If you redistribute a modified version of this library, the BSD 3-Clause License requires you to retain the original copyright. Kanji Time does not modify any portion of reportlab.
 
 svgwrite 1.4.3
 --------------

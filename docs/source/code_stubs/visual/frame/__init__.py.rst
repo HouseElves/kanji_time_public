@@ -1,8 +1,8 @@
 .. _kanji_time-visual-frame-_init_-py:
 
-========================
-visual/frame/__init__.py
-========================
+==============
+Content Frames
+==============
 
 .. automodule:: kanji_time.visual.frame.__init__
    :members:

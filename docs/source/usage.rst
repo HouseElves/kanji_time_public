@@ -1,20 +1,8 @@
-=======================
-Kanji Time Command Line
-=======================
+============
+Command Line
+============
 
 From the shell, the Kanji Time CLI allows you to generate one or more Kanji Time report PDFs by giving their aliases and passing one or more kanji glyph parameters for each report.
-
-Command Line Examples
----------------------
-
-.. code-block:: bash
-
-    python kanji_time.py 鳥 馬 魔 --report=practice_sheet
-    python kanji_time.py 鳥 --report=kanji_summary
-
-.. seealso:: Sample report outputs in :ref:`samples`
-
-----
 
 Command-Line Options
 ---------------------
@@ -56,7 +44,7 @@ These are the currently registered report aliases and their backing modules:
      - stroke diagram and empty practice grids for a kanji
      - :mod:`reports.practice_sheet.report`
 
-.. seealso:: Sample report outputs in :ref:`samples`
+.. seealso:: Sample report outputs in :doc:`samples`
 
 ----
 

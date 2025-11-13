@@ -1,8 +1,8 @@
-=================
-kanji_time_cli.py
-=================
+Command Line Interface and Dispatch
+===================================
 
-**The command line interface entry point**
+kanji_time_cli.py
+-----------------
 
 .. automodule:: kanji_time.kanji_time_cli
    :members:

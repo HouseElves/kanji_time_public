@@ -16,8 +16,8 @@ The main class, `Radical`, provides a rich object view of each radical’s shape
 
 Two helper functions return global lookup tables:
 
-  - `radical_map()` — radical number → (kangxi, cjk) Unicode pairs
-  - `meaning_map()` — radical number → gloss definitions and tag-based meanings
+  - `radical_map()` - radical number → (kangxi, cjk) Unicode pairs
+  - `meaning_map()` - radical number → gloss definitions and tag-based meanings
 
 ----
 

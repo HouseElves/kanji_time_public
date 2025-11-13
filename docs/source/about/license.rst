@@ -1,9 +1,14 @@
 .. _license:
 
+Source Code License 
+===================
+
+The Kanji Time source code is released under the GNU AGPL v3.0 as outlined in :doc:`LICENSE_link`.
+
 Documentation License
 =====================
 
-This documentation is licensed under the Creative Commons Attribution–Share Alike 4.0 International License (CC BY-SA 4.0).
+The Kanji Time documentation is licensed under the Creative Commons Attribution–Share Alike 4.0 International License (CC BY-SA 4.0).
 
 You are free to:
 
@@ -51,4 +56,4 @@ License Summary
 
 - **Documentation**: Creative Commons Attribution–Share Alike 4.0 (CC BY-SA 4.0)
 - **Source data described or referenced**: Separate CC BY-SA 4.0 licenses, Unicode License 3.0 (see above)
-- **Software code referenced or linked**: See project `LICENSE` file for AGPL-3.0 licensing details.
+- **Software code referenced or linked**: See project :doc:`LICENSE_link` file for AGPL-3.0 licensing details.

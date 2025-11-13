@@ -1,8 +1,8 @@
-===========
-__main__.py
-===========
+Program Entry Point
+===================
 
-**The Python interpreter entry point via "python -m"**
+__main__.py
+-----------
 
 .. automodule:: kanji_time.__main__
    :members:

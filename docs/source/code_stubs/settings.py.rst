@@ -1,8 +1,10 @@
-===========
-settings.py
-===========
+Global Settings for Kanji Time
+==============================
 
-**Global settings for Kanji time**
+A placeholder for future expansion.
+
+settings.py
+-----------
 
 .. automodule:: kanji_time.settings
    :members:

@@ -1,8 +1,7 @@
 .. _kanji_time-visual-_init_-py:
 
-==================
-visual/__init__.py
-==================
+Visual Package
+==============
 
 .. automodule:: kanji_time.visual.__init__
    :members:

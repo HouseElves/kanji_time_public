@@ -14,7 +14,7 @@ The layout includes:
 - A **practice heading** and **grids** laid out in multiple strips
 - Optional headings for clarity
 
-All content is arranged vertically using the `StackLayoutStrategy`, and drawn using `ReportLabDrawing` and `FormattedText` components. No banners or glossary content are included — this report focuses purely on handwriting practice.
+All content is arranged vertically using the `StackLayoutStrategy`, and drawn using `ReportLabDrawing` and `FormattedText` components. No banners or glossary content are included - this report focuses purely on handwriting practice.
 
 Implementation Notes
 --------------------

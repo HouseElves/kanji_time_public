@@ -1,44 +1,48 @@
-.. _dev_notes:
+:orphan:
+
+.. _dev_notes_index:
 
 =================
 Development Notes
 =================
 
-Root modules
-------------
+.. only:: dev_notes
 
-.. toctree::
-   :maxdepth: 2
+    Root modules
+    ------------
 
-   dev_notes/index
+    .. toctree::
+       :maxdepth: 2
 
-.. _external_data_notes:
+       dev_notes/index
 
-External Data Package `external_data` Notes
--------------------------------------------
+    .. _external_data_notes:
 
-.. toctree::
-   :maxdepth: 2
+    External Data Package `external_data` Notes
+    -------------------------------------------
 
-   external_data/dev_notes/index
+    .. toctree::
+       :maxdepth: 2
 
-
-Reports package `reports`
--------------------------
-
-.. toctree::
-   :maxdepth: 2
-
-   reports/dev_notes/index
+       external_data/dev_notes/index
 
 
-Visual package `visual`
------------------------
+    Reports package `reports`
+    -------------------------
 
-.. toctree::
-   :maxdepth: 2
+    .. toctree::
+       :maxdepth: 2
 
-   visual/frame/dev_notes/index
-   visual/layout/dev_notes/index
-   visual/protocol/dev_notes/index
+       reports/dev_notes/index
+
+
+    Visual package `visual`
+    -----------------------
+
+    .. toctree::
+       :maxdepth: 2
+
+       visual/frame/dev_notes/index
+       visual/layout/dev_notes/index
+       visual/protocol/dev_notes/index
 

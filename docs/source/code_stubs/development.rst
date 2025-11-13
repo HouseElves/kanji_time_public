@@ -1,6 +1,6 @@
-===========
-Source Code
-===========
+=============
+API Reference
+=============
 
 Jump to the code: :ref:`sources_root`
 
@@ -79,44 +79,33 @@ The below diagram visualizes this structure.
     x:::hidden ~~~ data
     root --> ad & util & data & vis & rep
 
-This breakdown is mirrored in the directory structure in the project:
+The project file directory structure mirrors this structure:
 
 .. literalinclude:: dirsonly
 
 .. _sources_root:
 
-Project Root
-------------
-
-The project root contains the main entry point for Kanji time and the internal package directories.
-
-.. toctree::
-   :maxdepth: 2
-
-   __init__.py
-   __main__.py
-   settings.py
-   kanji_time_cli.py
-   svg_transform.py
-
-
-Package Source Code
--------------------
+Packages
+--------
 
 .. toctree::
    :maxdepth: 1
+   :hidden:
 
-   adapter/index
-   external_data/index
-   visual/index
-   reports/index
-   utilities/index
+   Root Package <__init__.py>
+   Adapter Package <adapter/__init__.py>
+   External Data Package <external_data/__init__.py>
+   Visual Entities Packagae <visual/__init__.py>
+   Reports Package <reports/__init__.py>
+   Utilities Package <utilities/__init__.py>
 
 
-Raw Development Notes
----------------------
+.. only:: dev_notes
 
-Raw code development notes extracted from the source files.
+    Raw Development Notes
+    ---------------------
 
-   :ref:`dev_notes`
+    Raw code development notes extracted from the source files.
+
+       :ref:`dev_notes_index`
 

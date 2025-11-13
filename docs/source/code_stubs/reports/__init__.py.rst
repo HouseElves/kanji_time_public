@@ -1,8 +1,7 @@
 .. _kanji_time-reports-_init_-py:
 
-===================
-reports/__init__.py
-===================
+Reports Package
+===============
 
 .. automodule:: kanji_time.reports.__init__
    :members:

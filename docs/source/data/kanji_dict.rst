@@ -10,8 +10,8 @@ It contains readings, glosses, and grammatical tags for each character or kana.
 
 The interface exposes:
 
-    - `get_glyph_xml(glyph)` — fetches XML elements matching a given character
-    - `flatten_xml(entry)` — converts those elements to a simplified dictionary form
+    - `get_glyph_xml(glyph)` - fetches XML elements matching a given character
+    - `flatten_xml(entry)` - converts those elements to a simplified dictionary form
 
 The resulting dictionary includes orthographic variants, frequency indicators, kana readings, and semantic glosses grouped by sense.
 

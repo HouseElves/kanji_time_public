@@ -5,8 +5,8 @@ Report Output
 
 The `reports` module provides a pluggable, extensible, and layout-aware architecture for generating Kanji Time output sheets in PDF format using ReportLab. It currently supports two major report types:
 
-    - `Kanji Summary Report` — displays readings, radicals, and dictionary definitions for a glyph
-    - `Practice Sheet Report` — presents stroke order diagrams and blank practice grids
+    - `Kanji Summary Report` - displays readings, radicals, and dictionary definitions for a glyph
+    - `Practice Sheet Report` - presents stroke order diagrams and blank practice grids
 
 Each report implements the `RenderingFrame` and `PageController` protocols, coordinating layout and pagination using reusable content frames and layout strategies.
 
@@ -66,7 +66,7 @@ Package symbols in 'reports'
 ----------------------------
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
     info_sheet
     practice_sheet

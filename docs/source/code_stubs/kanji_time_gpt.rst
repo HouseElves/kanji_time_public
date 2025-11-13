@@ -1,13 +1,11 @@
 :orphan:
 
-======================================
+.. _kanji_time_gpt:
+
 ChatGPT 4o Baseline: kanji_time_cli.py
 ======================================
 
-.. _kanji_time_gpt:
-
-ChatGPT 4o Baseline for kanji_time.py
--------------------------------------
+The final version of kanji_time_cli.py is a heavily modified version of the below code obtained from ChatGPT 4o.
 
 .. sourcecode:: python
 

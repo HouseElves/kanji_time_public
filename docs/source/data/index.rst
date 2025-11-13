@@ -10,7 +10,7 @@ The Kanji Time :code:`external_data` module encapsulates all the interfaces into
 The design isolates each dataset into its own dedicated code module, linked below.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    kanji_dict
    kanjidict2

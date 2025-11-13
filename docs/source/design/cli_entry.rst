@@ -73,7 +73,7 @@ Execution Flow
 
 Once the CLI resolves the requested report by name and gathers the report's data it enters a page-rendering loop.
 The pagination logic interacts with other Kanji Time components as below.
-The overriding consideration for this loop is simplicity: the page-rendering loop delegates all the complexity of page layout, tracking data, and deciding page breaks & report completion to the report controller in a Template Algorithm software pattern.
+The overriding consideration for this loop is simplicity: the page-rendering loop delegates all the complexity of page layout, tracking data, and deciding page breaks & report completion to the report controller in a Template Method software pattern.
 
 .. mermaid::
     :name: sd_pagination

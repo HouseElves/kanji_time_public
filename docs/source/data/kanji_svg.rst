@@ -14,9 +14,9 @@ The `KanjiSVG` class acts as a cached drawing service that:
 
 Clients can call:
 
-    - `draw_stroke_steps()` — create a diagram showing the stroke sequence for a glyph
-    - `draw_practice_strip()` — draw the glyph and a row of empty cells for handwriting drills
-    - `draw_glyph()` — draw the kanji alone or with radical strokes highlighted
+    - `draw_stroke_steps()` - create a diagram showing the stroke sequence for a glyph
+    - `draw_practice_strip()` - draw the glyph and a row of empty cells for handwriting drills
+    - `draw_glyph()` - draw the kanji alone or with radical strokes highlighted
 
 Internally, Kanji Time uses `svgwrite` for drawing SVG graphics and `xml.etree.ElementTree` for parsing them.
 

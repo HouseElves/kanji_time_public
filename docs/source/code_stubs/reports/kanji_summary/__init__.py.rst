@@ -1,8 +1,7 @@
 .. _kanji_time-reports-kanji_summary-_init_-py:
 
-=================================
-reports/kanji_summary/__init__.py
-=================================
+Kanji Summary Report
+====================
 
 .. automodule:: kanji_time.reports.kanji_summary.__init__
    :members:

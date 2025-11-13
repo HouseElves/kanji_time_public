@@ -6,7 +6,7 @@ Kanji Summary Report
 
 Python module: :mod:`reports.kanji_summary.report`
 
-The Kanji Summary Report is designed to provide rich contextual information for a given kanji character. It complements the practice sheet by giving learners insight into the character's readings, meanings, radical, and dictionary glosses — structured across one or more paginated PDF pages.
+The Kanji Summary Report is designed to provide rich contextual information for a given kanji character. It complements the practice sheet by giving learners insight into the character's readings, meanings, radical, and dictionary glosses - structured across one or more paginated PDF pages.
 
 Report Structure
 ----------------

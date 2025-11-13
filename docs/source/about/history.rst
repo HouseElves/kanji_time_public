@@ -18,20 +18,21 @@ The overarching idea is to cement a kanji in memory by its strokes and by its di
 
 I looked to the same trusted data sources as `jisho.org` to generate two items:
 
-1. printable exercise sheets containing stroke diagrams and ruled areas to practice a kanji character, and,
-2. consistently formatted kanji summaries that contain readings, radical information, and definitions.
+#. printable exercise sheets containing stroke diagrams and ruled areas to practice a kanji character, and,
+#. consistently formatted kanji summaries that contain readings, radical information, and definitions.
 
-The author could achieve most of this from a Jupyter Notebook and supporting IPython services - but it quickly became apparent that to get polished results, we'd need to integrate layout and PDF output into the code.
+The author could achieve most of this from a Jupyter Notebook and supporting IPython services - but it quickly became apparent that this approach would not yield highly polished results.
+To get desired level of quality, we'd need to integrate layout and PDF output into the code.
 
-We'd need to up our game from a notebook to a Python console application.
+We'd outgrown a simple Jupyter notebook to being a Python console application:  "Kanji Time" is born!
 
-Kanji Time is born!
--------------------
+Kanji Time Console Application
+------------------------------
 
-The new application is "Kanji Time" and the result is in front of you.
+The new application, "Kanji Time", developed out of Jupyter prototypes, is in front of you.
 
-The Kanji Time app only has two PDF outputs at this time to prove out the concept.
-These are just the beginning!
+It produces two useful PDF outputs to prove out the concept - with plenty of room for growth to add more.
+
 Kanji Time incorporates a flexible drop-in report architecture and simple reusable layout rules that easily allow for future expansion to new exercise sheets such as:
 
     - exploring small groups of compound kanji words connected through a common theme (such as a common stroke group, prefix/suffix, readings, or sounds),
@@ -43,7 +44,8 @@ The possibilities are endless - extensibility and growth are baked in as core de
 New Goals Emerge
 ----------------
 
-As I was developing Kanji Time I was looking ahead to the upcoming session of `Code In Place (CiP) <https://codeinplace.stanford.edu>`_.  I realized that Kanji Time could make an interesting example to my CiP section students of what "real-life" Python programming looks like.
+As I was developing Kanji Time I was looking ahead to the upcoming session of `Code In Place (CiP) <https://codeinplace.stanford.edu>`_.
+I realized that Kanji Time could make an interesting example to my CiP section students of what "real-life" Python programming looks like.
 
 To that end I set some smaller goals:
 

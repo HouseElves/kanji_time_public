@@ -1,8 +1,7 @@
 .. _kanji_time-external_data-_init_-py:
 
-=========================
-external_data/__init__.py
-=========================
+External Data Package
+=====================
 
 .. automodule:: kanji_time.external_data.__init__
    :members:

@@ -1,6 +1,6 @@
-==============================================================
-Place Frames in a Single Row or Column: Stack Layout Strategy
-==============================================================
+===========================================
+Single Row or Column: Stack Layout Strategy
+===========================================
 
 Python code file: visual/layout/stack_layout.py
 

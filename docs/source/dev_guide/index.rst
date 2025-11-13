@@ -1,11 +1,8 @@
-=================
-Developer's Guide
-=================
-
 .. toctree::
-    :maxdepth: 2
+   :hidden:
+   :caption: Developer's Guide
 
-    ../data/index
-    ../frames/index
-    ../geometry/index
-    ../reports/index
+   ../data/index
+   ../frames/index
+   ../geometry/index
+   ../reports/index

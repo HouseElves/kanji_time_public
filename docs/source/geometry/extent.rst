@@ -23,7 +23,7 @@ AnchorPoint Enumeration
 Python module: :mod:`visual.layout.anchor_point`
 
 The :class:`AnchorPoint` enum defines symbolic alignment flags for positioning one frame inside another.
-The flags are compass-style anchor hints — such as `N`, `SW`, or `CENTER` — used by layout engines to place child content within a parent container.
+The flags are compass-style anchor hints - such as `N`, `SW`, or `CENTER` - used by layout engines to place child content within a parent container.
 
 This enum is used primarily by `Extent.anchor_at()` to align an inner extent relative to a larger one. It supports:
 

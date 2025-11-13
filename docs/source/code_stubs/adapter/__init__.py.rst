@@ -1,8 +1,9 @@
+:orphan:
+
 .. _kanji_time-adapter-_init_-py:
 
-===================
-adapter/__init__.py
-===================
+Adapter Package
+===============
 
 .. automodule:: kanji_time.adapter.__init__
    :members:

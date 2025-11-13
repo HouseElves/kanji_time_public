@@ -20,7 +20,7 @@ Atomic Frames and Containers
 These are the core architectural building blocks of the layout system.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    simple_element
    container
@@ -36,7 +36,7 @@ Specialized Atomic Content Frames
 These provide specific rendering logic for formatted text, vector diagrams, horizontal rules, and spacing blocks.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    formatted_text
    drawing

@@ -10,7 +10,7 @@ E.g. the `reports.kanji_summary` package contains all the code objects necessary
 
 Since running arbitrary code from the command line is a security breach, each report alias must also be present in Kanji Time's report whitelist table :data:`kanji_time.VALID_REPORTS`.
 
-.. rubric:: Report Add On Model Contents
+.. rubric:: Report Add-on Model Contents
     :heading-level: 2
 
 - :ref:`addon_contract`
@@ -104,7 +104,7 @@ There is a lot going on in a page controller.  So much that Kanji Time provides 
 
 
 These players drive the pagination loop in the below code as shown in the sequence diagram at :ref:`sd_pagination`.
-Most of this loop isn't central to understanding the Add On Contract.
+Most of this loop isn't central to understanding the Add-on Contract.
 For that understanding, let's examine lines 1, 2, 9, and 11.
 
 .. code-block:: python

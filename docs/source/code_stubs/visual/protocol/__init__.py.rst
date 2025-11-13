@@ -1,8 +1,7 @@
 .. _kanji_time-visual-protocol-_init_-py:
 
-===========================
-visual/protocol/__init__.py
-===========================
+Protocols
+=========
 
 .. automodule:: kanji_time.visual.protocol.__init__
    :members:

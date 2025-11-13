@@ -1,8 +1,7 @@
-===========
-__init__.py
-===========
+Project Root
+============
 
-**Defines the required global state for Kanji Time."**
+**Defines the required global state for Kanji Time.**
 
 .. automodule:: kanji_time.__init__
    :members:

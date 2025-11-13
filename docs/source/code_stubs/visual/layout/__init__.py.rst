@@ -1,8 +1,7 @@
 .. _kanji_time-visual-layout-_init_-py:
 
-=========================
-visual/layout/__init__.py
-=========================
+Visual Layout Control
+=====================
 
 .. automodule:: kanji_time.visual.layout.__init__
    :members:

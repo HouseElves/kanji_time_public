@@ -41,23 +41,4 @@ Kanji Time imports data from
 
 Kanji Time uses these data in their original unaltered form.
 
-.. _licensing:
-
-Licenses
---------
-
-Kanji Time is a mixed-license project.
-The code is released under the GNU AGPL v3.0, while the accompanying documentation is licensed under CC BY-SA 4.0.
-It redistributes third-party data sets under their original licenses: KanjiDic2 and KanjiVG under CC BY-SA 4.0, and Unicode CJKRadicals.txt under the Unicode License Version 3.0.
-
-All redistributed data is included in its original, unmodified form.
-
-For full details, see:
-
-.. toctree::
-    :maxdepth: 1
-
-    license
-    notice
-    third_party_licenses
-
+Licensing details available in :doc:`../licensing`

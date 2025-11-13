@@ -47,7 +47,7 @@ The RenderingFrame Protocol
 
 The foundation of layout in Kanji Time is the `RenderingFrame` protocol.
 
-All components that can be placed on a page — such as text boxes, glyphs, diagrams, or containers — conform to this protocol.
+All components that can be placed on a page - such as text boxes, glyphs, diagrams, or containers - conform to this protocol.
 
 A `RenderingFrame` is responsible for three key phases in presenting its content:
 

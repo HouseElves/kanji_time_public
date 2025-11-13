@@ -16,7 +16,7 @@ Every strategy must implement two core methods:
 - **`measure()`**: Accepts a list of element extents and returns the minimal size needed to accommodate them.
 - **`layout()`**: Accepts a target region and element sizes, and returns their final positions as a list of `Region` objects.
 
-This abstraction allows different strategies — like stacked, wrapped, or grid layouts — to be cleanly plugged into the layout pipeline.
+This abstraction allows different strategies - like stacked, wrapped, or grid layouts - to be cleanly plugged into the layout pipeline.
 
 .. mermaid::
 
