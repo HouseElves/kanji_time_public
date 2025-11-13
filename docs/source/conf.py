@@ -87,7 +87,7 @@ def on_builder_init_set_master_doc(app: Sphinx):
     # The others need to go into the exclude patterns since Sphinx will try to build them unless we tell it otherwise.
     master_docs = {
         'linear_flow': 'index_linear',
-        'nonlinear_flow': 'index_nonlinear_cards'
+        'nonlinear_flow': 'index'
     }
     all_masters = set(master_docs.values())
     
@@ -107,7 +107,7 @@ def on_builder_init_set_master_doc(app: Sphinx):
         # Sphinx is a little inconsistent on it's protocol. In this case, the exclusion list needs a full file name.
         f"{doc}.rst" for doc in all_masters if doc != master_doc  # more clear than "doc in (all_masters - {master_doc})"
     ]
-    app.config.master_doc = master_doc
+    app.config.root_doc = master_doc
     app.config.exclude_patterns += excluded_masters
     app.tags.add(flow_type)
 
