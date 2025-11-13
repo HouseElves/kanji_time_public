@@ -9,7 +9,7 @@ glyphs, glosses, and cross-referenced definitions in reports and SVG diagrams.
 Kanji Time parses the `CJKRadicals.txt` file from the Unicode Character Database and extracts:
 
   - glyph variants for each radical (standard, simplified, and alternate),
-  - gloss meanings and kana/romanji names, and,
+  - gloss meanings and kana/romaji names, and,
   - supplemental metadata from KANJIDIC2 via `radical_name` and `rad_value` tags.
 
 The main class, `Radical`, provides a rich object view of each radical’s shape and significance.

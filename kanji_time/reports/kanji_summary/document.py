@@ -334,14 +334,14 @@ class KanjiReportData:
         glyphs = ", ".join(radical_detail.glyphs)
         name = ", ".join(radical_detail.hiragana_names)
         meaning = ", ".join(radical_detail.interpretations)
-        romanji = radical_detail.romanji_name
+        romaji = radical_detail.romaji_name
 
         radical_text: Sequence[Paragraph] = [
             Paragraph(
                 in_typeface('Helvetica', f'Radical #{radical_detail.radical_num}: ') + f"{glyphs}", styles['Japanese Align=Right']
             ),
             Paragraph(name + '<br/>' if name is not None else '', styles['Japanese Align=Right']),
-            Paragraph(in_typeface('Helvetica', romanji) + '<br/>' if romanji is not None else '', styles['Japanese Align=Right']),
+            Paragraph(in_typeface('Helvetica', romaji) + '<br/>' if romaji is not None else '', styles['Japanese Align=Right']),
             Paragraph(in_typeface('Helvetica', meaning), styles['Japanese Align=Right']),
         ]
 

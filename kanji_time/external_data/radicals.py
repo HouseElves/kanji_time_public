@@ -49,7 +49,7 @@ RadicalVariants = Sequence[tuple[str | None, str | None]]  #: Primary and altern
 RadicalMap = Mapping[int, RadicalVariants]  #: Primary and alternate characters for all radicals by radical number
 MeaningMap = Mapping[int, list[dict]]  #: Short meanings for all radicals by radical number
 
-romanji_name = re.compile(r'(.*) radical \(no\. ?\d{1,3}\)')  #: Regular expression for extracting the romanji name for a radical character
+romaji_name = re.compile(r'(.*) radical \(no\. ?\d{1,3}\)')  #: Regular expression for extracting the romaji name for a radical character
 radical_number_pattern = re.compile("([1-9][0-9]{0,2})(\'{0,2})")  #: Regular expression for extracting the radical number 1 to 214, inclusive
 
 
@@ -259,10 +259,10 @@ class Radical:
         }
 
     @property
-    def romanji_name(self) -> str | None:
+    def romaji_name(self) -> str | None:
         """Extract the Romaji version of the radical name from the meanings."""
         for meaning in self.significance:  # type: ignore
-            if (m := meaning.get("meanings")) is not None and (r := [match[1] for x in m if (match := romanji_name.match(x))]):
+            if (m := meaning.get("meanings")) is not None and (r := [match[1] for x in m if (match := romaji_name.match(x))]):
                 return r[0]
         return None
 
@@ -278,7 +278,7 @@ class Radical:
             e
             for meaning_list in all_meaning_lists
             for e in meaning_list  # type: ignore
-            if not romanji_name.match(e)
+            if not romaji_name.match(e)
         }
 
 

@@ -78,7 +78,7 @@ The `Radical` class loads this data and provides accessors for
 
     - radical glyphs (`.glyphs`),
     - English glosses (`.interpretations`), and,
-    - kana/romanized names (`.hiragana_names`, `.romanji_name`)
+    - kana/romanized names (`.hiragana_names`, `.romaji_name`)
 
 The containing module also exposes `radical_map()` and `meaning_map()` functions to retrieve the full lookup tables.
 
