@@ -153,6 +153,10 @@ Kanji Time will be *isolated inside its own virtual environment using `venv`* so
 * If you already use virtual environments, feel free to substitute appropriate commands for your preferred tool (such as `pyenv` or `virtualenv`).  
   Kanji Time is agnostic to how the environment is managed.
 
+> [!NOTE]
+> Ubuntu/Debian users will need to install `venv` support if it is not already present: `sudo apt install python3-venv`  
+> See [Real Python's virtual environment primer](https://realpython.com/python-virtual-environments-a-primer/) for platform-specific setup details.
+
 From the command line, create (or navigate to) a parent directory for Kanji Time (e.g., `PythonApps`), then run:
 
 ### On **Windows**
@@ -170,6 +174,9 @@ python3 -m venv .kanji_time
 source .kanji_time/bin/activate
 pip3 install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.1-alpha-20250606/kanji_time-0.1.1a20250606-py3-none-any.whl
 ```
+
+> [!TIP]
+> **Having trouble?** See the [Troubleshooting Guide](docs/source/troubleshooting.md) for common installation and runtime issues.
 
 Kanji Time will be installed into a directory named `.kanji_time` under the parent directory that you selected.
 
@@ -244,6 +251,9 @@ python3 -m build
 # Install
 pip3 install -e .
 ```
+
+> [!TIP]
+> **Having trouble?** See the [Troubleshooting Guide](docs/source/troubleshooting.md) for common installation and runtime issues.
 
 Once installed, you can run sample reports just as if you installed from the wheel.
 
