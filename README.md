@@ -253,7 +253,7 @@ pip3 install -e .
 ```
 
 > [!TIP]
-> **Having trouble?** See the [Troubleshooting Guide](docs/source/troubleshooting.md) for common installation and runtime issues.
+> **Having trouble?** See the [Troubleshooting Guide](troubleshooting.md) for common installation and runtime issues.
 
 Once installed, you can run sample reports just as if you installed from the wheel.
 
