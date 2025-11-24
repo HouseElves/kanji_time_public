@@ -56,6 +56,9 @@ classifiers = [
 [tool.setuptools.dynamic]
 version = {attr = "kanji_time.__version__"}
 
+[project.urls]
+documentation = "https://kanji-time-public.readthedocs.io/en/latest/"
+repository = "https://github.com/HouseElves/kanji_time_public"
 
 [project.scripts]
 kanjitime = "kanji_time.__main__:main"
