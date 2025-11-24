@@ -15,7 +15,7 @@ include-package-data = true
 
 [project]
 name = "kanji-time"
-version = "0.1.1.alpha.20251123"
+dynamic = ["version"]  
 description = "A tool for generating kanji study sheets and dictionary summaries"
 readme = "README.rst"
 license = "AGPL-3.0-only"
@@ -52,6 +52,10 @@ classifiers = [
     "Natural Language :: English",
     "Topic :: Education"
 ]
+
+[tool.setuptools.dynamic]
+version = {attr = "kanji_time.__version__"}
+
 
 [project.scripts]
 kanjitime = "kanji_time.__main__:main"
