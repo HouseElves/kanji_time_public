@@ -20,7 +20,7 @@ Package Contents
 
 import pathlib
 
-__version__ = "0.1.1-alpha-20251123"
+__version__ = "0.1.2-alpha-20251123"
 
 #: root directory for the Python sources.
 SOURCES_ROOT = pathlib.Path(__file__).parent
