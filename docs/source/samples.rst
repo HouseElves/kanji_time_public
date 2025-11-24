@@ -13,7 +13,7 @@ Obtain this PDF by typing this at the command line
 
 .. code-block:: bash
 
-    python kanji_time.py 生 --report=kanji_summary
+    python3 -m kanji_time 生 --report=kanji_summary
 
 
 .. only:: html or singlehtml
@@ -46,7 +46,7 @@ Obtain this PDF by typing this at the command line
 
 .. code-block:: bash
 
-    python kanji_time.py 生 --report=practice_sheet
+    python3 -m kanji_time 生 --report=practice_sheet
 
 .. only:: html or singlehtml
 

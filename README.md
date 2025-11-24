@@ -158,17 +158,17 @@ From the command line, create (or navigate to) a parent directory for Kanji Time
 ### On **Windows**
 
 ```bash
-python -m venv .kanji_time
+python3 -m venv .kanji_time
 .kanji_time\Scripts\activate
-pip install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.1-alpha-20250606/kanji_time-0.1.1a20250606-py3-none-any.whl
+pip3 install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.1-alpha-20250606/kanji_time-0.1.1a20250606-py3-none-any.whl
 ```
 
 ### On **macOS** or **Linux**
 
 ```bash
-python -m venv .kanji_time
+python3 -m venv .kanji_time
 source .kanji_time/bin/activate
-pip install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.1-alpha-20250606/kanji_time-0.1.1a20250606-py3-none-any.whl
+pip3 install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.1-alpha-20250606/kanji_time-0.1.1a20250606-py3-none-any.whl
 ```
 
 Kanji Time will be installed into a directory named `.kanji_time` under the parent directory that you selected.
@@ -178,7 +178,7 @@ Kanji Time will be installed into a directory named `.kanji_time` under the pare
 Generate sample kanji reports from the command line:
 
 ```bash
-python -m kanji_time 現 生 鳥 --report=kanji_summary --report=practice_sheet
+python3 -m kanji_time 現 生 鳥 --report=kanji_summary --report=practice_sheet
 ```
 
 * This will process the characters `現`, `生`, and `鳥`, and produce PDF outputs and execution logs.
@@ -218,14 +218,14 @@ rem Get the source code
 git clone https://github.com/HouseElves/kanji_time_public.git
 cd kanji_time_public
 rem Make a virtual environment
-python -m venv .kanji_time
+python3 -m venv .kanji_time
 .kanji_time\Scripts\activate
 rem Build
-pip install -r requirements.txt
-pip install --upgrade build
-python -m build
+pip3 install -r requirements.txt
+pip3 install --upgrade build
+python3 -m build
 rem Install
-pip install -e .
+pip3 install -e .
 ```
 
 ### On **macOS** or **Linux**
@@ -235,14 +235,14 @@ pip install -e .
 git clone https://github.com/HouseElves/kanji_time_public.git
 cd kanji_time_public
 # Make a virtual environment
-python -m venv .kanji_time
+python3 -m venv .kanji_time
 source .kanji_time/bin/activate
 # Build
-pip install -r requirements.txt
-pip install --upgrade build
-python -m build
+pip3 install -r requirements.txt
+pip3 install --upgrade build
+python3 -m build
 # Install
-pip install -e .
+pip3 install -e .
 ```
 
 Once installed, you can run sample reports just as if you installed from the wheel.
@@ -253,7 +253,7 @@ See the [Run Sample Reports](#run-sample-reports) section for details.
 
 # Documentation
 
-The Kanji Time usage & develpment guide is now live on ReadTheDocs!
+The Kanji Time usage & development guide is now live on ReadTheDocs!
 
 ➡️ [Full Documentation »](https://kanji-time-public.readthedocs.io/en/latest/)
 

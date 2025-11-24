@@ -5,8 +5,8 @@ From the shell, the Kanji Time CLI allows you, the user, to generate one or more
 
 ```bash
 
-    python kanji_time.py 鳥 馬 魔 --report=practice_sheet
-    python kanji_time.py 鳥 --report=kanji_summary
+    python3 -m kanji_time 鳥 馬 魔 --report=practice_sheet
+    python3 -m kanji_time 鳥 --report=kanji_summary
 
 ```
 

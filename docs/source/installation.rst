@@ -38,9 +38,9 @@ On **Windows**
 .. code-block:: batch
    :caption: Installing Kanji Time on Windows
 
-        python -m venv .kanji_time
+        python3 -m venv .kanji_time
         .kanji_time\Scripts\activate
-        pip install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.1-alpha-20250606/kanji_time-0.1.1a20250606-py3-none-any.whl
+        pip3 install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.1-alpha-20250606/kanji_time-0.1.1a20250606-py3-none-any.whl
 
 On **macOS** or **Linux**
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -48,9 +48,9 @@ On **macOS** or **Linux**
 .. code-block:: bash
    :caption: Installing Kanji Time on macOS or Linux
 
-        python -m venv .kanji_time
+        python3 -m venv .kanji_time
         source .kanji_time/bin/activate
-        pip install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.1-alpha-20250606/kanji_time-0.1.1a20250606-py3-none-any.whl
+        pip3 install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.1-alpha-20250606/kanji_time-0.1.1a20250606-py3-none-any.whl
 
 ----
 
@@ -73,14 +73,14 @@ On **Windows**
         git clone https://github.com/HouseElves/kanji_time_public.git
         cd kanji_time_public
         rem Make a virtual environment
-        python -m venv .kanji_time
+        python3 -m venv .kanji_time
         .kanji_time\Scripts\activate
         rem Build
-        pip install -r requirements.txt
-        pip install --upgrade build
-        python -m build
+        pip3 install -r requirements.txt
+        pip3 install --upgrade build
+        python3 -m build
         rem Install
-        pip install -e .
+        pip3 install -e .
 
 On **macOS** or **Linux**
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -92,14 +92,14 @@ On **macOS** or **Linux**
         git clone https://github.com/HouseElves/kanji_time_public.git
         cd kanji_time_public
         # Make a virtual environment
-        python -m venv .kanji_time
+        python3 -m venv .kanji_time
         source .kanji_time/bin/activate
         # Build
-        pip install -r requirements.txt
-        pip install --upgrade build
-        python -m build
+        pip3 install -r requirements.txt
+        pip3 install --upgrade build
+        python3 -m build
         # Install
-        pip install -e .
+        pip3 install -e .
 
 ----
 
@@ -111,7 +111,7 @@ The below command will run Kanji Time to produce dictionary information and stro
 
 .. code-block:: bash
 
-        python -m kanji_time 現 生 鳥 --report=kanji_summary --report=practice_sheet
+        python3 -m kanji_time 現 生 鳥 --report=kanji_summary --report=practice_sheet
 
 After a moment or two, you will see output similar to this:
 
