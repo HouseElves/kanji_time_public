@@ -154,7 +154,8 @@ Kanji Time will be *isolated inside its own virtual environment using `venv`* so
   Kanji Time is agnostic to how the environment is managed.
 
 > [!NOTE]
-> Ubuntu/Debian users will need to install `venv` support if it is not already present: `sudo apt install python3-venv`  
+> Ubuntu/Debian users will need to install `venv` support if it is not already present:  
+> `sudo apt install python3-venv`  
 > See [Real Python's virtual environment primer](https://realpython.com/python-virtual-environments-a-primer/) for platform-specific setup details.
 
 From the command line, create (or navigate to) a parent directory for Kanji Time (e.g., `PythonApps`), then run:
@@ -176,7 +177,7 @@ pip3 install https://github.com/HouseElves/kanji_time_public/releases/download/v
 ```
 
 > [!TIP]
-> **Having trouble?** See the [Troubleshooting Guide](docs/source/troubleshooting.md) for common installation and runtime issues.
+> **Having trouble?** See the [Troubleshooting Guide](troubleshooting.md) for common installation and runtime issues.
 
 Kanji Time will be installed into a directory named `.kanji_time` under the parent directory that you selected.
 
