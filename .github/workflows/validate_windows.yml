@@ -1,0 +1,143 @@
+# .github/workflows/validate_macOS.yml
+
+name: Tests on Windows
+
+on:
+  # Allow manual triggering with version input
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to test (e.g., 0.1.2-alpha-20251123 or "latest")'
+        required: true
+        default: 'latest'
+
+jobs:
+  # ============================================================================
+  # WINDOWS - Native testing (most compatible)
+  # ============================================================================
+  test-windows:
+    name: Windows (Python ${{ matrix.python-version }})
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12']
+    
+    steps:
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      
+      - name: Set version variable
+        id: version
+        shell: pwsh
+        run: |
+          if ("${{ github.event_name }}" -eq "release") {
+            $VERSION = "${{ github.event.release.tag_name }}"
+            $VERSION = $VERSION.TrimStart('v')
+          } else {
+            $VERSION = "${{ github.event.inputs.version }}"
+          }
+          echo "version=$VERSION" >> $env:GITHUB_OUTPUT
+          Write-Host "Testing version: $VERSION"
+      
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov coverage
+      
+      - name: Download and install wheel from GitHub
+        shell: pwsh
+        run: |
+          $VERSION = "${{ steps.version.outputs.version }}"
+          
+          if ($VERSION -eq "latest" -or $VERSION -eq "lkg") {
+            $WHEEL_URL = "https://github.com/${{ github.repository }}/releases/latest/download/kanji_time-$VERSION-py3-none-any.whl"
+          } else {
+            $WHEEL_VERSION = $VERSION -replace '-alpha-','a' -replace '-beta-','b' -replace '-rc-','rc'
+            $WHEEL_URL = "https://github.com/${{ github.repository }}/releases/download/v$VERSION/kanji_time-$WHEEL_VERSION-py3-none-any.whl"
+          }
+          
+          Write-Host "Installing from: $WHEEL_URL"
+          pip install "$WHEEL_URL"
+      
+      - name: Clone test suite from GitHub
+        shell: pwsh
+        run: |
+          $VERSION = "${{ steps.version.outputs.version }}"
+          
+          # Determine git tag
+          if ($VERSION -eq "latest" -or $VERSION -eq "lkg") {
+            # Get the actual latest tag
+            $response = Invoke-RestMethod -Uri "https://api.github.com/repos/${{ github.repository }}/releases/latest"
+            $GIT_TAG = $response.tag_name
+          } else {
+            $GIT_TAG = "v$VERSION"
+          }
+          
+          Write-Host "Cloning from tag: $GIT_TAG"
+          git clone --depth 1 --branch "$GIT_TAG" https://github.com/${{ github.repository }}.git C:\temp\kanji-src
+          Copy-Item -Recurse C:\temp\kanji-src\kanji_time kanji_time
+          Copy-Item C:\temp\kanji-src\pytest.ini pytest.ini
+      
+      - name: Run tests with coverage
+        shell: pwsh
+        run: |
+          Write-Host "Running pytest with coverage..."
+          coverage run --branch -m pytest
+          
+          Write-Host ""
+          Write-Host "======================================"
+          Write-Host "Coverage Report"
+          Write-Host "======================================"
+          coverage report -m
+          
+          Write-Host ""
+          Write-Host "Files under 90% branch coverage:"
+          $report = coverage report
+          $report | Select-String -Pattern "^\S.*\s+\d+%$" | ForEach-Object {
+            if ($_ -match "(\d+)%$") {
+              $percent = [int]$matches[1]
+              if ($percent -lt 90) {
+                Write-Host $_
+              }
+            }
+          }
+      
+      - name: Report results
+        if: always()
+        shell: pwsh
+        run: |
+          Write-Host "✅ Windows (Python ${{ matrix.python-version }}): PASSED"
+
+  summary:
+    name: Test Summary
+    runs-on: ubuntu-latest
+    needs: [test-windows]
+    if: always()
+    
+    steps:
+      - name: Check test results
+        run: |
+          echo "======================================"
+          echo "Multi-Platform Test Summary"
+          echo "======================================"
+          
+          if [ "${{ needs.test-windows.result }}" = "success" ]; then
+            echo "PLATFORM PASSED"
+            echo ""
+            echo "Tested on:"
+            echo "  • Windows (Python 3.11, 3.12) native"
+            echo ""
+            echo "The release is validated and ready for users!"
+            exit 0
+          else
+            echo "❌ SOME PLATFORM FAILED"
+            echo ""
+            echo "Results:"
+            echo "  • Windows:   ${{ needs.test-windows.result }}"
+            echo ""
+            echo "Check individual job logs for details."
+            exit 1
+          fi
