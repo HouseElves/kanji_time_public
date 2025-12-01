@@ -3,9 +3,24 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/HouseElves/kanji_time_public/actions/workflows/validate_Linux.yml">
+    <img src="https://github.com/HouseElves/kanji_time_public/actions/workflows/validate_Linux.yml/badge.svg" alt="Tests on Linux">
+  </a>
+  <a href="https://github.com/HouseElves/kanji_time_public/actions/workflows/validate_macOS.yml">
+    <img src="https://github.com/HouseElves/kanji_time_public/actions/workflows/validate_macOS.yml/badge.svg" alt="Tests on macOS">
+  </a>
+  <a href="https://github.com/HouseElves/kanji_time_public/actions/workflows/validate_windows.yml">
+    <img src="https://github.com/HouseElves/kanji_time_public/actions/workflows/validate_windows.yml/badge.svg" alt="Tests on Windows">
+  </a>
+  <br/>
+  <a href="https://kanji-time-public.readthedocs.io/">
+    <img src="https://readthedocs.org/projects/kanji-time-public/badge/?version=latest" alt="Documentation Status">
+  </a>
+  <br/>
   <a href="https://github.com/HouseElves/kanji_time_public/releases">
     <img src="https://img.shields.io/github/v/release/HouseElves/kanji_time_public?include_prereleases" alt="GitHub release">
   </a>
+  <br/>
   <a href="https://www.python.org/downloads/release/python-3110/">
     <img src="https://img.shields.io/badge/python-3.11%2B-blue.svg" alt="Python 3.11+">
   </a>  <a href="https://www.gnu.org/licenses/agpl-3.0">
@@ -143,7 +158,7 @@ build & run Kanji Time from the source code.
 
 Kanji Time runs on Python 3.11.0 or later.
 
-The installation instructions below have been verified on **Windows 10** (Build 19045.5965), **Ubuntu 22.04.5 LTS**, and **macOS 15.5 "Sequoia"**.  
+Kanji Time as been installed and verified on **Windows Server 2025 (v10.0.26100, Build 6905)**, **Ubuntu 24.04.3 LTS**, and **macOS 15.7.2 "Sequoia"**.  
 
 These steps will install Kanji Time using the latest development wheel from GitHub.  
 
