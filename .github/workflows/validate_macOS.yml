@@ -1,6 +1,6 @@
 # .github/workflows/validate_macOS.yml
 
-name: Validate Release on macOS
+name: Testing on macOS
 
 on:
   # Allow manual triggering with version input
