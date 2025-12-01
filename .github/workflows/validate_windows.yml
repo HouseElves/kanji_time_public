@@ -124,7 +124,7 @@ jobs:
           echo "Multi-Platform Test Summary"
           echo "======================================"
           
-          if [ "${{ needs.test-macos.result }}" = "success" ]; then
+          if [ "${{ needs.test-windows.result }}" = "success" ]; then
             echo "PLATFORM PASSED"
             echo ""
             echo "Tested on:"
@@ -136,7 +136,7 @@ jobs:
             echo "❌ SOME PLATFORM FAILED"
             echo ""
             echo "Results:"
-            echo "  • Windows:   ${{ needs.test-macos.result }}"
+            echo "  • Windows:   ${{ needs.test-windows.result }}"
             echo ""
             echo "Check individual job logs for details."
             exit 1
