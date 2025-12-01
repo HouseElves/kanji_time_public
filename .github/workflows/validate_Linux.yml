@@ -55,8 +55,7 @@ jobs:
       - name: Download and install wheel from GitHub
         run: |
           VERSION="${{ steps.version.outputs.version }}"
-          if ($VERSION -eq "latest" -or $VERSION -eq "lkg") {
-            $WHEEL_URL = "https://github.com/${{ github.repository }}/releases/latest/download/kanji_time-$VERSION-py3-none-any.whl"
+          if [ $VERSION = "latest" ] || [ $VERSION = "lkg" ]; then
             WHEEL_URL="https://github.com/${{ github.repository }}/releases/latest/download/kanji_time-${VERSION}-py3-none-any.whl"
           else
             WHEEL_VERSION=$(echo "$VERSION" | sed 's/-alpha-/a/' | sed 's/-beta-/b/' | sed 's/-rc-/rc/')
