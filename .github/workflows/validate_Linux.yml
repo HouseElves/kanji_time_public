@@ -41,12 +41,11 @@ jobs:
       - name: Install Cairo dependencies (Linux)
         run: |
           echo "Installing Cairo and pkg-config via apt..."
-          apt-get update && apt-get install -y \
+          sudo apt-get update 
+          sudo apt-get install -y \
             gcc \
             pkg-config \
-            libcairo2-dev \
-            git \
-          && rm -rf /var/lib/apt/lists/*        
+            libcairo2-dev
 
       - name: Install test dependencies
         run: |
