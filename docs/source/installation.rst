@@ -40,7 +40,7 @@ On **Windows**
 
         python3 -m venv .kanji_time
         .kanji_time\Scripts\activate
-        pip3 install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.2-alpha-20251123/kanji_time-0.1.2a20251123-py3-none-any.whl
+        pip3 install https://github.com/HouseElves/kanji_time_public/releases/latest/download/kanji_time-latest-py3-none-any.whl
 
 On **macOS** or **Linux**
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -50,7 +50,7 @@ On **macOS** or **Linux**
 
         python3 -m venv .kanji_time
         source .kanji_time/bin/activate
-        pip3 install https://github.com/HouseElves/kanji_time_public/releases/download/v0.1.2-alpha-20251123/kanji_time-0.1.2a20251123-py3-none-any.whl
+        pip3 install https://github.com/HouseElves/kanji_time_public/releases/latest/download/kanji_time-latest-py3-none-any.whl
 
 ----
 
