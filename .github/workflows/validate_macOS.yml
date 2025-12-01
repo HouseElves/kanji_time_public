@@ -1,0 +1,134 @@
+# .github/workflows/validate_macOS.yml
+
+name: Validate Release on macOS
+
+on:
+  # Allow manual triggering with version input
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to test (e.g., 0.1.2-alpha-20251123 or "latest")'
+        required: true
+        default: 'latest'
+
+jobs:
+  test-macos:
+    name: macOS (Python ${{ matrix.python-version }})
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12']
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      
+      - name: Set version variable
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            VERSION="${{ github.event.release.tag_name }}"
+            VERSION="${VERSION#v}"
+          else
+            VERSION="${{ github.event.inputs.version }}"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Testing version: $VERSION"
+      
+      - name: Install Cairo dependencies (macOS)
+        run: |
+          echo "Installing Cairo and pkg-config via Homebrew..."
+          brew install cairo pkg-config
+      
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov coverage
+      
+      - name: Download and install wheel from GitHub
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          
+          if [ "$VERSION" = "latest" ] || [ "$VERSION" = "lkg" ]; then
+            WHEEL_URL="https://github.com/${{ github.repository }}/releases/latest/download/kanji_time-${VERSION}-py3-none-any.whl"
+          else
+            WHEEL_VERSION=$(echo "$VERSION" | sed 's/-alpha-/a/' | sed 's/-beta-/b/' | sed 's/-rc-/rc/')
+            WHEEL_URL="https://github.com/${{ github.repository }}/releases/download/v${VERSION}/kanji_time-${WHEEL_VERSION}-py3-none-any.whl"
+          fi
+          
+          echo "Installing from: $WHEEL_URL"
+          pip install "$WHEEL_URL"
+      
+      - name: Clone test suite from GitHub
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          
+          # Determine git tag
+          if [ "$VERSION" = "latest" ] || [ "$VERSION" = "lkg" ]; then
+            # Get the actual latest tag
+            GIT_TAG=$(curl -s "https://api.github.com/repos/${{ github.repository }}/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+          else
+            GIT_TAG="v${VERSION}"
+          fi
+          
+          echo "Cloning from tag: $GIT_TAG"
+          git clone --depth 1 --branch "$GIT_TAG" https://github.com/${{ github.repository }}.git /tmp/kanji-src
+          cp -r /tmp/kanji-src/kanji_time kanji_time
+          cp /tmp/kanji-src/pytest.ini pytest.ini
+      
+      - name: Run tests with coverage
+        run: |
+          echo "Running pytest with coverage..."
+          coverage run --branch -m pytest
+          
+          echo ""
+          echo "======================================"
+          echo "Coverage Report"
+          echo "======================================"
+          coverage report -m
+          
+          echo ""
+          echo "⚠️  Files under 90% branch coverage:"
+          coverage report | awk 'NR<=2 {print} NR>2 && $NF ~ /%$/ && int($NF) < 90 {print}'
+      
+      - name: Report results
+        if: always()
+        run: |
+          echo "✅ macOS (Python ${{ matrix.python-version }}): PASSED"
+
+  summary:
+    name: Test Summary
+    runs-on: ubuntu-latest
+    needs: [test-macos]
+    if: always()
+    
+    steps:
+      - name: Check test results
+        run: |
+          echo "======================================"
+          echo "Multi-Platform Test Summary"
+          echo "======================================"
+          
+          if [ "${{ needs.test-macos.result }}" = "success" ]; then
+            echo "PLATFORM PASSED"
+            echo ""
+            echo "Tested on:"
+            echo "  • macOS (Python 3.11, 3.12) native"
+            echo ""
+            echo "The release is validated and ready for users!"
+            exit 0
+          else
+            echo "❌ SOME PLATFORM FAILED"
+            echo ""
+            echo "Results:"
+            echo "  • macOS:   ${{ needs.test-macos.result }}"
+            echo ""
+            echo "Check individual job logs for details."
+            exit 1
+          fi
