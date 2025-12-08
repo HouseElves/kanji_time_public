@@ -180,7 +180,7 @@ From the command line, create (or navigate to) a parent directory for Kanji Time
 ```bash
 python3 -m venv .kanji_time
 .kanji_time\Scripts\activate
-pip3 install https://github.com/HouseElves/kanji_time_public/releases/latest/download/kanji_time-latest-py3-none-any.whl
+pip3 install https://github.com/HouseElves/kanji_time_public/releases/latest/download/kanji_time-0.1.2a20251123-py3-none-any.whl
 ```
 
 ### On **macOS** or **Linux**
@@ -188,7 +188,7 @@ pip3 install https://github.com/HouseElves/kanji_time_public/releases/latest/dow
 ```bash
 python3 -m venv .kanji_time
 source .kanji_time/bin/activate
-pip3 install https://github.com/HouseElves/kanji_time_public/releases/latest/download/kanji_time-latest-py3-none-any.whl
+pip3 install https://github.com/HouseElves/kanji_time_public/releases/latest/download/kanji_time-0.1.2a20251123-py3-none-any.whl
 ```
 
 > [!TIP]
