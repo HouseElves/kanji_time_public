@@ -66,6 +66,7 @@ FILE_FORMAT = test_database.public.kanjisvg_xml
 /*
 BEWARE:  session variables can get into a view!  Consider a "constants" table.
  */
+use kanjitime_ingest.kanjisvg;
 set filename_component_delim = '.';
 set kanji_variant_delim = '-';
 
@@ -130,88 +131,6 @@ as a flattened pair
     '$' is the tag content -> text, nested tags
 
  */
-
--- do domains work?
-CREATE DOMAIN kanji_variant AS TEXT CHECK
-    (
-    VALUE IN
-        (
-         'DgLst'
-        ,'Dg3'
-        ,'Hyougai'
-        ,'Hz'
-        ,'HzFst'
-        ,'HzFstLeRi'
-        ,'HzFstRiLe'
-        ,'HzFstVtLst'
-        ,'HzLst'
-        ,'Insatsu'
-        ,'Jinmei'
-        ,'Kaisho'
-        ,'Le'
-        ,'LeFst'
-        ,'MdLst'
-        ,'MidFst'
-        ,'NoDot'
-        ,'Ri'
-        ,'Ten3'
-        ,'TenLst'
-        ,'Vt'
-        ,'Vt4'
-        ,'Vt6'
-        ,'VtFst'
-        ,'VtFstRiLe'
-        ,'VtLst'
-        ,''
-        )
-    );
--- Houston, that's a hard "no"
--- at least there is metadata
-
-CREATE TABLE kanji_variant_metadata 
-    (
-     kanji_variant_value     VARCHAR PRIMARY KEY
-    ,help_text               TEXT NOT NULL
-    );
-INSERT INTO kanji_variant_metadata 
-    (
-     kanji_variant_value
-    ,help_text
-    )
-VALUES  
-     ('DgLst', 'Used for a stroke order variant of 癶.')
-    ,('Dg3', 'Used for a stroke order variant of 癶.')
-    ,('Hyougai', 'Variant forms of the character, called "hyougai" (表外) in Japanese. These are often the characters for different Unicode code points, or otherwise inconsistent.')
-    ,('Hz', 'Horizontal')
-    ,('HzFst', 'Horizontal First stroke order')
-    ,('HzFstLeRi', 'Horizontal First, Left to Right stroke order')
-    ,('HzFstRiLe', 'Horizontal First, Right to Left stroke order')
-    ,('HzFstVtLst', 'Horizontal First, Vertical Last')
-    ,('HzLst', 'Horizontal Last')
-    ,('Insatsu', 'Printed form (印刷), where it differs from the schoolbook format. This is used inconsistently.')
-    ,('Jinmei', 'Versions of the character used for names, which appear in the Jinmei list. In practice these often refer to different Unicode code points than the ones given.')
-    ,('Kaisho', 'Kaisho variant. In practice this usually seems to mean something like 月 or 日 with a shorter middle stroke which doesn''t go all the way to the right side of the element.')
-    ,('Le', 'Left')
-    ,('LeFst', 'Left First')
-    ,('MdLst', 'Middle Last')
-    ,('MidFst', 'Middle First')
-    ,('NoDot', 'Used for a variant of 饗 only.')
-    ,('Ri', 'Right')
-    ,('Ten3', 'These characters all contain a 必 element, with the strokes in a different order than usual.')
-    ,('TenLst', 'These characters all contain a 卵 element, with the centre right shortest stroke coming last in the stroke order.')
-    ,('Vt', 'Vertical')
-    ,('Vt4', 'These characters contain a variant stroke order with a vertical as the fourth stroke.')
-    ,('Vt6', 'These characters contain a variant stroke order with a vertical as the sixth stroke.')
-    ,('VtFst', 'Vertical First')
-    ,('VtFstRiLe', 'Vertical First Right to Left')
-    ,('VtLst', 'Vertical Last')
-    ,('', 'Primary')
-    ;
-
-
-
-
-
 
 select 
      kvg
@@ -278,3 +197,773 @@ from kvg_upload
     ('<e>2</e>'),
     ('<b>0.123</b>')
     ;
+
+
+-- Let's start with a drawing table
+--
+
+-- do domains work?
+CREATE DOMAIN kanji_variant AS TEXT CHECK
+    (
+    VALUE IN
+        (
+         'DgLst'
+        ,'Dg3'
+        ,'Hyougai'
+        ,'Hz'
+        ,'HzFst'
+        ,'HzFstLeRi'
+        ,'HzFstRiLe'
+        ,'HzFstVtLst'
+        ,'HzLst'
+        ,'Insatsu'
+        ,'Jinmei'
+        ,'Kaisho'
+        ,'Le'
+        ,'LeFst'
+        ,'MdLst'
+        ,'MidFst'
+        ,'NoDot'
+        ,'Ri'
+        ,'Ten3'
+        ,'TenLst'
+        ,'Vt'
+        ,'Vt4'
+        ,'Vt6'
+        ,'VtFst'
+        ,'VtFstRiLe'
+        ,'VtLst'
+        ,''
+        )
+    );
+-- Houston, that's a hard "no"
+-- at least there is metadata
+
+DROP TABLE kanji_variant_metadata;
+CREATE TABLE kanji_variant_metadata 
+    (
+     kanji_variant_value     VARCHAR PRIMARY KEY  
+                             COMMENT 'SUBTYPE: kanji_variant; DESCRIPTION: Classification of the stroking variant of this kanji character.'
+    ,help_text               TEXT NOT NULL
+                             COMMENT 'SUBTYPE: html_help_text; DESCRIPTION: Details about this stroking variant classification.'
+    )
+COMMENT = 'KanjiVG includes data on variations of characters and stroke order. For example, when characters in the schoolbook style deviate from traditional kaisho, there might be an extra file containing the kaisho version of the character. This file is named using the same Unicode value as the schoolbook style kanji, with the suffix -Kaisho. For example the kaisho variant of 島, 05cf6.svg is named 05cfa-Kaisho.svg. There are also different versions for different stroke orders.'
+    ;
+    
+INSERT INTO kanji_variant_metadata 
+    (
+     kanji_variant_value
+    ,help_text
+    )
+VALUES  
+     ('DgLst', 'Used for a stroke order variant of 癶.')
+    ,('Dg3', 'Used for a stroke order variant of 癶.')
+    ,('Hyougai', 'Variant forms of the character, called "hyougai" (表外) in Japanese. These are often the characters for different Unicode code points, or otherwise inconsistent.')
+    ,('Hz', 'Horizontal')
+    ,('HzFst', 'Horizontal First stroke order')
+    ,('HzFstLeRi', 'Horizontal First, Left to Right stroke order')
+    ,('HzFstRiLe', 'Horizontal First, Right to Left stroke order')
+    ,('HzFstVtLst', 'Horizontal First, Vertical Last')
+    ,('HzLst', 'Horizontal Last')
+    ,('Insatsu', 'Printed form (印刷), where it differs from the schoolbook format. This is used inconsistently.')
+    ,('Jinmei', 'Versions of the character used for names, which appear in the Jinmei list. In practice these often refer to different Unicode code points than the ones given.')
+    ,('Kaisho', 'Kaisho variant. In practice this usually seems to mean something like 月 or 日 with a shorter middle stroke which doesn''t go all the way to the right side of the element.')
+    ,('Le', 'Left')
+    ,('LeFst', 'Left First')
+    ,('MdLst', 'Middle Last')
+    ,('MidFst', 'Middle First')
+    ,('NoDot', 'Used for a variant of 饗 only.')
+    ,('Ri', 'Right')
+    ,('Ten3', 'These characters all contain a 必 element, with the strokes in a different order than usual.')
+    ,('TenLst', 'These characters all contain a 卵 element, with the centre right shortest stroke coming last in the stroke order.')
+    ,('Vt', 'Vertical')
+    ,('Vt4', 'These characters contain a variant stroke order with a vertical as the fourth stroke.')
+    ,('Vt6', 'These characters contain a variant stroke order with a vertical as the sixth stroke.')
+    ,('VtFst', 'Vertical First')
+    ,('VtFstRiLe', 'Vertical First Right to Left')
+    ,('VtLst', 'Vertical Last')
+    ,('', 'Primary')
+    ;
+
+/* First attempt 
+ALTER TABLE kanji_variant_metadata 
+SET
+    COMMENT = 'KanjiVG includes data on variations of characters and stroke order. For example, when characters in the schoolbook style deviate from traditional kaisho, there might be an extra file containing the kaisho version of the character. This file is named using the same Unicode value as the schoolbook style kanji, with the suffix -Kaisho. For example the kaisho variant of 島, 05cf6.svg is named 05cfa-Kaisho.svg. There are also different versions for different stroke orders.'
+    ;
+ALTER TABLE kanji_variant_metadata 
+MODIFY COLUMN kanji_variant_value
+    COMMENT 'SUBTYPE: kanji_variant (see table kanji_variant_metadata); DESCRIPTION: Classification of the stroking variant of this kanji character.'
+    ;
+*/
+
+DROP TABLE IF EXISTS kanji_stroke_primitive_metadata;
+CREATE TABLE kanji_stroke_primitive_metadata 
+    (
+     kanji_stroke_primitive_value   VARCHAR PRIMARY KEY
+                                    COMMENT 'SUBTYPE: kanji_stroke_primitive; DESCRIPTION: Classification of the shape of a kanji character stroke in the Unicode CJK Strokes block.'
+    ,cjk_stroke                     TEXT NOT NULL
+                                    COMMENT 'SUBTYPE: codepoint_name; DESCRIPTION: The representation of the kanji stroke shape as a Unicode codepoint.'
+    ,help_text                      TEXT NOT NULL
+                                    COMMENT 'SUBTYPE: html_help_text; DESCRIPTION: Details about the usage of this stroke primitive.'
+    )
+COMMENT = 'The type attribute of a stroke specifies its shape. It can be used to know how the stroke should be rendered.<P/>The values of this attribute use the keys of Unicode''s CJK Strokes.<P/>The best documentation available on the meanings of these stroke types seems to be that found in Proposed additions to the CJK Strokes block of the UCS, and the explanation of the stroke types there mostly consists of a list of examples, so there is some remaining ambiguity about how best to use these.<P/>In some cases these stroke types, in particular ㇁ (U+31C1), or ㇔ (U+31D4), may appear to be in error, but check the explanations below before suggesting changes.<P/>In other cases another field consisting of alphabetical letters. These letters refer to a set of stroke types which Ulrich Apel designed but has not documented. The letters seem to indicate the intersections of the ends of strokes with other strokes. See issue 324 on Github for more details.'
+    ;
+
+INSERT INTO kanji_stroke_primitive_metadata 
+    (
+     kanji_stroke_primitive_value
+    ,cjk_stroke
+    ,help_text
+    )
+VALUES  
+     ('㇀', 'CJK Stroke T U+31C0', 'This stroke is the lower left one in 冰 and 氾. It always goes from left to right and upwards. See ㇒ (CJK Stroke P) for a similar-looking stroke which goes in the opposite direction.')
+    ,('㇁', 'CJK Stroke WG U+31C1', 'This is used for the down stroke of 犭 and the lower right part of ⻖. Some fonts, including the default font used by KanjiVG''s host, github.com, represent this shape as being almost identical to ㇓ (CJK Stroke SP), so it may appear to be an error on a browser screen. However, this is the correct shape for 犭 and ⻖.')
+    ,('㇂', 'CJK Stroke XG U+31C2', 'This is used in, for example, for the long vertical stroke of 戈. ')
+    ,('㇃', 'CJK Stroke BXG U+31C3', 'Used for the second, long stroke of 心. ')
+    ,('㇄', 'CJK Stroke SW U+31C4', '')
+    ,('㇅', 'CJK Stroke HZZ U+31C5', 'This relatively rare shape is used, for example, for stroke 15 of 麌. ')
+    ,('㇆', 'CJK Stroke HZG U+31C6', 'This is used for the right side of 印 or 掏. ')
+    ,('㇇', 'CJK Stroke HP U+31C7', ' This is the correct stroke type for 又，双，叒， and 今. See also See also ㇖ (CJK Stroke HG). ')
+    ,('㇈', 'CJK Stroke HZWG U+31C8', 'The examples given in the Unicode reference are 飞，风，瘋，九，几，气，虱 ')
+    ,('㇉', 'CJK Stroke SZWG U+31C9', 'This is used, for example, for the bottom part of 弓. ')
+    ,('㇋', 'CJK Stroke HZZP U+31CB', '')
+    ,('㇏', 'CJK Stroke N U+31CF', 'This stroke type is used for the right part of 人 and similar strokes in 大 and 天, and also for the long stroke at the bottom of 道 and 走. ')
+    ,('㇐', 'CJK Stroke H U+31D0', 'This is used for horizontal lines, such as the top and bottom strokes of 西.')
+    ,('㇑', 'CJK Stroke S U+31D1', '')
+    ,('㇒', 'CJK Stroke P U+31D2', 'This stroke is the lower left one in 木, always goes from right to left and downwards. See ㇀ (CJK Stroke T) for a similar-looking stroke which goes in the opposite direction. ')
+    ,('㇓', 'CJK Stroke SP U+31D3', 'This stroke is used for vertical strokes whose ends turn left. Depending on the font, it is easily confused with ㇁ (CJK Stroke WG), but that is actually a stroke going diagonally left to right at its top. ')
+    ,('㇔', 'CJK Stroke D U+31D4', ' This is used for a short dash. Although the usual form of this in fonts is a line slanting down to the right, the dash may slant either down and left, such as the left stroke of 心 or 灬, or down and right, such as the right strokes of 心 or 灬. ')
+    ,('㇕', 'CJK Stroke HZ U+31D5', 'This is used for the upper right part of 口, or the middle upper stroke of 巨. ')
+    ,('㇖', 'CJK Stroke HG U+31D6', 'This is the correct stroke type for 疋，了，予，矛， 子，字，疏，写，and 冖. See also ㇇ (CJK Stroke HP). ')
+    ,('㇗', 'CJK Stroke SZ U+31D7', '')
+    ,('㇙', 'CJK Stroke ST U+31D9', 'This is used for the bottom left of 衣 or 食. ')
+    ,('㇚', 'CJK Stroke SG U+31DA', '')
+    ,('㇛', 'CJK Stroke PD U+31DB', 'This stroke type is used for the left vertical stroke of 女, or kanji which contain 女 as a component, or for 巛 and kanji containing a 巛 element. ')
+    ,('㇜', 'CJK Stroke PZ U+31DC', '')
+    ,('㇞', 'CJK Stroke SZZ U+31DE', 'This rare stroke type is only used in the character 亞, and characters such as 壼 which contain 亞 as a component. ')
+    ,('㇟', 'CJK Stroke SWG U+31DF', '')
+    ,('㇡', 'CJK Stroke HZZZG U+31E1', '')
+    ,('６', '', 'For reasons which have not been documented, this was used in some characters such as 蠣 or 寓 to represent one of the lower strokes. ')
+    ,('a', '', 'End touches middle part of other stroke')
+    ,('b', '', 'End touches end of other stroke')
+    ,('c', '', 'Unknown')
+    ,('v', '', 'Unknown')
+    ,('/', '', 'Where the value has two possibilities, a slash is used to separate them. For example, the bottom dash in 冬 (fuyu, ''winter'') may slant either upwards or downwards, so this is represented by kvg:type=''㇔/㇀'' in the KanjiVG source file.')
+    ,('㇌', 'CJK Stroke HPWG U+31CC', 'This stroke pattern is used to represent the right side of ⻖ and related shapes when it is written as two strokes, per the Chinese convention. KanjiVG always uses three strokes to write ⻖, with the right side broken into upper and lower pieces, so this pattern is not used by KanjiVG.')
+    ,('㇊', 'CJK Stroke HZT', 'U+31CA The main use of this seems to be to represent the 言 component known as gonben in simplified Chinese characters like 计, or other simplified Chinese forms such as so it is not very useful for Japanese.' )
+    ,('㇎', 'CJK Stroke HZZZ U+31CE', 'This rare pattern seems to only be used in the Chinese drawing of 凸. Japanese uses a different stroke pattern for this character.')
+    ,('㇣', 'CJK Stroke Q U+31E3', 'This only occurs in characters which are not part of KanjiVG, such as 㔔.')
+    ;
+
+DROP TABLE IF EXISTS kanji_stroke_type_metadata;
+CREATE TABLE kanji_stroke_type_metadata 
+    -- TODO (downstream):  add some images / SVG drawings to this table for examples of these stoke types w/ connecting strokes
+    (
+     kanji_stroke_type_value   VARCHAR PRIMARY KEY
+                               COMMENT 'SUBTYPE: kanji_stroke_type = kanji_stroke_primitive{1,4}; DESCRIPTION: Encoding of a stroke shape and (possibly) how it touches an adjacent stroke.'
+    ,help_text                 TEXT NOT NULL
+                               COMMENT 'SUBTYPE: html_help_text; DESCRIPTION: !!! EMPTY COLUMN:  TODO !!!.'
+    )
+COMMENT = 'A complete description of the shape of a stroke. It consists of up to two <b>kanji_stroke_primitive</b> values separated by a ''/'' primitive, where each primitive might be decorated with a touch-type <b>kanji_stroke_primitive</b> value ''a'', ''b'', ''c'', or ''v''.'
+    ;
+INSERT INTO kanji_stroke_type_metadata
+VALUES
+     ('㇀', '')
+    ,('㇀/㇏', '')
+    ,('㇀/㇐', '')
+    ,('㇀/㇑', '')
+    ,('㇁', '')
+    ,('㇂', '')
+    ,('㇃', '')
+    ,('㇄', '')
+    ,('㇄/㇟', '')
+    ,('㇄a', '')
+    ,('㇅', '')
+    ,('㇆', '')
+    ,('㇆/㇚', '')
+    ,('㇆a', '')
+    ,('㇆v', '')
+    ,('㇇', '')
+    ,('㇇/㇆', '')
+    ,('㇇a', '')
+    ,('㇈', '')
+    ,('㇈a', '')
+    ,('㇈b', '')
+    ,('㇉', '')
+    ,('㇋', '')
+    ,('㇏', '')
+    ,('㇏/㇒', '')
+    ,('㇏/㇔', '')
+    ,('㇏a', '')
+    ,('㇐', '')
+    ,('㇐/㇑a', '')
+    ,('㇐/㇒', '')
+    ,('㇐/㇔', '')
+    ,('㇐a', '')
+    ,('㇐b', '')
+    ,('㇐b/㇔', '')
+    ,('㇐c', '')
+    ,('㇐c/㇀', '')
+    ,('㇐c/㇔', '')
+    ,('㇑', '')
+    ,('㇑/㇐', '')
+    ,('㇑/㇒', '')
+    ,('㇑/㇔', '')
+    ,('㇑/㇙', '')
+    ,('㇑/㇚', '')
+    ,('㇑a', '')
+    ,('㇑a/㇒', '')
+    ,('㇑a/㇔', '')
+    ,('㇒', '')
+    ,('㇒/㇀', '')
+    ,('㇒/㇐', '')
+    ,('㇒/㇑', '')
+    ,('㇒/㇔', '')
+    ,('㇒/㇚', '')
+    ,('㇓', '')
+    ,('㇔', '')
+    ,('㇔/㇀', '')
+    ,('㇔/㇏', '')
+    ,('㇔/㇐', '')
+    ,('㇔/㇑', '')
+    ,('㇔/㇑a', '')
+    ,('㇔/㇒', '')
+    ,('㇔/㇚', '')
+    ,('㇔a', '')
+    ,('㇕', '')
+    ,('㇕/㇆', '')
+    ,('㇕/㇑', '')
+    ,('㇕a', '')
+    ,('㇕a/㇆', '')
+    ,('㇕b', '')
+    ,('㇕b/㇆', '')
+    ,('㇕c', '')
+    ,('㇖', '')
+    ,('㇖a', '')
+    ,('㇖b', '')
+    ,('㇖b/㇆', '')
+    ,('㇗', '')
+    ,('㇗/㇛', '')
+    ,('㇗a', '')
+    ,('㇙', '')
+    ,('㇙/㇄', '')
+    ,('㇙/㇏', '')
+    ,('㇙/㇑', '')
+    ,('㇙/㇟', '')
+    ,('㇚', '')
+    ,('㇚/㇑', '')
+    ,('㇛', '')
+    ,('㇜', '')
+    ,('㇞', '')
+    ,('㇟', '')
+    ,('㇟/㇏', '')
+    ,('㇟/㇑', '')
+    ,('㇟a', '')
+    ,('㇟a/㇏', '')
+    ,('㇟b', '')
+    ,('㇡', '')
+    ,('一', '')
+    ,('丶', '')
+    ,('丿', '')
+    ,('６', '')
+    ;
+
+DROP TABLE IF EXISTS kanji_stroke_group_position_metadata;
+CREATE TABLE kanji_stroke_group_position_metadata 
+    (
+     kanji_stroke_group_position_value   VARCHAR PRIMARY KEY
+                               COMMENT 'SUBTYPE: kanji_stroke_group_position; DESCRIPTION: Unique name for the location of a group of strokes within a kanji.'
+    ,help_text                 TEXT NOT NULL
+                               COMMENT 'SUBTYPE: html_help_text; DESCRIPTION: A qualative description of this group location relative of other stroke groups within a kanji.'
+    )
+COMMENT = 'Defines where this groups is located with respect to the other groups with the same parent. Not every element has a ''position'' value.'
+    ;
+INSERT INTO kanji_stroke_group_position_metadata
+    (
+     kanji_stroke_group_position_value
+    ,help_text
+    )
+VALUES
+     ('bottom', 'This part is under another part.')
+    ,('kamae',  'This part is wrapped around another part, such as 門. This is used very inconsistently in KanjiVG as a grab-bag for various different structures.')
+    ,('left',   'This part is left of another part.')
+    ,('nyo',    'This part is left and under another part, such as 辶.')
+    ,('nyoc',   'This part is the complement or counterpart of a nyo part.')
+    ,('right',  'This part is right of another part.')
+    ,('tare',   'This part is left and above another part, such as 广.')
+    ,('tarec',  'This part is the complement or counterpart of a tare part.')
+    ,('top',    'This part is above another part.')
+    ;
+
+
+DROP TABLE IF EXISTS kanji_radical_class_metadata;
+CREATE TABLE kanji_radical_class_metadata 
+    (
+     kanji_radical_class_value VARCHAR PRIMARY KEY
+                               COMMENT 'SUBTYPE: kanji_radical_class; DESCRIPTION: Name of the lexicon contaning the kanji radical represented in a stroke group.'
+    ,help_text                 TEXT NOT NULL
+                               COMMENT 'SUBTYPE: html_help_text; DESCRIPTION: A brief description of the usage and variances of this kanji radical lexicon.'
+    )
+COMMENT = 'This is set to a value if this group of strokes is considered a radical of the kanji, and by which reference. The value of the attribute depends on the reference.'
+    ;
+INSERT INTO kanji_radical_class_metadata 
+    (
+     kanji_radical_class_value
+    ,help_text
+    )
+VALUES
+     ('general', 'The generally accepted radical which authors agree on.')
+    ,('jis', 'This marks the radicals used by JIS Kanji Jiten, used by Kanjidic, which sometimes differ from the general or tradit radicals. This value was added to deal with inconsistencies between KanjiVG and Kanjidic and other references.') 
+    ,('nelson', 'The keyword ''nelson'' is used for Nelson radicals.')
+    ,('tradit', 'The keyword ''tradit'' is used for the ''traditional'' radical, where the Kangxi radical disagrees with Nelson.')
+    ;
+
+
+CREATE OR REPLACE FUNCTION encode_kanji(c TEXT)
+    RETURNS char(5)
+    IMMUTABLE
+AS
+$$
+BEGIN
+    RETURN to_varchar(unicode(c), '0000x');
+END;
+$$
+    ;
+
+-- Sanity check  for codepoint_hex
+select 'A' as val, unicode(val) as cp, to_varchar(cp, '0000x') as enc, encode_kanji(val), encode_kanji('㇏');
+
+CREATE OR REPLACE FUNCTION decode_kanji(c TEXT)
+    RETURNS char(5)
+    IMMUTABLE
+AS
+$$
+BEGIN
+    RETURN chr(to_number(c, 'xxxxx'));
+END;
+$$
+    ;
+
+select
+     encode_kanji(val) as encoded
+    ,decode_kanji(encoded) as decoded
+from 
+    (
+    select 'A' as val
+    union
+    select '㇏' as val
+    )
+    ;
+
+
+-- some functions to simplify group and path id decoding
+
+--"kvg:05cfa-Kaisho-g1"
+
+WITH ids AS (
+  SELECT 'kvg:05cfa-Kaisho-g1' as id
+  UNION ALL
+  SELECT '05cfa-Kaisho-g1'
+  UNION ALL  
+  SELECT 'kvg:1a2b3-s42'
+)
+SELECT
+   id
+   -- Validation
+  ,REGEXP_LIKE(id, '^(kvg:)?[0-9a-f]{5}(-[A-Za-z]{3,})?-[gs][0-9]+$') as is_valid
+  ,REGEXP_SUBSTR(id, '^([A-Za-z]+):', 1, 1, 'e') as ns_prefix
+  ,REGEXP_SUBSTR(id, '([0-9a-f]{5})', 1, 1, 'e') as hex_code
+  ,decode_kanji(hex_code) as kanji
+  ,REGEXP_SUBSTR(id, '-([A-Za-z]{3,})-', 1, 1, 'e') as kanji_variant
+  ,REGEXP_SUBSTR(id, '([gs])([0-9]+)$', 1, 1, 'e', 1) as stroke_or_group
+  ,case when stroke_or_group = 'g' then 1 else 0 end as is_group
+  ,case when stroke_or_group = 's' then 1 else 0 end as is_stroke
+  ,REGEXP_SUBSTR(id, '([gs])([0-9]+)$', 1, 1, 'e', 2) as seq_number
+FROM ids
+    ;
+
+WITH ids AS (
+  SELECT 'kvg:05cfa-Kaisho-g1' as id
+  UNION ALL
+  SELECT '05cfa-Kaisho-g1'
+  UNION ALL  
+  SELECT 'kvg:1a2b3-s42'
+)
+SELECT OBJECT_CONSTRUCT(
+    'ns_prefix', REGEXP_SUBSTR(id, '^([A-Za-z]+):', 1, 1, 'e')
+    ,'hex_code', REGEXP_SUBSTR(id, '([0-9a-f]{5})', 1, 1, 'e')
+    ,'kanji_variant', REGEXP_SUBSTR(id, '-([A-Za-z]{3,})-', 1, 1, 'e')
+    ,'stroke_or_group', REGEXP_SUBSTR(id, '([gs])([0-9]+)$', 1, 1, 'e', 1)
+    ,'seq_number', REGEXP_SUBSTR(id, '([gs])([0-9]+)$', 1, 1, 'e', 2)
+    ) as decoded
+from ids
+    ;
+
+
+CREATE OR REPLACE FUNCTION decode_id(id VARCHAR)
+RETURNS OBJECT
+AS
+$$
+OBJECT_CONSTRUCT(
+     'ns_prefix', REGEXP_SUBSTR(id, '^([A-Za-z]+):(Stroke(Numbers|Paths)_)?', 1, 1, 'e', 1)
+    ,'block_name', REGEXP_SUBSTR(id, '^([A-Za-z]+):(Stroke(Numbers|Paths)_)?', 1, 1, 'e', 3)
+    ,'hex_code', REGEXP_SUBSTR(id, '([0-9a-f]{5})', 1, 1, 'e')
+    ,'kanji_variant', REGEXP_SUBSTR(id, '-([A-Za-z]{3,})-?', 1, 1, 'e')
+    ,'stroke_or_group', REGEXP_SUBSTR(id, '([gs])([0-9]+)?$', 1, 1, 'e', 1)
+    ,'seq_number', REGEXP_SUBSTR(id, '([gs])([0-9]+)?$', 1, 1, 'e', 2)
+    )
+$$;
+
+WITH ids AS (
+  SELECT 'kvg:05cfa-Kaisho-g1' as id
+  UNION ALL
+  SELECT '05cfa-Kaisho-g1'
+  union all
+  select 'kvg:StrokeNumbers_0796d'
+  UNION ALL  
+  SELECT 'kvg:1a2b3-s42'
+  union all
+  select 'kvg:StrokePaths_05cfa-Kaisho'
+)
+select decode_id(id) as decoded
+FROM ids
+    ;
+
+
+select 
+     kvg
+    ,kvg['@']           as root_tag
+    ,kvg['$']           as content
+    ,object_keys(content[0]) as first_tag_keys
+    ,content[0]['@'] as first_tag_name
+    ,content[0]['@id'] as first_tag_id
+    ,content[0]['$'] as first_tag_content
+    ,decode_id(first_tag_id) as decoded.group_id_0
+    ,content[1]['@'] as second_tag_name
+    ,content[1]['@id'] as second_tag_id
+    ,content[1]['$'] as second_tag_content
+    ,decode_id(second_tag_id) as decoded.group_id_1
+    ,case 
+        when decoded.group_id_0:block_name = 'Paths' then first_tag_content
+        when decoded.group_id_1:block_name = 'Paths' then second_tag_content
+        else 'bleh'
+     end as PathBlock
+    --,case 
+    --    when decoded.group_id_0:blockname = 'Numbers' then content[0]['$']
+    --    when decoded.group_id_1:blockname = 'Numbers' then content[1]['$']
+    -- end as LabelBlock
+    ,kvg['@height']     as height
+    ,kvg['@width']      as width
+    ,kvg['@viewbox']    as viewbox
+    ,object_keys(kvg)
+from kvg_upload
+    ;  
+
+select
+     codepoint_str                  as encoded_kanji
+    ,decode_kanji(codepoint_str)    as kanji
+    ,kvg_variant_name               as kanji_variant
+    ,kvg['@']                       as root_tag
+    ,kvg['@height']                 as height
+    ,kvg['@width']                  as width
+    ,coalesce(
+        -- alternate spellings
+         kvg['@viewBox']
+        ,kvg['@viewbox']
+        )                           as viewbox
+    ,kvg['$']                       as children
+    ,kvg['$'][x.index]                       as content
+    ,decode_id(x.value['@id']) as id
+    ,id:block_name as block_name
+    ,decode_id(x.value['@id']):hex_code as hex_code  -- I can dereference a computed value directly
+    ,x.value as kvg_block
+    ,x.*
+ from kvg_upload
+ cross join lateral flatten(kvg['$']) as x
+ where kvg['@'] = 'svg'
+    ;
+
+select * from kanji_drawing_extractor;
+select * from kanji_paths_extractor;
+
+select * from root_group_extractor;
+
+
+create or replace view kanji_drawing_extractor
+as
+select
+     codepoint_str                  as encoded_kanji
+    ,decode_kanji(encoded_kanji)    as kanji
+    ,kvg_variant_name               as kanji_variant
+    ,kvg['@']                       as root_tag
+    ,kvg['@height']                 as height
+    ,kvg['@width']                  as width
+    ,kvg['@xmlns']                  as dflt_namespace
+    ,coalesce(
+        -- alternate spellings
+         kvg['@viewBox']
+        ,kvg['@viewbox']
+        )                           as viewbox
+    ,kvg['$']                       as children
+from kvg_upload
+where kvg['@'] = 'svg'
+    ;
+
+
+create or replace view kanji_paths_extractor
+as
+select
+     decoded.group_id:hex_code                  as encoded_kanji
+    ,decoded.group_id:kanji_variant             as kanji_variant
+    ,decode_kanji(decoded.group_id:hex_code)    as kanji
+    ,d.children[x.index]                        as paths_header
+    ,x.value['@style']                          as svg_style
+    ,paths_header['@']                          as paths_tag
+    ,paths_header['$']                          as stroke_groups
+from kanji_drawing_extractor as d
+cross join lateral flatten(d.children) as x
+cross join lateral 
+    (
+    SELECT decode_id(x.value['@id']) AS group_id
+    ) decoded
+where decoded.group_id:block_name = 'Paths' --'Numbers'
+    ;
+
+
+
+create or replace view root_group_extractor
+as
+select
+     p.stroke_groups['@id']                         as node_id
+    ,decoded.group_id:hex_code                      as root_encoded_kanji
+    ,decoded.group_id:kanji_variant                 as kanji_variant
+    ,decode_kanji(decoded.group_id:kanji_variant)   as kanji
+    ,p.stroke_groups['@kvg:element']                as kanji_element
+    ,NULL                                           as stroke_group_id
+    ,p.stroke_groups['@']                           as child_tag
+    ,p.stroke_groups['$']                           as child_groups
+from kanji_paths_extractor p
+cross join lateral 
+    (
+    -- TODO: make this a "key extractor" function
+    SELECT decode_id(p.stroke_groups['@id']) AS group_id
+    ) decoded
+    ;
+
+
+-- fixed column name collision w/ alias by decoding into a cross-lateral. 
+
+-- basis case
+--
+select 
+     decoded.group_id:hex_code                  as encoded_kanji
+    ,decoded.group_id:kanji_variant             as kanji_variant
+    ,decode_kanji(decoded.group_id:hex_code)    as kanji
+    ,r.stroke_group_id                          as parent_group_id
+    ,decoded.group_id:seq_number                as stroke_or_group_id
+    ,decoded.group_id:stroke_or_group           as stroke_or_group
+    ,x.value['@kvg:element']                    as kanji_element
+    ,x.value['@kvg:position']                   as position
+    ,x.value['@']                               as child_tag
+    ,x.value['$']                               as child_groups
+    ;
+
+select 
+     seq as xml_id
+    ,x.value['@id'] as node_id
+    ,x.path as my_path
+    ,coalesce('['||x.index||']', '['''||x.key||''']') as final_path_component
+    ,left(x.path, length(x.path) - length(final_path_component)) as parent_path
+    ,x.key
+    ,x.index
+    ,x.*
+from root_group_extractor r
+cross join lateral flatten(r.child_groups, recursive=>true) as x
+where node_id is not NULL
+order by parent_path
+    ;
+
+cross join lateral 
+    (
+    SELECT decode_id(x.value['@id']) AS group_id
+    ) as decoded
+ ;
+
+
+
+WITH RECURSIVE stroke_group_tree 
+AS 
+    (
+    -- BASIS: children of the root stroke group
+    select 
+         REGEXP_SUBSTR(x.value['@id'], '([0-9a-f]{5})', 1, 1, 'e')          as encoded_kanji
+        ,REGEXP_SUBSTR(x.value['@id'], '-([A-Za-z]{3,})-', 1, 1, 'e')       as kanji_variant
+        ,r.stroke_group_id                                                  as parent_group_id
+        ,REGEXP_SUBSTR(x.value['@id'], '([gs])([0-9]+)$', 1, 1, 'e', 2)     as stroke_or_group_id
+        ,REGEXP_SUBSTR(x.value['@id'], '([gs])([0-9]+)$', 1, 1, 'e', 1)     as stroke_or_group
+        --
+        ,x.value['@kvg:element']            as kanji_element
+        ,x.value['@kvg:position']           as position
+        ,x.value['@']                       as child_tag
+        ,x.value['$']                       as child_groups
+    from root_group_extractor r
+    cross join lateral flatten(r.child_groups) as x
+    where x.value['@'] = 'g'
+
+    UNION ALL
+
+    -- TAIL LOOP: children of groups found so far
+    select
+         REGEXP_SUBSTR(x.value['@id'], '([0-9a-f]{5})', 1, 1, 'e')          as encoded_kanji
+        ,REGEXP_SUBSTR(x.value['@id'], '-([A-Za-z]{3,})-', 1, 1, 'e')       as kanji_variant
+        ,t.stroke_or_group_id                                               as parent_group_id
+        ,REGEXP_SUBSTR(x.value['@id'], '([gs])([0-9]+)$', 1, 1, 'e', 2)     as stroke_or_group_id
+        ,REGEXP_SUBSTR(x.value['@id'], '([gs])([0-9]+)$', 1, 1, 'e', 1)     as stroke_or_group
+        --
+        ,x.value['@kvg:element']                    as kanji_element
+        ,x.value['@kvg:position']                   as position
+        ,x.value['@']                               as child_tag
+        ,x.value['$']                               as child_groups
+    from stroke_group_tree t
+    cross join lateral flatten(t.child_groups) as x
+    WHERE x.value['@'] = 'g' AND t.stroke_or_group_id IS NOT NULL
+    -- cheap guard; you can set 10 or 20
+    -- AND t.depth < 10
+    )
+select 
+    * 
+from stroke_group_tree
+    ;
+    ----> yeah, but no!
+    /*
+    SQL compilation error: error line 35 at position 23
+    A self reference of CTE 'STROKE_GROUP_TREE' cannot be used as an argument to a UDTF
+     */
+
+CREATE OR REPLACE FUNCTION flatten_child_groups(child_groups VARIANT)
+RETURNS TABLE (value VARIANT)
+LANGUAGE PYTHON
+RUNTIME_VERSION = '3.10'
+HANDLER = 'FlattenHandler'
+AS
+$$
+class FlattenHandler:
+    def process(self, child_groups):
+        if child_groups and isinstance(child_groups, list):
+            for item in child_groups:
+                yield (item,)
+$$; 
+
+
+WITH RECURSIVE stroke_group_tree 
+AS 
+    (
+    -- BASIS: children of the root stroke group
+    select 
+         x.value['@id']                     as id_attr
+        ,NULL                               as parent_id_attr
+        --
+        ,x.value['@kvg:element']            as kanji_element
+        ,x.value['@kvg:position']           as position
+        ,x.value['@']                       as child_tag
+        ,x.value['$']                       as child_groups
+        ,1                                  as depth
+    from root_group_extractor r
+    CROSS JOIN TABLE(flatten_child_groups(r.child_groups)) AS x
+    where x.value['@'] in ('path', 'g')
+
+    UNION ALL
+
+    -- TAIL LOOP: children of groups found so far
+    select 
+         x.value['@id']                     as id_attr
+        ,s.id_attr                          as parent_id_attr
+        --
+        ,x.value['@kvg:element']            as kanji_element
+        ,x.value['@kvg:position']           as position
+        ,x.value['@']                       as child_tag
+        ,x.value['$']                       as child_groups
+        ,s.depth + 1                        as depth
+    from stroke_group_tree s
+    CROSS JOIN TABLE(flatten_child_groups(s.child_groups)) AS x
+    where   s.child_tag = 'g'
+        -- cheap guard
+        AND s.depth < 10
+    )
+select 
+    * 
+from stroke_group_tree
+
+    ;
+
+
+
+    -- BASIS: children of the root stroke group
+    select 
+         x.value['@id']                     as id_attr
+       , NULL                               as parent_id_attr
+        --
+        ,x.value['@kvg:element']            as kanji_element
+        ,x.value['@kvg:position']           as position
+        ,x.value['@']                       as child_tag
+        ,x.value['$']                       as child_groups
+    from root_group_extractor r
+    CROSS JOIN TABLE(flatten_child_groups(r.child_groups)) AS x
+    where x.value['@'] in ('path', 'g')
+    ;
+
+    select 
+         x.value['@id']                     as id_attr
+        --
+        ,x.value['@kvg:element']            as kanji_element
+        ,x.value['@kvg:position']           as position
+        ,x.value['@']                       as child_tag
+        ,x.value['$']                       as child_groups
+    from root_group_extractor r
+    cross join lateral flatten(r.child_groups) as x
+    where r.value['@'] = 'g'    -- test the parent tag --> allows in 'path' tags at the leaves.
+        ;
+
+
+OBJECT_CONSTRUCT(
+     'ns_prefix', REGEXP_SUBSTR(id, '^([A-Za-z]+):(Stroke(Numbers|Paths)_)?', 1, 1, 'e', 1)
+    ,'block_name', REGEXP_SUBSTR(id, '^([A-Za-z]+):(Stroke(Numbers|Paths)_)?', 1, 1, 'e', 3)
+    ,'hex_code', REGEXP_SUBSTR(id, '([0-9a-f]{5})', 1, 1, 'e')
+    ,'kanji_variant', REGEXP_SUBSTR(id, '-([A-Za-z]{3,})-?', 1, 1, 'e')
+    ,'stroke_or_group', REGEXP_SUBSTR(id, '([gs])([0-9]+)?$', 1, 1, 'e', 1)
+    ,'seq_number', REGEXP_SUBSTR(id, '([gs])([0-9]+)?$', 1, 1, 'e', 2)
+    )
+
+
+
+select
+     xmlget(content[0], 'g', 0)
+    ,content[0]['@'] as first_tag_name
+from kanji_drawing_extractor
+where content[0]['@'] = 'g'
+    ;
+
+select
+     codepoint_str                  as encoded_kanji
+    ,decode_kanji(codepoint_str)    as kanji
+    ,kvg_variant_name               as kanji_variant    
+    ,x.*
+    ,kvg['g'][x.seq-1]
+    ,kvg['$']
+from kvg_upload
+cross join lateral  flatten(kvg['$']) as x
+    ;
+
+select
+     x.*
+    ,kvg['$'][x.seq-1]['@id']
+from kvg_upload
+    ;
+select
+     x.*
+    ,kvg['$'][x.seq-1]['@id']
+from kvg_upload
+cross join lateral flatten(xmlget(kvg, 'g', 0)) as x
+--where key = '@id'
+    ;
+ 
