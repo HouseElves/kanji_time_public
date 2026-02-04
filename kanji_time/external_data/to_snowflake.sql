@@ -735,19 +735,9 @@ create or replace view root_group_extractor
 as
 select
      p.stroke_groups['@id']                         as node_id
-    ,decoded.group_id:hex_code                      as root_encoded_kanji
-    ,decoded.group_id:kanji_variant                 as kanji_variant
-    ,decode_kanji(decoded.group_id:kanji_variant)   as kanji
-    ,p.stroke_groups['@kvg:element']                as kanji_element
-    ,NULL                                           as stroke_group_id
-    ,p.stroke_groups['@']                           as child_tag
-    ,p.stroke_groups['$']                           as child_groups
+    ,p.stroke_groups['@']                           as node_tag
+    ,p.stroke_groups['$']                           as children
 from kanji_paths_extractor p
-cross join lateral 
-    (
-    -- TODO: make this a "key extractor" function
-    SELECT decode_id(p.stroke_groups['@id']) AS group_id
-    ) decoded
     ;
 
 
@@ -768,26 +758,39 @@ select
     ,x.value['$']                               as child_groups
     ;
 
-select 
-     seq as xml_id
-    ,x.value['@id'] as node_id
-    ,x.path as my_path
-    ,coalesce('['||x.index||']', '['''||x.key||''']') as final_path_component
-    ,left(x.path, length(x.path) - length(final_path_component)) as parent_path
-    ,x.key
-    ,x.index
-    ,x.*
-from root_group_extractor r
-cross join lateral flatten(r.child_groups, recursive=>true) as x
-where node_id is not NULL
-order by parent_path
+create table StrokePath as
+    (
+    select 
+         seq as xml_id
+        ,r.node_id              as svg_paths_id
+        ,x.value['@id']         as node_id
+        ,x.value['@']           as node_tag
+        ,x.path                 as node_address
+        ,coalesce(
+             '[''$'']['||x.index||']'
+            ,'['''||x.key||''']'
+            )                   as final_address_component
+        -- length(final_address_component) is overstated at the first-level child, but that's OK because its parent is the SVG Paths node.
+        ,left(
+             x.path
+            ,length(x.path) - length(final_address_component)
+            )                   as parent_node_address
+    from root_group_extractor r
+    cross join lateral flatten(r.children, recursive=>true) as x
+    where x.value['@id'] is not NULL
+    order by svg_paths_id, parent_node_address
+    )
     ;
 
+/*
+-- Convenient model for applying a function 
 cross join lateral 
     (
     SELECT decode_id(x.value['@id']) AS group_id
     ) as decoded
  ;
+
+ */
 
 
 
@@ -925,45 +928,139 @@ from stroke_group_tree
         ;
 
 
-OBJECT_CONSTRUCT(
-     'ns_prefix', REGEXP_SUBSTR(id, '^([A-Za-z]+):(Stroke(Numbers|Paths)_)?', 1, 1, 'e', 1)
-    ,'block_name', REGEXP_SUBSTR(id, '^([A-Za-z]+):(Stroke(Numbers|Paths)_)?', 1, 1, 'e', 3)
-    ,'hex_code', REGEXP_SUBSTR(id, '([0-9a-f]{5})', 1, 1, 'e')
-    ,'kanji_variant', REGEXP_SUBSTR(id, '-([A-Za-z]{3,})-?', 1, 1, 'e')
-    ,'stroke_or_group', REGEXP_SUBSTR(id, '([gs])([0-9]+)?$', 1, 1, 'e', 1)
-    ,'seq_number', REGEXP_SUBSTR(id, '([gs])([0-9]+)?$', 1, 1, 'e', 2)
+
+
+
+
+/*
+XML_ID	SVG_PATHS_ID	NODE_ID	NODE_TAG	NODE_ADDRESS	FINAL_ADDRESS_COMPONENT	PARENT_NODE_ADDRESS
+1	kvg:0796d	kvg:0796d-g3	g	[1]	['$'][1]	
+1	kvg:0796d	kvg:0796d-g1	g	[0]	['$'][0]	
+1	kvg:0796d	kvg:0796d-g2	g	[0]['$'][0]	['$'][0]	[0]
+1	kvg:0796d	kvg:0796d-s5	path	[0]['$'][1]	['$'][1]	[0]
+1	kvg:0796d	kvg:0796d-s6	path	[0]['$'][2]	['$'][2]	[0]
+1	kvg:0796d	kvg:0796d-s1	path	[0]['$'][0]['$'][0]	['$'][0]	[0]['$'][0]
+1	kvg:0796d	kvg:0796d-s2	path	[0]['$'][0]['$'][1]	['$'][1]	[0]['$'][0]
+1	kvg:0796d	kvg:0796d-s3	path	[0]['$'][0]['$'][2]	['$'][2]	[0]['$'][0]
+1	kvg:0796d	kvg:0796d-s4	path	[0]['$'][0]['$'][3]	['$'][3]	[0]['$'][0]
+1	kvg:0796d	kvg:0796d-s7	path	[1]['$'][0]	['$'][0]	[1]
+1	kvg:0796d	kvg:0796d-s11	path	[1]['$'][4]	['$'][4]	[1]
+1	kvg:0796d	kvg:0796d-s10	path	[1]['$'][3]	['$'][3]	[1]
+1	kvg:0796d	kvg:0796d-s9	path	[1]['$'][2]	['$'][2]	[1]
+1	kvg:0796d	kvg:0796d-s8	path	[1]['$'][1]	['$'][1]	[1]
+2	kvg:0798d-HzFst	kvg:0798d-HzFst-g1	g	[0]	['$'][0]	
+2	kvg:0798d-HzFst	kvg:0798d-HzFst-g2	g	[1]	['$'][1]	
+2	kvg:0798d-HzFst	kvg:0798d-HzFst-s1	path	[0]['$'][0]	['$'][0]	[0]
+2	kvg:0798d-HzFst	kvg:0798d-HzFst-s4	path	[0]['$'][3]	['$'][3]	[0]
+2	kvg:0798d-HzFst	kvg:0798d-HzFst-s3	path	[0]['$'][2]	['$'][2]	[0]
+2	kvg:0798d-HzFst	kvg:0798d-HzFst-s2	path	[0]['$'][1]	['$'][1]	[0]
+2	kvg:0798d-HzFst	kvg:0798d-HzFst-s5	path	[1]['$'][0]	['$'][0]	[1]
+2	kvg:0798d-HzFst	kvg:0798d-HzFst-s6	path	[1]['$'][1]	['$'][1]	[1]
+2	kvg:0798d-HzFst	kvg:0798d-HzFst-s7	path	[1]['$'][2]	['$'][2]	[1]
+2	kvg:0798d-HzFst	kvg:0798d-HzFst-s8	path	[1]['$'][3]	['$'][3]	[1]
+2	kvg:0798d-HzFst	kvg:0798d-HzFst-g3	g	[1]['$'][4]	['$'][4]	[1]
+2	kvg:0798d-HzFst	kvg:0798d-HzFst-g4	g	[1]['$'][5]	['$'][5]	[1]
+2	kvg:0798d-HzFst	kvg:0798d-HzFst-s9	path	[1]['$'][4]['$'][0]	['$'][0]	[1]['$'][4]
+2	kvg:0798d-HzFst	kvg:0798d-HzFst-s10	path	[1]['$'][4]['$'][1]	['$'][1]	[1]['$'][4]
+2	kvg:0798d-HzFst	kvg:0798d-HzFst-s11	path	[1]['$'][5]['$'][0]	['$'][0]	[1]['$'][5]
+2	kvg:0798d-HzFst	kvg:0798d-HzFst-s12	path	[1]['$'][5]['$'][1]	['$'][1]	[1]['$'][5]
+2	kvg:0798d-HzFst	kvg:0798d-HzFst-s13	path	[1]['$'][5]['$'][2]	['$'][2]	[1]['$'][5]
+*/
+
+CREATE OR REPLACE FUNCTION group_attributes(
+    stroke_group OBJECT
     )
+RETURNS OBJECT
+AS
+$$
+OBJECT_CONSTRUCT(
+    'element', stroke_group['@kvg:element'],
+    'number', stroke_group['@kvg:number'],
+    'original', stroke_group['@kvg:original'],
+    'part', stroke_group['@kvg:part'],
+    'partial', stroke_group['@kvg:partial'],
+    'phon', stroke_group['@kvg:phon'],
+    'position', stroke_group['@kvg:position'],
+    'radical', stroke_group['@kvg:radical'],
+    'radicalForm', stroke_group['@kvg:radicalForm'],
+    'tradForm', stroke_group['@kvg:tradForm'],
+    'variant', stroke_group['@kvg:variant']
+    )
+$$;
 
+CREATE OR REPLACE FUNCTION group_attributes(
+    stroke_group OBJECT
+    )
+RETURNS OBJECT
+AS
+$$
+OBJECT_CONSTRUCT(
+    'element', stroke_group['@kvg:element'],
+    'number', stroke_group['@kvg:number'],
+    'original', stroke_group['@kvg:original'],
+    'part', stroke_group['@kvg:part'],
+    'partial', stroke_group['@kvg:partial'],
+    'phon', stroke_group['@kvg:phon'],
+    'position', stroke_group['@kvg:position'],
+    'radical', stroke_group['@kvg:radical'],
+    'radicalForm', stroke_group['@kvg:radicalForm'],
+    'tradForm', stroke_group['@kvg:tradForm'],
+    'variant', stroke_group['@kvg:variant']
+    )
+$$;
 
+CREATE OR REPLACE FUNCTION stroke_attributes(
+    stroke OBJECT
+    )
+RETURNS OBJECT
+AS
+$$
+OBJECT_CONSTRUCT(
+    'd', stroke['@d'],
+    'type', stroke['@kvg:type']
+    )
+$$;
 
+select * from StrokePath;
+
+select * from StrokePath where node_tag = 'g';
+
+create view StrokeGroup 
+as
 select
-     xmlget(content[0], 'g', 0)
-    ,content[0]['@'] as first_tag_name
-from kanji_drawing_extractor
-where content[0]['@'] = 'g'
+     *
+from StrokePath 
+where node_tag = 'g'
     ;
 
-select
-     codepoint_str                  as encoded_kanji
-    ,decode_kanji(codepoint_str)    as kanji
-    ,kvg_variant_name               as kanji_variant    
-    ,x.*
-    ,kvg['g'][x.seq-1]
-    ,kvg['$']
-from kvg_upload
-cross join lateral  flatten(kvg['$']) as x
-    ;
 
-select
-     x.*
-    ,kvg['$'][x.seq-1]['@id']
-from kvg_upload
-    ;
-select
-     x.*
-    ,kvg['$'][x.seq-1]['@id']
-from kvg_upload
-cross join lateral flatten(xmlget(kvg, 'g', 0)) as x
---where key = '@id'
-    ;
- 
+drop table if exists StrokePath;
+create table StrokePath as 
+    (
+    select 
+         seq as xml_id
+        ,r.node_id              as svg_paths_id
+        ,x.value['@id']         as node_id
+        ,x.value['@']           as node_tag
+        ,case x.value['@']
+            when 'g' then group_attributes(x.value)
+            when 'path' then stroke_attributes(x.value)
+         end as node_attributes
+        ,x.path                 as node_address
+        ,coalesce(
+             '[''$'']['||x.index||']'
+            ,'['''||x.key||''']'
+            )                   as final_address_component
+        -- length(final_address_component) is overstated at the first-level child, but that's OK because its parent is the SVG Paths node.
+        ,left(
+             x.path
+            ,length(x.path) - length(final_address_component)
+            )                   as parent_node_address
+    from root_group_extractor r
+    cross join lateral flatten(r.children, recursive=>true) as x
+    where x.value['@id'] is not NULL
+    order by svg_paths_id, parent_node_address
+    );
+
+select * from strokegroup
+cross lateral join 
