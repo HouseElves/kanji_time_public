@@ -109,7 +109,7 @@ as
         ,svg_content
     from kanji_svg_files
     )
-select top 2
+select top 20
      codepoint_str
     ,codepoint
     ,kvg_variant_name
@@ -1062,5 +1062,269 @@ create table StrokePath as
     order by svg_paths_id, parent_node_address
     );
 
-select * from strokegroup
-cross lateral join 
+select 
+    * 
+from root_group_extractor
+    ;
+
+CREATE OR REPLACE FUNCTION merge_attributes(parent OBJECT, child OBJECT)
+RETURNS OBJECT
+LANGUAGE JAVASCRIPT
+AS
+$$
+    // Parent first, then child overwrites
+    return {...PARENT, ...CHILD};
+$$;
+
+
+CREATE OR REPLACE FUNCTION parse_svg_style(style_string VARCHAR)
+RETURNS OBJECT
+LANGUAGE JAVASCRIPT
+AS
+$$
+    if (!STYLE_STRING) return null;
+    
+    return STYLE_STRING
+        .split(';')
+        .filter(pair => pair.trim())
+        .reduce((obj, pair) => {
+            const [key, value] = pair.split(':');
+            if (key && value) {
+                obj[key.trim()] = value.trim();
+            }
+            return obj;
+        }, {});
+$$;
+
+/* Closing in on the target:  a minimalist version of what we want. */
+create or replace view kanji_drawing_extractor
+as
+select
+     codepoint_str                  as encoded_kanji
+    ,decode_kanji(encoded_kanji)    as kanji
+    ,kvg_variant_name               as kanji_variant
+    ,kvg['@']                       as root_tag
+    ,kvg['@height']                 as height
+    ,kvg['@width']                  as width
+    ,kvg['@xmlns']                  as dflt_namespace
+    ,coalesce(
+        -- alternate spellings
+         kvg['@viewBox']
+        ,kvg['@viewbox']
+        )                           as viewbox
+    ,kvg['$']                       as children
+from kvg_upload
+where kvg['@'] = 'svg'
+    ;
+
+
+
+create or replace view kanji_paths_extractor
+as
+select
+     x.value['@id']                             AS node_id
+    ,d.children[x.index]                        as paths_header
+    ,x.value['@style']                          as svg_style
+    ,x.value['@kvg:element']                    as element
+    ,paths_header['@']                          as paths_tag
+    ,paths_header['$']                          as stroke_groups
+from kanji_drawing_extractor as d
+cross join lateral flatten(d.children) as x
+where node_id like 'kvg:StrokePaths%'
+    ;
+
+
+select 
+     strtok_to_array(svg_style, ':;')
+    ,parse_svg_style(svg_style)
+from kanji_paths_extractor
+    ;
+
+create or replace view kanji_paths_extractor
+as
+select
+     x.value['@id']                             AS node_id
+    ,d.children[x.index]                        as paths_header
+    ,parse_svg_style(x.value['@style'])         as svg_style
+    ,x.value['@kvg:element']                    as element
+    ,paths_header['@']                          as paths_tag
+    ,paths_header['$']                          as stroke_groups
+from kanji_drawing_extractor as d
+cross join lateral flatten(d.children) as x
+where node_id like 'kvg:StrokePaths%'
+    ;
+
+select * from kanji_paths_extractor;
+
+
+create or replace view root_group_extractor
+as
+select
+     p.stroke_groups['@id']                         as node_id
+    ,p.stroke_groups['@']                           as node_tag
+    ,p.stroke_groups['$']                           as children
+from kanji_paths_extractor p
+    ;
+
+create or replace view path_node_extractor
+as
+select
+     p.paths_header['@id']                         as node_id
+    ,p.paths_header['@']                           as node_tag
+    ,p.paths_header                                as node
+from kanji_paths_extractor p
+    ;
+
+select
+    *
+from path_node_extractor
+order by node_id
+    ;
+
+drop table if exists StrokePath;
+create table StrokePath as 
+    (
+    select 
+         seq as xml_id
+        ,r.node_id              as svg_paths_id
+        ,x.value['@id']         as node_id
+        ,x.value['@']           as node_tag
+        ,case x.value['@']
+            when 'g' then group_attributes(x.value)
+            when 'path' then stroke_attributes(x.value)
+         end as node_attributes
+        ,x.path                 as node_address
+        ,coalesce(
+             '[''$'']['||x.index||']'
+            ,'['''||x.key||''']'
+            )                   as final_address_component
+        -- length(final_address_component) is overstated at the first-level child, but that's OK because its parent is the SVG Paths node.
+        -- this issue goes away if I reroot up a level to the StrokePaths node
+        ,left(
+             x.path
+            ,length(x.path) - length(final_address_component)
+            )                   as parent_node_address
+        ,x.index as sort_order
+    from root_group_extractor r  
+    cross join lateral flatten(r.children, recursive=>true) as x
+    where x.value['@id'] is not NULL
+    order by svg_paths_id, parent_node_address
+    );
+
+
+-- kvg:StrokePaths_07980-Kaisho
+select 
+    *
+from StrokePath
+where svg_paths_id = 'kvg:07980-Kaisho'
+order by node_id
+    ;
+
+/*
+         x.value['@id']                     as id_attr
+        ,NULL                               as parent_id_attr
+        --
+        ,x.value['@kvg:element']            as kanji_element
+        ,x.value['@kvg:position']           as position
+        ,x.value['@']                       as child_tag
+        ,x.value['$']                       as child_groups
+        ,1                                  as depth
+    from root_group_extractor r
+    CROSS JOIN TABLE(flatten_child_groups(r.child_groups)) AS x
+    where x.value['@'] in ('path', 'g')
+
+ */
+
+WITH RECURSIVE stroke_group_tree 
+AS 
+    (
+    -- BASIS: children of the root stroke group
+    select 
+         *
+        ,'StrokePaths' as owner
+        ,1 as depth
+    from StrokePath
+    where 
+        svg_paths_id = 'kvg:07980-Kaisho' 
+    and parent_node_address = ''
+
+    UNION ALL
+
+    -- TAIL LOOP: children of groups found so far
+    select 
+         path.* 
+        ,right(s.node_id, len(s.node_id) - len(path.svg_paths_id) - 1)  as owner
+        ,s.depth + 1 as depth
+    from stroke_group_tree s
+    inner join StrokePath path
+        on  path.xml_id = s.xml_id
+        and path.svg_paths_id = s.svg_paths_id
+        and path.parent_node_address = s.node_address
+    where   s.node_tag = 'g'
+        -- cheap guard
+        AND s.depth < 10
+    )
+select 
+    * 
+from stroke_group_tree
+--where node_tag = 'path'
+order by node_address
+    ;
+
+    ---> s8 is interesting:  it's a singleton, so the [0] offset for it into ['$'] get suppressed.  
+    ---> how does that work with a singleton group in the parent/child address calculations? 
+
+select kvg from kvg_upload where codepoint_str = '07980' and kvg_variant_name = 'Kaisho';
+
+<svg height="109" viewBox="0 0 109 109" width="109" xmlns="http://www.w3.org/2000/svg">
+  <g id="kvg:StrokePaths_07980-Kaisho" style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;">
+    <g id="kvg:07980-Kaisho" kvg:element="禀">
+      <g id="kvg:07980-Kaisho-g1" kvg:element="㐭" kvg:position="top">
+        <g id="kvg:07980-Kaisho-g2" kvg:element="亠">
+          <path d="M51.57,8.25c0.98,0.53,2.58,2.56,2.58,3.61c0,3.86-0.31,3.13-0.13,6.4" id="kvg:07980-Kaisho-s1" kvg:type="㇑a"></path>
+          <path d="M19.83,20.19c1.73,0.34,3.26,0.72,5.25,0.48c11.86-1.43,47.16-3.18,60.99-3.88c2.03-0.1,3.07,0.04,4.59,0.61" id="kvg:07980-Kaisho-s2" kvg:type="㇐"></path>
+        </g>
+        <g id="kvg:07980-Kaisho-g3" kvg:element="回">
+          <g id="kvg:07980-Kaisho-g4" kvg:element="囗" kvg:part="1">
+            <path d="M29.2,27.78c0.68,0.63,1.25,1.8,1.42,2.59C32,36.5,33,41.25,35.31,52.5" id="kvg:07980-Kaisho-s3" kvg:type="㇑"></path>
+            <path d="M31.54,28.79c13.09-1.11,38.69-3.29,46.89-3.29c1.87,0,2.59,1.05,2.38,2.31c-1.02,5.98-1.88,13.64-3.92,21.72" id="kvg:07980-Kaisho-s4" kvg:type="㇕a"></path>
+          </g>
+          <g id="kvg:07980-Kaisho-g5" kvg:element="口">
+            <path d="M44.45,34.21c0.29,0.17,0.58,0.3,0.71,0.51c0.99,1.64,2.19,5.73,3.04,8.67" id="kvg:07980-Kaisho-s5" kvg:type="㇑"></path>
+            <path d="M46.23,34.9c5.86-0.85,14.35-1.8,17.71-2.01c1.23-0.08,1.96,0.47,1.79,0.93c-0.73,1.91-1.58,4.22-2.66,6.86" id="kvg:07980-Kaisho-s6" kvg:type="㇕b"></path>
+            <path d="M48.37,42.24c4.25-0.42,10.52-0.94,15.93-1.32" id="kvg:07980-Kaisho-s7" kvg:type="㇐b"></path>
+          </g>
+          <g id="kvg:07980-Kaisho-g6" kvg:element="囗" kvg:part="2">
+            <path d="M35.95,50.25c11.3-0.75,29.5-1.81,41.45-2.4" id="kvg:07980-Kaisho-s8" kvg:type="㇐a"></path>
+          </g>
+        </g>
+      </g>
+      <g id="kvg:07980-Kaisho-g7" kvg:element="示" kvg:position="bottom" kvg:radical="general">
+        <g id="kvg:07980-Kaisho-g8" kvg:position="top">
+          <path d="M34.85,60.19c0.99,0.37,2.8,0.48,3.78,0.37c6.29-0.65,28.63-2.52,35.29-2.62c1.65-0.03,2.63,0.18,3.45,0.37" id="kvg:07980-Kaisho-s9" kvg:type="㇐"></path>
+          <path d="M19.08,72.78c1.64,0.59,4.65,0.7,6.29,0.59c12.38-0.86,42.03-3.53,62.01-3.56c2.73,0,4.38,0.28,5.74,0.57" id="kvg:07980-Kaisho-s10" kvg:type="㇐"></path>
+        </g>
+        <g id="kvg:07980-Kaisho-g9" kvg:position="bottom">
+          <path d="M54.86,73.97c0.07,0.37,1.42,1.92,1.42,4.27c0,4.51-0.25,13.05-0.25,16.89c0,8.15-3.5,2.93-6.74,0.19" id="kvg:07980-Kaisho-s11" kvg:type="㇚"></path>
+          <path d="M35.48,83.05c0.05,0.39,0.1,1.01-0.1,1.57c-1.21,3.3-9.96,9.76-19.45,14.2" id="kvg:07980-Kaisho-s12" kvg:type="㇒"></path>
+          <path d="M69.4,82.06c6.67,2.45,17.57,9.79,19.24,13.59" id="kvg:07980-Kaisho-s13" kvg:type="㇔"></path>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="kvg:StrokeNumbers_07980-Kaisho" style="font-size:8;fill:#808080">
+    <text transform="matrix(1 0 0 1 44.50 9.50)">1</text>
+    <text transform="matrix(1 0 0 1 12.50 20.50)">2</text>
+    <text transform="matrix(1 0 0 1 23.75 36.50)">3</text>
+    <text transform="matrix(1 0 0 1 35.75 26.50)">4</text>
+    <text transform="matrix(1 0 0 1 40.50 40.33)">5</text>
+    <text transform="matrix(1 0 0 1 47.50 33.50)">6</text>
+    <text transform="matrix(1 0 0 1 50.50 40.50)">7</text>
+    <text transform="matrix(1 0 0 1 38.50 47.50)">8</text>
+    <text transform="matrix(1 0 0 1 28.50 61.50)">9</text>
+    <text transform="matrix(1 0 0 1 16.50 70.95)">10</text>
+    <text transform="matrix(1 0 0 1 45.50 81.88)">11</text>
+    <text transform="matrix(1 0 0 1 24.50 84.50)">12</text>
+    <text transform="matrix(1 0 0 1 61.50 88.50)">13</text>
+  </g>
+</svg>
