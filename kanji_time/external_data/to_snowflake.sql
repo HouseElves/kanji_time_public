@@ -1175,6 +1175,7 @@ select
 from kanji_paths_extractor p
     ;
 
+
 select
     *
 from path_node_extractor
@@ -1194,12 +1195,15 @@ create table StrokePath as
             when 'path' then stroke_attributes(x.value)
          end as node_attributes
         ,x.path                 as node_address
+        -- CAVEAT:  'flatten' omits the explict array index 0 when there is exactly one child element. 
+        --          Viz. the pedantic ['$'][0] becomes simply ['$'] in this case. --> see g6/s8 on 07980-Kaisho for an example.
+        --          I don't believe that this matters for KanjiVG but it's worth noting on other sources. Is the behavior doc'd anywhere?
         ,coalesce(
              '[''$'']['||x.index||']'
             ,'['''||x.key||''']'
             )                   as final_address_component
         -- length(final_address_component) is overstated at the first-level child, but that's OK because its parent is the SVG Paths node.
-        -- this issue goes away if I reroot up a level to the StrokePaths node
+        -- this issue goes away if I reroot up a level to the StrokePaths node --> but that's more trouble than it's worth.
         ,left(
              x.path
             ,length(x.path) - length(final_address_component)
@@ -1235,40 +1239,71 @@ order by node_id
 
  */
 
+CREATE OR REPLACE FUNCTION merge_attributes(parent OBJECT, child OBJECT)
+RETURNS OBJECT
+LANGUAGE JAVASCRIPT
+AS
+$$
+    // Parent first, then child overwrites
+    return {...PARENT, ...CHILD};
+$$;
+
 WITH RECURSIVE stroke_group_tree 
 AS 
     (
     -- BASIS: children of the root stroke group
     select 
-         *
-        ,'StrokePaths' as owner
+         'StrokePaths' as owner
+        ,StrokePath.*
+        ,node_attributes as full_attributes
+        ,coalesce(node_attributes['position'], '') as effective_position
         ,1 as depth
     from StrokePath
-    where 
-        svg_paths_id = 'kvg:07980-Kaisho' 
-    and parent_node_address = ''
+    where   parent_node_address = ''
+        -- and svg_paths_id = 'kvg:07980-Kaisho' 
 
     UNION ALL
 
-    -- TAIL LOOP: children of groups found so far
+    -- INDUCTIVE STEP: children of groups found so far
     select 
-         path.* 
-        ,right(s.node_id, len(s.node_id) - len(path.svg_paths_id) - 1)  as owner
-        ,s.depth + 1 as depth
-    from stroke_group_tree s
+         right(parent.node_id, len(parent.node_id) - len(path.svg_paths_id) - 1)  as owner
+        ,path.* 
+        ,merge_attributes(parent.full_attributes, path.node_attributes) as full_attributes
+        ,parent.effective_position || coalesce('-'||path.node_attributes['position'], '') as effective_position
+        ,parent.depth + 1 as depth
+    from stroke_group_tree parent
     inner join StrokePath path
-        on  path.xml_id = s.xml_id
-        and path.svg_paths_id = s.svg_paths_id
-        and path.parent_node_address = s.node_address
-    where   s.node_tag = 'g'
-        -- cheap guard
-        AND s.depth < 10
+        on  path.xml_id = parent.xml_id
+        and path.svg_paths_id = parent.svg_paths_id
+        and path.parent_node_address = parent.node_address
+    where   parent.depth < 10       -- cheap guard
+        AND parent.node_tag = 'g'   -- only groups, a/k/a the 'g' tags, have children
     )
 select 
-    * 
+     full_attributes['element']         as element
+    ,full_attributes['element'] 
+     || case when full_attributes['part'] is not null then 'P' else '' end 
+     || case when full_attributes['number'] is not null then 'N' else '' end 
+                                        as effective_element
+    ,effective_position
+    ,full_attributes['type'] as stroke_type
+    ,full_attributes['d'] as path
+    ,substring(
+         node_id
+        ,length(svg_paths_id) + 3
+        )::integer                      as seq_number
+    ,svg_paths_id 
+     || '-' || 
+     case node_tag
+        when 'g' then 'g'
+        when 'path' then 's'
+     end
+     || trim(seq_number::varchar)       as reconstructed_node_id
+    ,node_id = reconstructed_node_id    as seq_number_OK
+    --,stroke_group_tree.*
 from stroke_group_tree
---where node_tag = 'path'
-order by node_address
+where node_tag = 'path'
+order by element, effective_position, stroke_type -- node_address
     ;
 
     ---> s8 is interesting:  it's a singleton, so the [0] offset for it into ['$'] get suppressed.  
@@ -1276,6 +1311,9 @@ order by node_address
 
 select kvg from kvg_upload where codepoint_str = '07980' and kvg_variant_name = 'Kaisho';
 
+-- why isn't the "亠" element top-top and the "回" element top-bottom?  --> everything under one position should be part of the same thing?  Because they're different elements in the same position!
+-- wheras "示" is one element divided into two groups that are *not* elements.
+-- This has to have something to do with the radicals.
 <svg height="109" viewBox="0 0 109 109" width="109" xmlns="http://www.w3.org/2000/svg">
   <g id="kvg:StrokePaths_07980-Kaisho" style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;">
     <g id="kvg:07980-Kaisho" kvg:element="禀">
